@@ -1,0 +1,1249 @@
+﻿record_id,dept_name,dept,course_level,course_code,course_name,course_type,credit,course_description,raw_values,source_url,crawled_at,missing_fields
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0001,AI컴퓨팅학과,aic,1000-level,CS10003,인공지능 기초,Required,,,"Category: 1000-level
+Code: CS10003
+Course Name: 인공지능 기초
+Type: Required",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0002,AI컴퓨팅학과,aic,2000-level,CS40700,인공지능 개론,Required,,,"Category: 2000-level
+Code: CS40700
+Course Name: 인공지능 개론
+Type: Required",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0003,AI컴퓨팅학과,aic,2000-level,CS30706,기계학습,Required,,,"Category: 2000-level
+Code: CS30706
+Course Name: 기계학습
+Type: Required",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0004,AI컴퓨팅학과,aic,2000-level,CS20300,시스템프로그래밍,Elective,,,"Category: 2000-level
+Code: CS20300
+Course Name: 시스템프로그래밍
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0005,AI컴퓨팅학과,aic,2000-level,CS30704,인간-컴퓨터 상호작용 개론,Elective,,,"Category: 2000-level
+Code: CS30704
+Course Name: 인간-컴퓨터 상호작용 개론
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0006,AI컴퓨팅학과,aic,3000-level,CS30707,강화학습 개론,Elective,,,"Category: 3000-level
+Code: CS30707
+Course Name: 강화학습 개론
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0007,AI컴퓨팅학과,aic,3000-level,CS30101,전산기조직,Elective,,,"Category: 3000-level
+Code: CS30101
+Course Name: 전산기조직
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0008,AI컴퓨팅학과,aic,3000-level,CS30300,운영체제 및 실험,Elective,,,"Category: 3000-level
+Code: CS30300
+Course Name: 운영체제 및 실험
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0009,AI컴퓨팅학과,aic,4000-level,CS40701,그래프 기계학습 및 마이닝,Elective,,,"Category: 4000-level
+Code: CS40701
+Course Name: 그래프 기계학습 및 마이닝
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0010,AI컴퓨팅학과,aic,4000-level,CS40709,3차원 데이터를 위한 기계학습,Elective,,,"Category: 4000-level
+Code: CS40709
+Course Name: 3차원 데이터를 위한 기계학습
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0011,AI컴퓨팅학과,aic,4000-level,CS40806,웨어러블 사용자 인터페이스,Elective,,,"Category: 4000-level
+Code: CS40806
+Course Name: 웨어러블 사용자 인터페이스
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0012,AI컴퓨팅학과,aic,5000-level+,CS50700,인공지능 및 기계학습,Elective,,,"Category: 5000-level+
+Code: CS50700
+Course Name: 인공지능 및 기계학습
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0013,AI컴퓨팅학과,aic,5000-level+,CS59900,컴퓨팅 특강 <리소스 효율적 AI 연구>,Elective,,Course Name: 컴퓨팅 특강 <리소스 효율적 AI 연구>,"Category: 5000-level+
+Code: CS59900
+Course Name: 컴퓨팅 특강 <리소스 효율적 AI 연구>
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,credit
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0014,AI컴퓨팅학과,aic,5000-level+,CS50804,인간과 컴퓨터 상호작용,Elective,,,"Category: 5000-level+
+Code: CS50804
+Course Name: 인간과 컴퓨터 상호작용
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0015,AI컴퓨팅학과,aic,5000-level+,CS50605,사물인터넷 데이터 사이언스,Elective,,,"Category: 5000-level+
+Code: CS50605
+Course Name: 사물인터넷 데이터 사이언스
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+aic_education_courses_교과목 안내_d550178826_d5501788__item_0016,AI컴퓨팅학과,aic,5000-level+,CS50705,인공지능 윤리,Elective,,,"Category: 5000-level+
+Code: CS50705
+Course Name: 인공지능 윤리
+Type: Elective",https://aic.kaist.ac.kr/#/education-courses,2026-05-26T13:24:53.541543+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0001,AX학과,ax,데이터콘텐츠AX,AX20001,"AI를 위한 확률, 통계 및 최적화",전공필수,,"Course Name: AI를 위한 확률, 통계 및 최적화","Code: AX20001
+Course Name: AI를 위한 확률, 통계 및 최적화
+Type: 전공필수",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0002,AX학과,ax,데이터콘텐츠AX,AX20002,AI모델 및 알고리즘의 이해,전공필수,,,"Code: AX20002
+Course Name: AI모델 및 알고리즘의 이해
+Type: 전공필수",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0003,AX학과,ax,데이터콘텐츠AX,AX30001,AI 시스템 설계 및 플랫폼 구현,전공필수,,Course Name: AI 시스템 설계 및 플랫폼 구현,"Code: AX30001
+Course Name: AI 시스템 설계 및 플랫폼 구현
+Type: 전공필수",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0004,AX학과,ax,데이터콘텐츠AX,FX20001,AI 철학: 윤리와 법,전공필수,,,"Code: FX20001
+Course Name: AI 철학: 윤리와 법
+Type: 전공필수",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0005,AX학과,ax,데이터콘텐츠AX,AX40001,AX 리빙랩 I,전공필수,,,"Code: AX40001
+Course Name: AX 리빙랩 I
+Type: 전공필수",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0006,AX학과,ax,데이터콘텐츠AX,AX40002,AX 리빙랩 II,전공필수,,,"Code: AX40002
+Course Name: AX 리빙랩 II
+Type: 전공필수",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0007,AX학과,ax,데이터콘텐츠AX,IE.20041,공학통계 I,전공선택,,,"Code: IE.20041
+Course Name: 공학통계 I
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0008,AX학과,ax,데이터콘텐츠AX,IE.20042,데이터 구조 및 분석,전공선택,,,"Code: IE.20042
+Course Name: 데이터 구조 및 분석
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0009,AX학과,ax,데이터콘텐츠AX,IE.20042,공학통계 II,전공선택,,,"Code: IE.20042
+Course Name: 공학통계 II
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0010,AX학과,ax,데이터콘텐츠AX,IE.30043,통계적 기계학습,전공선택,,,"Code: IE.30043
+Course Name: 통계적 기계학습
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0011,AX학과,ax,데이터콘텐츠AX,ID.30011,소프트웨어프로토타이핑,전공선택,,,"Code: ID.30011
+Course Name: 소프트웨어프로토타이핑
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0012,AX학과,ax,데이터콘텐츠AX,IE.40037,데이터 기반 의사결정 및 제어 방법론,전공선택,,Course Name: 데이터 기반 의사결정 및 제어 방법론,"Code: IE.40037
+Course Name: 데이터 기반 의사결정 및 제어 방법론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0019,AX학과,ax,바이오소재AX,CBE.20006,생화공 수치계산법,전공선택,,,"Code: CBE.20006
+Course Name: 생화공 수치계산법
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0020,AX학과,ax,바이오소재AX,CBE.30041,공정모사와 제어,전공선택,,,"Code: CBE.30041
+Course Name: 공정모사와 제어
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0021,AX학과,ax,바이오소재AX,CBE.49900,생명화학공학특강: AI를 이용한 생화공 문제 해결,전공선택,,Course Name: 생명화학공학특강: AI를 이용한 생화공 문제 해결,"Code: CBE.49900
+Course Name: 생명화학공학특강: AI를 이용한 생화공 문제 해결
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0022,AX학과,ax,바이오소재AX,CBE.30063,대사공학 및 합성생물학 입문,전공선택,,,"Code: CBE.30063
+Course Name: 대사공학 및 합성생물학 입문
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0023,AX학과,ax,바이오소재AX,MS.49900,신소재특강: 전산재료과학개론,전공선택,,,"Code: MS.49900
+Course Name: 신소재특강: 전산재료과학개론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0024,AX학과,ax,바이오소재AX,CBE.40064,생명공학을 위한 빅데이터 분석 및 기계학습,전공선택,,Course Name: 생명공학을 위한 빅데이터 분석 및 기계학습,"Code: CBE.40064
+Course Name: 생명공학을 위한 빅데이터 분석 및 기계학습
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0031,AX학과,ax,생명과학AX,BS.20005,생화학,전공선택,,,"Code: BS.20005
+Course Name: 생화학
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0032,AX학과,ax,생명과학AX,BS.30057,신경생물학 I,전공선택,,,"Code: BS.30057
+Course Name: 신경생물학 I
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0033,AX학과,ax,생명과학AX,BS.40050,신경생물학 II,전공선택,,,"Code: BS.40050
+Course Name: 신경생물학 II
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0034,AX학과,ax,생명과학AX,BS.40015,유전체학,전공선택,,,"Code: BS.40015
+Course Name: 유전체학
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0035,AX학과,ax,생명과학AX,BS.50012,생물통계학,전공선택,,,"Code: BS.50012
+Course Name: 생물통계학
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0036,AX학과,ax,생명과학AX,BS.50043,고급신경생물학,전공선택,,,"Code: BS.50043
+Course Name: 고급신경생물학
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0037,AX학과,ax,생명과학AX,CH.40015,인공지능 화학,전공선택,,,"Code: CH.40015
+Course Name: 인공지능 화학
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0044,AX학과,ax,물리제조AX,IE.20051,제조 프로세스 혁신,전공선택,,,"Code: IE.20051
+Course Name: 제조 프로세스 혁신
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0045,AX학과,ax,물리제조AX,IE.20021,생산관리 I,전공선택,,,"Code: IE.20021
+Course Name: 생산관리 I
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0046,AX학과,ax,물리제조AX,ME.20003,메카트로닉스 시스템 설계,전공선택,,,"Code: ME.20003
+Course Name: 메카트로닉스 시스템 설계
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0047,AX학과,ax,물리제조AX,ME.30040,공학 설계,전공선택,,,"Code: ME.30040
+Course Name: 공학 설계
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0048,AX학과,ax,물리제조AX,IE.30031,OR: 최적화,전공선택,,,"Code: IE.30031
+Course Name: OR: 최적화
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0049,AX학과,ax,물리제조AX,ME.30061,시스템 모델링 제어,전공선택,,,"Code: ME.30061
+Course Name: 시스템 모델링 제어
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0050,AX학과,ax,물리제조AX,ME.40062,자동제어,전공선택,,,"Code: ME.40062
+Course Name: 자동제어
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0051,AX학과,ax,물리제조AX,ME.40059,시각지능개론,전공선택,,,"Code: ME.40059
+Course Name: 시각지능개론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0052,AX학과,ax,물리제조AX,ME.40053,로봇공학 개론,전공선택,,,"Code: ME.40053
+Course Name: 로봇공학 개론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0059,AX학과,ax,지속가능성AX,CE.20050,스마트시티와 디지털 인프라스트럭쳐 개론,전공선택,,Course Name: 스마트시티와 디지털 인프라스트럭쳐 개론,"Code: CE.20050
+Course Name: 스마트시티와 디지털 인프라스트럭쳐 개론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0060,AX학과,ax,지속가능성AX,CE.20053,사회기반시설물을 위한 센싱기술 개론,전공선택,,Course Name: 사회기반시설물을 위한 센싱기술 개론,"Code: CE.20053
+Course Name: 사회기반시설물을 위한 센싱기술 개론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0061,AX학과,ax,지속가능성AX,CE.20054,환경 과학 및 공학개론,전공선택,,,"Code: CE.20054
+Course Name: 환경 과학 및 공학개론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0062,AX학과,ax,지속가능성AX,CE.20040,도시건축학개론,전공선택,,,"Code: CE.20040
+Course Name: 도시건축학개론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0063,AX학과,ax,지속가능성AX,CE.49903,건설 및 환경공학 특강 <기후 시스템 과학과 완화 및 적응 방안>,전공선택,,Course Name: 건설 및 환경공학 특강 <기후 시스템 과학과 완화 및 적응 방안>,"Code: CE.49903
+Course Name: 건설 및 환경공학 특강 <기후 시스템 과학과 완화 및 적응 방안>
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0064,AX학과,ax,지속가능성AX,CE.40076,인공지능과 스마트기술을 이용한 사회기반구조물 및 환경 설계,전공선택,,Course Name: 인공지능과 스마트기술을 이용한 사회기반구조물 및 환경 설계,"Code: CE.40076
+Course Name: 인공지능과 스마트기술을 이용한 사회기반구조물 및 환경 설계
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0065,AX학과,ax,지속가능성AX,CE.20091,지리공간분석개론,전공선택,,,"Code: CE.20091
+Course Name: 지리공간분석개론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0066,AX학과,ax,지속가능성AX,CE.30050,모빌리티시스템공학개론,전공선택,,,"Code: CE.30050
+Course Name: 모빌리티시스템공학개론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0067,AX학과,ax,지속가능성AX,CE.50080,구조물 안전진단을 위한 통계식 패턴인식 및 머신러닝,전공선택,,Course Name: 구조물 안전진단을 위한 통계식 패턴인식 및 머신러닝,"Code: CE.50080
+Course Name: 구조물 안전진단을 위한 통계식 패턴인식 및 머신러닝
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0068,AX학과,ax,지속가능성AX,CE.30072,지속가능 물순환 공학,전공선택,,,"Code: CE.30072
+Course Name: 지속가능 물순환 공학
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0069,AX학과,ax,지속가능성AX,CE.50045,교통시스템을 위한 인공지능 적용,전공선택,,Course Name: 교통시스템을 위한 인공지능 적용,"Code: CE.50045
+Course Name: 교통시스템을 위한 인공지능 적용
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0076,AX학과,ax,경영공학AX,BTM.201,통계분석론,전공선택,,,"Code: BTM.201
+Course Name: 통계분석론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0077,AX학과,ax,경영공학AX,BTM.236,마케팅원론,전공선택,,,"Code: BTM.236
+Course Name: 마케팅원론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0078,AX학과,ax,경영공학AX,BTM.235,재무관리론,전공선택,,,"Code: BTM.235
+Course Name: 재무관리론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0079,AX학과,ax,경영공학AX,BTM.447,경영을 위한 인공지능 기초,전공선택,,,"Code: BTM.447
+Course Name: 경영을 위한 인공지능 기초
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0080,AX학과,ax,경영공학AX,BTM.415,게임이론,전공선택,,,"Code: BTM.415
+Course Name: 게임이론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0081,AX학과,ax,경영공학AX,BTM.441,인공지능을 통한 비즈니스 솔루션,전공선택,,Course Name: 인공지능을 통한 비즈니스 솔루션,"Code: BTM.441
+Course Name: 인공지능을 통한 비즈니스 솔루션
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0082,AX학과,ax,경영공학AX,-,AI 특허,전공선택,,,"Code: -
+Course Name: AI 특허
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0083,AX학과,ax,AX학과 전공선택 과목 리스트,AX.40011,신호 및 영상처리를 위한 프로그래밍,전공선택,,Course Name: 신호 및 영상처리를 위한 프로그래밍,"Code: AX.40011
+Course Name: 신호 및 영상처리를 위한 프로그래밍
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0084,AX학과,ax,AX학과 전공선택 과목 리스트,AX.40021,스마트 제조를 위한 인공지능,전공선택,,,"Code: AX.40021
+Course Name: 스마트 제조를 위한 인공지능
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0085,AX학과,ax,AX학과 전공선택 과목 리스트,AX.40041,생명과학을 위한 데이터기반 인공지능,전공선택,,Course Name: 생명과학을 위한 데이터기반 인공지능,"Code: AX.40041
+Course Name: 생명과학을 위한 데이터기반 인공지능
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0086,AX학과,ax,AX학과 전공선택 과목 리스트,AX.40042,인공지능 화학,전공선택,,,"Code: AX.40042
+Course Name: 인공지능 화학
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0087,AX학과,ax,AX학과 전공선택 과목 리스트,AX.40043,생명공학을 위한 빅데이터 분석 및 기계학습,전공선택,,Course Name: 생명공학을 위한 빅데이터 분석 및 기계학습,"Code: AX.40043
+Course Name: 생명공학을 위한 빅데이터 분석 및 기계학습
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0088,AX학과,ax,AX학과 전공선택 과목 리스트,AX.40071,AI 발명 및 특허 출원,전공선택,,,"Code: AX.40071
+Course Name: AI 발명 및 특허 출원
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0089,AX학과,ax,AX학과 전공선택 과목 리스트,AX.40072,경영을 위한 인공지능 기초,전공선택,,,"Code: AX.40072
+Course Name: 경영을 위한 인공지능 기초
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0090,AX학과,ax,AX학과 전공선택 과목 리스트,AX.49991,AX의 특강,전공선택,,,"Code: AX.49991
+Course Name: AX의 특강
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0091,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50001,"AI를 위한 고급 확률, 통계 및 최적화",전공선택,,"Course Name: AI를 위한 고급 확률, 통계 및 최적화","Code: AX.50001
+Course Name: AI를 위한 고급 확률, 통계 및 최적화
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0092,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50002,AX 고급 리빙랩,전공선택,,,"Code: AX.50002
+Course Name: AX 고급 리빙랩
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0093,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50011,계산과학을 위한 기계학습,전공선택,,,"Code: AX.50011
+Course Name: 계산과학을 위한 기계학습
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0094,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50012,추천시스템 및 그래프기계학습,전공선택,,,"Code: AX.50012
+Course Name: 추천시스템 및 그래프기계학습
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0095,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50013,신경망이론 및 응용,전공선택,,,"Code: AX.50013
+Course Name: 신경망이론 및 응용
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0096,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50014,랜덤데이타: 해석 및 처리,전공선택,,,"Code: AX.50014
+Course Name: 랜덤데이타: 해석 및 처리
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0097,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50015,응용수학의 방법,전공선택,,,"Code: AX.50015
+Course Name: 응용수학의 방법
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0098,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50021,자율주행 인공지능,전공선택,,,"Code: AX.50021
+Course Name: 자율주행 인공지능
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0099,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50022,자율주행 자동차 개론,전공선택,,,"Code: AX.50022
+Course Name: 자율주행 자동차 개론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0100,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50041,생물통계학,전공선택,,,"Code: AX.50041
+Course Name: 생물통계학
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0101,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50042,수리생물학개론,전공선택,,,"Code: AX.50042
+Course Name: 수리생물학개론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0102,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50051,지속가능 기술시스템을 위한 데이터 과학 방법론,전공선택,,Course Name: 지속가능 기술시스템을 위한 데이터 과학 방법론,"Code: AX.50051
+Course Name: 지속가능 기술시스템을 위한 데이터 과학 방법론
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,credit
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0103,AX학과,ax,AX학과 전공선택 과목 리스트,AX.50071,고급경영통계,전공선택,,,"Code: AX.50071
+Course Name: 고급경영통계
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0104,AX학과,ax,AX학과 전공선택 과목 리스트,AX.70071,고급계량분석,전공선택,,,"Code: AX.70071
+Course Name: 고급계량분석
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0105,AX학과,ax,AX학과 전공선택 과목 리스트,AX.92100,논문연구 (석사),전공선택,,,"Code: AX.92100
+Course Name: 논문연구 (석사)
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0106,AX학과,ax,AX학과 전공선택 과목 리스트,AX.92200,논문연구 (박사),전공선택,,,"Code: AX.92200
+Course Name: 논문연구 (박사)
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0107,AX학과,ax,AX학과 전공선택 과목 리스트,AX.89991,AX의 특수논제,전공선택,,,"Code: AX.89991
+Course Name: AX의 특수논제
+Type: 전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+ax_education_courses_교과목 안내_c90ad7596c_c90ad759__item_0163,AX학과,ax,지속가능성AX,CE.49903,건설 및 환경공학 특강,전공선택,,,"건설 및 환경공학 특강
+<기후 시스템 과학과 완화 및 적응 방안>
+전공선택",https://ax.kaist.ac.kr/#/education-courses,2026-05-26T13:29:07.575376+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_001,AI미래학과,fx,1000-LEVEL,CS.10003,인공지능 기초,ELECTIVE,,,"1000-LEVEL
+CS.10003
+인공지능 기초
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_002,AI미래학과,fx,2000-LEVEL,FSM.20001,미래학 개론,ELECTIVE,,,"2000-LEVEL
+FSM.20001
+미래학 개론
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_003,AI미래학과,fx,2000-LEVEL,IE.20041,공학통계 I,ELECTIVE,,,"2000-LEVEL
+IE.20041
+공학통계 I
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_004,AI미래학과,fx,2000-LEVEL,IE.20060,데이터 구조 및 분석,ELECTIVE,,,"2000-LEVEL
+IE.20060
+데이터 구조 및 분석
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_005,AI미래학과,fx,2000-LEVEL,CE.20012,환경과 지속가능성 개론,ELECTIVE,,,"2000-LEVEL
+CE.20012
+환경과 지속가능성 개론
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_006,AI미래학과,fx,3000-LEVEL,CS.30706,기계학습,ELECTIVE,,,"3000-LEVEL
+CS.30706
+기계학습
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_007,AI미래학과,fx,3000-LEVEL,IP.30001,지식재산권 개요,ELECTIVE,,,"3000-LEVEL
+IP.30001
+지식재산권 개요
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_008,AI미래학과,fx,4000-LEVEL,CS.40700,인공지능 개론,ELECTIVE,,,"4000-LEVEL
+CS.40700
+인공지능 개론
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_009,AI미래학과,fx,4000-LEVEL,IP.40007,기업가를 위한 법,ELECTIVE,,,"4000-LEVEL
+IP.40007
+기업가를 위한 법
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_010,AI미래학과,fx,4000-LEVEL,IP.40010,"법, 기술, 혁신",ELECTIVE,,,"4000-LEVEL
+IP.40010
+법, 기술, 혁신
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_011,AI미래학과,fx,5000-LEVEL+,GGS.50021,글로벌 환경문제 통합평가론,ELECTIVE,,,"5000-LEVEL+
+GGS.50021
+글로벌 환경문제 통합평가론
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_012,AI미래학과,fx,5000-LEVEL+,GGS.50023,기후 및 환경보건 연구방법론,ELECTIVE,,,"5000-LEVEL+
+GGS.50023
+기후 및 환경보건 연구방법론
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_013,AI미래학과,fx,5000-LEVEL+,GGS.50004,기후변화의 과학,ELECTIVE,,,"5000-LEVEL+
+GGS.50004
+기후변화의 과학
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_014,AI미래학과,fx,5000-LEVEL+,CC.50031,특허분석과 발명출원,ELECTIVE,,,"5000-LEVEL+
+CC.50031
+특허분석과 발명출원
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+fx_home_2026 AI미래학과 학과설명회_1094c5a46d_1094c5a4__item_0008__course_015,AI미래학과,fx,5000-LEVEL+,CS.50705,인공지능 윤리,ELECTIVE,,,"5000-LEVEL+
+CS.50705
+인공지능 윤리
+ELECTIVE",https://fx.kaist.ac.kr/,2026-05-26T13:30:33.939577+00:00,"credit, course_description"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
