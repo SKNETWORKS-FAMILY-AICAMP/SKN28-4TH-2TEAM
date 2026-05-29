@@ -26,8 +26,8 @@ import pandas as pd
 BASE_DIR = Path(r"C:\Users\Playdata\workspace\SKN28-third-2TEAM\data\raw_data")  
 
 OUT_DIR = BASE_DIR.parent / "processed"
-SQL_DIR = OUT_DIR / "sql"
-VECTOR_DIR = OUT_DIR / "vectorstore"
+SQL_DIR = OUT_DIR / "csv"
+VECTOR_DIR = OUT_DIR / "json"
 REPORT_DIR = OUT_DIR / "reports"
 
 for d in [SQL_DIR, VECTOR_DIR, REPORT_DIR]:
