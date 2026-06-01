@@ -1,0 +1,366 @@
+[
+  {
+    "question": "AI컴퓨팅학과 석사 지원 자격은?",
+    "expected_route": "vector",
+    "actual_route": "vector",
+    "route_ok": true,
+    "retrieval_status": "searched",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [
+      {
+        "title": "석박사 통합과정",
+        "dept": "aic",
+        "dept_name": "AI컴퓨팅학과",
+        "content_type": "admission",
+        "source": "https://aic.kaist.ac.kr/#/admission-grad",
+        "search_stage": "strict_filter",
+        "score": 0.817060649394989,
+        "rerank_score": 0.735068
+      },
+      {
+        "title": "석박사 통합과정",
+        "dept": "aic",
+        "dept_name": "AI컴퓨팅학과",
+        "content_type": "admission",
+        "source": "https://aic.kaist.ac.kr/#/admission-grad",
+        "search_stage": "strict_filter",
+        "score": 0.8170742988586426,
+        "rerank_score": 0.735067
+      },
+      {
+        "title": "(KAIST석사재학생) 석박사 통합과정",
+        "dept": "aic",
+        "dept_name": "AI컴퓨팅학과",
+        "content_type": "admission",
+        "source": "https://aic.kaist.ac.kr/#/admission-grad",
+        "search_stage": "strict_filter",
+        "score": 0.8394016027450562,
+        "rerank_score": 0.733731
+      }
+    ],
+    "answer_preview": ""
+  },
+  {
+    "question": "AI컴퓨팅학과 박사 지원 자격은?",
+    "expected_route": "vector",
+    "actual_route": "vector",
+    "route_ok": true,
+    "retrieval_status": "searched",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [
+      {
+        "title": "박사과정",
+        "dept": "aic",
+        "dept_name": "AI컴퓨팅학과",
+        "content_type": "admission",
+        "source": "https://aic.kaist.ac.kr/#/admission-grad",
+        "search_stage": "strict_filter",
+        "score": 0.8364684581756592,
+        "rerank_score": 0.733905
+      },
+      {
+        "title": "박사과정",
+        "dept": "aic",
+        "dept_name": "AI컴퓨팅학과",
+        "content_type": "admission",
+        "source": "https://aic.kaist.ac.kr/#/admission-grad",
+        "search_stage": "strict_filter",
+        "score": 0.8396347761154175,
+        "rerank_score": 0.733717
+      },
+      {
+        "title": "석박사 통합과정",
+        "dept": "aic",
+        "dept_name": "AI컴퓨팅학과",
+        "content_type": "admission",
+        "source": "https://aic.kaist.ac.kr/#/admission-grad",
+        "search_stage": "strict_filter",
+        "score": 0.844951868057251,
+        "rerank_score": 0.733404
+      }
+    ],
+    "answer_preview": ""
+  },
+  {
+    "question": "AI컴퓨팅학과 학과설명회 정보 알려줘",
+    "expected_route": "vector",
+    "actual_route": "vector",
+    "route_ok": true,
+    "retrieval_status": "searched",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [
+      {
+        "title": "2026 AI컴퓨팅학과 학과설명회",
+        "dept": "aic",
+        "dept_name": "AI컴퓨팅학과",
+        "content_type": "event",
+        "source": "https://aic.kaist.ac.kr/#/notice",
+        "search_stage": "strict_filter",
+        "score": 0.7332780361175537,
+        "rerank_score": 0.915388
+      }
+    ],
+    "answer_preview": ""
+  },
+  {
+    "question": "AI컴퓨팅학과는 어떤 학과야?",
+    "expected_route": "vector",
+    "actual_route": "vector",
+    "route_ok": true,
+    "retrieval_status": "searched",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [
+      {
+        "title": "컴퓨팅 특강 <리소스 효율적 AI 연구>",
+        "dept": "aic",
+        "dept_name": "AI컴퓨팅학과",
+        "content_type": "course",
+        "source": "https://aic.kaist.ac.kr/#/education-courses",
+        "search_stage": "strict_filter",
+        "score": 1.0502043962478638,
+        "rerank_score": 0.547551
+      },
+      {
+        "title": "2026 AI컴퓨팅학과 학과설명회",
+        "dept": "aic",
+        "dept_name": "AI컴퓨팅학과",
+        "content_type": "event",
+        "source": "https://aic.kaist.ac.kr/#/notice",
+        "search_stage": "strict_filter",
+        "score": 1.0610604286193848,
+        "rerank_score": 0.547037
+      },
+      {
+        "title": "인간과 컴퓨터 상호작용",
+        "dept": "aic",
+        "dept_name": "AI컴퓨팅학과",
+        "content_type": "course",
+        "source": "https://aic.kaist.ac.kr/#/education-courses",
+        "search_stage": "strict_filter",
+        "score": 1.063178539276123,
+        "rerank_score": 0.546938
+      }
+    ],
+    "answer_preview": ""
+  },
+  {
+    "question": "AI시스템학과 교과목 알려줘",
+    "expected_route": "sql",
+    "actual_route": "sql",
+    "route_ok": true,
+    "retrieval_status": "skipped_sql_route",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [],
+    "answer_preview": ""
+  },
+  {
+    "question": "AI시스템학과 교과목 목록과 각 과목 설명도 알려줘",
+    "expected_route": "hybrid",
+    "actual_route": "hybrid",
+    "route_ok": true,
+    "retrieval_status": "searched",
+    "used_fallback": true,
+    "warnings": [
+      "strict_filter 검색 결과가 부족하여 fallback 검색이 사용되었습니다. fallback 결과에는 원래 content_type과 다른 문서가 포함될 수 있습니다."
+    ],
+    "top_sources": [
+      {
+        "title": "AI시스템학과 소개서 다운로드 Download AI Systems Brochure",
+        "dept": "ai_systems",
+        "dept_name": "AI시스템학과",
+        "content_type": "admission",
+        "source": "https://ai-systems.kaist.ac.kr/admission-grad",
+        "search_stage": "department_only",
+        "score": 1.108473300933838,
+        "rerank_score": 0.412355
+      },
+      {
+        "title": "KAIST프로그램 장학생은 KAIST프로그램 참여 교수만을 지도교수로 신청할 수 있습니다.",
+        "dept": "ai_systems",
+        "dept_name": "AI시스템학과",
+        "content_type": "admission",
+        "source": "https://ai-systems.kaist.ac.kr/admission-grad",
+        "search_stage": "department_only",
+        "score": 1.1478102207183838,
+        "rerank_score": 0.410618
+      },
+      {
+        "title": "학사과정 입학 안내 Undergraduate Admission",
+        "dept": "ai_systems",
+        "dept_name": "AI시스템학과",
+        "content_type": "link",
+        "source": "https://ai-systems.kaist.ac.kr/admission-ug",
+        "search_stage": "department_only",
+        "score": 1.1660640239715576,
+        "rerank_score": 0.409833
+      }
+    ],
+    "answer_preview": ""
+  },
+  {
+    "question": "AX학과 교수진 이메일 목록 보여줘",
+    "expected_route": "sql",
+    "actual_route": "sql",
+    "route_ok": true,
+    "retrieval_status": "skipped_sql_route",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [],
+    "answer_preview": ""
+  },
+  {
+    "question": "AX학과 교수 연구분야도 설명해줘",
+    "expected_route": "hybrid",
+    "actual_route": "hybrid",
+    "route_ok": true,
+    "retrieval_status": "searched",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [
+      {
+        "title": "정학진",
+        "dept": "ax",
+        "dept_name": "AX학과",
+        "content_type": "person",
+        "source": "https://ax.kaist.ac.kr/#/people",
+        "search_stage": "strict_filter",
+        "score": 0.7949878573417664,
+        "rerank_score": 0.794755
+      },
+      {
+        "title": "이진준",
+        "dept": "ax",
+        "dept_name": "AX학과",
+        "content_type": "person",
+        "source": "https://ax.kaist.ac.kr/#/people",
+        "search_stage": "strict_filter",
+        "score": 0.8055441379547119,
+        "rerank_score": 0.794103
+      },
+      {
+        "title": "엄지용",
+        "dept": "ax",
+        "dept_name": "AX학과",
+        "content_type": "person",
+        "source": "https://ax.kaist.ac.kr/#/people",
+        "search_stage": "strict_filter",
+        "score": 0.8612321019172668,
+        "rerank_score": 0.790789
+      }
+    ],
+    "answer_preview": ""
+  },
+  {
+    "question": "KAIST 학과 사무실 전화번호 알려줘",
+    "expected_route": "sql",
+    "actual_route": "sql",
+    "route_ok": true,
+    "retrieval_status": "skipped_sql_route",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [],
+    "answer_preview": ""
+  },
+  {
+    "question": "자료 다운로드 링크 알려줘",
+    "expected_route": "sql",
+    "actual_route": "sql",
+    "route_ok": true,
+    "retrieval_status": "skipped_sql_route",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [],
+    "answer_preview": ""
+  },
+  {
+    "question": "교수진도 알려줘",
+    "expected_route": "clarify",
+    "actual_route": "clarify",
+    "route_ok": true,
+    "retrieval_status": "need_clarification",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [],
+    "answer_preview": ""
+  },
+  {
+    "question": "입학 조건은?",
+    "expected_route": "clarify",
+    "actual_route": "clarify",
+    "route_ok": true,
+    "retrieval_status": "need_clarification",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [],
+    "answer_preview": ""
+  },
+  {
+    "question": "AI미래학과 입학 일정 알려줘",
+    "expected_route": "vector",
+    "actual_route": "vector",
+    "route_ok": true,
+    "retrieval_status": "searched",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [
+      {
+        "title": "주요 지원자격",
+        "dept": "fx",
+        "dept_name": "AI미래학과",
+        "content_type": "admission",
+        "source": "https://fx.kaist.ac.kr/#admission",
+        "search_stage": "strict_filter",
+        "score": 0.8669293522834778,
+        "rerank_score": 0.907128
+      },
+      {
+        "title": "원서접수 일정 (서류제출 포함)",
+        "dept": "fx",
+        "dept_name": "AI미래학과",
+        "content_type": "admission",
+        "source": "https://fx.kaist.ac.kr/#admission",
+        "search_stage": "strict_filter",
+        "score": 0.9575257301330566,
+        "rerank_score": 0.90217
+      },
+      {
+        "title": "공통 전형 일정",
+        "dept": "fx",
+        "dept_name": "AI미래학과",
+        "content_type": "admission",
+        "source": "https://fx.kaist.ac.kr/#admission",
+        "search_stage": "strict_filter",
+        "score": 0.9610748291015625,
+        "rerank_score": 0.901985
+      }
+    ],
+    "answer_preview": ""
+  },
+  {
+    "question": "AX학과 설명회 일정 표로 정리하고 근거도 알려줘",
+    "expected_route": "hybrid",
+    "actual_route": "hybrid",
+    "route_ok": true,
+    "retrieval_status": "searched",
+    "used_fallback": false,
+    "warnings": [],
+    "top_sources": [
+      {
+        "title": "AX 학과 학과설명회 안내",
+        "dept": "ax",
+        "dept_name": "AX학과",
+        "content_type": "event",
+        "source": "https://ax.kaist.ac.kr/#/notice",
+        "search_stage": "strict_filter",
+        "score": 0.645493745803833,
+        "rerank_score": 0.629877
+      }
+    ],
+    "answer_preview": ""
+  }
+]

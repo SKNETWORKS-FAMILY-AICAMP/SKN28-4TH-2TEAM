@@ -337,6 +337,17 @@ def load_css():
             border-radius: 20px;
             padding: 1rem;
             box-shadow: 0 8px 24px rgba(0, 91, 172, 0.05);
+            color: #111111 !important;
+        }
+        
+        .stChatMessage p,
+        .stChatMessage li,
+        .stChatMessage span,
+        .stChatMessage div,
+        .stChatMessage table,
+        .stChatMessage th,
+        .stChatMessage td {
+            color: #111111 !important;
         }
 
         .stChatInput {
