@@ -527,8 +527,20 @@ if pending_user_question:
     st.session_state.pending_user_question = None
     process_pending_question(pending_user_question)
 
-user_input = st.chat_input("KAIST AI College에 대해 질문해보세요.", disabled=st.session_state.is_processing)
-if user_input:
+input_col, btn_col = st.columns([8, 1])
+with input_col:
+    user_input = st.text_input(
+        label="질문 입력",
+        placeholder="KAIST AI College에 대해 질문해보세요.",
+        label_visibility="collapsed",
+        disabled=st.session_state.is_processing,
+        key="user_text_input",
+    )
+with btn_col:
+    send = st.button("전송", use_container_width=True, disabled=st.session_state.is_processing)
+
+if (send or user_input and st.session_state.get("_last_input") != user_input) and user_input:
+    st.session_state["_last_input"] = user_input
     queue_question(user_input)
     st.rerun()
 
@@ -549,3 +561,29 @@ with center:
         st.session_state.pending_user_question = None
         st.session_state.answer_cache = {}
         st.rerun()
+
+st.markdown('<div class="section-title">더 알아보기</div>', unsafe_allow_html=True)
+
+nav1, nav2 = st.columns(2)
+
+with nav1:
+    st.markdown(
+        '<div class="info-card start-card">'
+        '<div class="icon-box">🏛️</div>'
+        '<h3>AI College 소개</h3>'
+        '<p>서비스 목적, 데이터 구성, RAG Guide의 사용자 흐름을 확인합니다.</p>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+    st.page_link("pages/1_AI_College_Intro.py", label="AI College 소개 보기", use_container_width=True)
+
+with nav2:
+    st.markdown(
+        '<div class="info-card start-card">'
+        '<div class="icon-box">🔎</div>'
+        '<h3>Departments</h3>'
+        '<p>학과, 연구 분야, 교수진, 교과목 정보를 카드형 화면으로 탐색합니다.</p>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+    st.page_link("pages/2_Departments.py", label="Departments 보기", use_container_width=True)
