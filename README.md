@@ -71,69 +71,77 @@ clarify   질문 정보가 부족해 추가 확인이 필요한 질문
 ├─ data/
 │  ├─ build_vectorstore.py              # JSONL -> Chroma vectorstore 생성
 │  ├─ demo_knowledge.py
-│  ├─ preprocssing.py                   # 원본 CSV/PDF 전처리
-│  ├─ raw/
-│  │  ├─ __init__.py
+│  ├─ preprocessing.py                  # 원본 CSV/PDF 전처리
+│  ├─ raw_data/                         # 원본 CSV/PDF 데이터
 │  │  ├─ admissions_clean.csv
 │  │  ├─ assets_clean.csv
+│  │  ├─ attachments_clean.csv
 │  │  ├─ course_track_map.csv
 │  │  ├─ courses_clean.csv
 │  │  ├─ events_clean.csv
 │  │  ├─ people_clean.csv
 │  │  ├─ quality_report.csv
-│  │  ├─ rag_chunks.csv
-│  │  └─ rag_documents.csv
-│  └─ raw_data/
-│     ├─ admissions_clean.csv
-│     ├─ assets_clean.csv
-│     ├─ attachments_clean.csv
-│     ├─ course_track_map.csv
-│     ├─ courses_clean.csv
-│     ├─ events_clean.csv
-│     ├─ people_clean.csv
-│     ├─ quality_report.csv
-│     ├─ AI_Computing_Grad_Info_Session_20260320.pdf
-│     ├─ AI_Systems_Grad_Info_20260319.pdf
-│     ├─ KAIST AI & FUTURES STUDIES.pdf
-│     ├─ KAIST AX (AI Transformation).pdf
-│     ├─ 손지은_KAIST_공식홈페이지_조사 - 기본정보.csv
-│     ├─ 손지은_KAIST_공식홈페이지_조사 - 학과사무실.csv
-│     └─ processed/
-│        ├─ reports/
-│        │  ├─ pdf_page_report.csv
-│        │  └─ preprocess_summary.csv
-│        ├─ sql/
-│        │  ├─ admissions.csv
-│        │  ├─ assets.csv
-│        │  ├─ attachments.csv
-│        │  ├─ course_track_map.csv
-│        │  ├─ courses.csv
-│        │  ├─ department_offices.csv
-│        │  ├─ events.csv
-│        │  ├─ kaist_links.csv
-│        │  ├─ kaist_profile.csv
-│        │  ├─ kaist_statistics.csv
-│        │  ├─ people.csv
-│        │  └─ quality_report.csv
-│        └─ vectorstore/
-│           ├─ vector_documents.json
-│           └─ vector_documents.jsonl
+│  │  ├─ AI_Computing_Grad_Info_Session_20260320.pdf
+│  │  ├─ AI_Systems_Grad_Info_20260319.pdf
+│  │  ├─ KAIST AI & FUTURES STUDIES.pdf
+│  │  ├─ KAIST AX (AI Transformation).pdf
+│  │  ├─ 손지은_KAIST_공식홈페이지_조사 - 기본정보.csv
+│  │  └─ 손지은_KAIST_공식홈페이지_조사 - 학과사무실.csv
+│  ├─ processed/                        # 전처리 결과
+│  │  ├─ csv/                           # SQL 적재 및 정형 조회용 CSV
+│  │  │  ├─ admissions.csv
+│  │  │  ├─ assets.csv
+│  │  │  ├─ attachments.csv
+│  │  │  ├─ courses.csv
+│  │  │  ├─ course_track_map.csv
+│  │  │  ├─ department_offices.csv
+│  │  │  ├─ events.csv
+│  │  │  ├─ kaist_links.csv
+│  │  │  ├─ kaist_profile.csv
+│  │  │  ├─ kaist_statistics.csv
+│  │  │  ├─ people.csv
+│  │  │  └─ quality_report.csv
+│  │  ├─ json/                          # VectorStore 적재용 문서
+│  │  │  ├─ vector_documents.json
+│  │  │  └─ vector_documents.jsonl
+│  │  └─ reports/                       # 전처리 리포트
+│  │     ├─ pdf_page_report.csv
+│  │     ├─ preprocess_summary.csv
+│  │     └─ rag_test_results.json
+│  └─ vectorstore/                      # 로컬 Chroma DB 생성 위치, Git 업로드 제외
+│     └─ chroma_db/
+├─ notebooks/
+│  └─ rag_test.ipynb
 ├─ pages/
 │  ├─ 1_AI_College_Intro.py
 │  ├─ 2_Departments.py
 │  └─ 3_RAG_Chatbot.py                  # Streamlit RAG 챗봇 페이지
+├─ sql/
+│  ├─ 01_schema.sql                     # MySQL 스키마 생성
+│  ├─ 02_load.sql                       # data/processed/csv 기반 데이터 적재
+│  ├─ 03_verify.sql                     # 적재 결과 검증
+│  ├─ clean_csv.ps1
+│  ├─ ERD.md
+│  ├─ OPEN_ISSUES.md
+│  └─ README.md
 ├─ src/
 │  └─ rag/
 │     ├─ query_analyzer.py              # 질문 의도, 학과, route 분석
 │     ├─ vector_retriever.py            # Chroma 기반 vector 검색
+│     ├─ sql_tool.py                    # MySQL 기반 SQL 조회
 │     ├─ context_builder.py             # 검색 결과를 LLM context로 변환
 │     ├─ answer_generator.py            # 프롬프트 및 LLM 답변 생성
 │     ├─ rag_pipeline.py                # 분석 -> 검색 -> context -> 답변 연결
-│     └─ test.py                        # 간단 동작 테스트
-├─ .env                                 # 로컬 환경변수, 업로드 제외
+│     ├─ rag_tests.py                   # RAG 테스트 코드
+│     ├─ test.py
+│     └─ test.ipynb
+├─ .streamlit/
+│  └─ config.toml
+├─ .env                                 # 로컬 환경변수, Git 업로드 제외
+├─ .env.example                         # 공유용 환경변수 예시
 ├─ .gitignore
 ├─ requirements.txt
-├─ streamlit_app.py
+├─ streamlit_app.py                     # Streamlit 진입 파일
 └─ README.md
 ```
 
@@ -167,15 +175,27 @@ python -c "import importlib.util as u; print({m: bool(u.find_spec(m)) for m in [
 
 ## 환경변수
 
-프로젝트 루트에 `.env` 파일을 만들고 OpenAI API key를 설정합니다.
+프로젝트 루트에 `.env` 파일을 만들고 OpenAI API key와 MySQL 접속 정보를 설정합니다.
 
 ```env
-OPENAI_API_KEY=sk-...
-```
+# OpenAI
+OPENAI_API_KEY=sk-여기에_본인_OpenAI_API_Key
 
-현재 RAG 실행에 필수인 환경변수는 `OPENAI_API_KEY`입니다.
+# MySQL
+KAIST_MYSQL_HOST=127.0.0.1
+KAIST_MYSQL_PORT=3306
+KAIST_MYSQL_USER=root
+KAIST_MYSQL_PASSWORD=본인_mysql_비밀번호
+KAIST_MYSQL_DATABASE=kaist_ai
+KAIST_SQL_MAX_ROWS=100
+KAIST_MYSQL_CONNECT_TIMEOUT=5
 
-`.env`는 `.gitignore`에 포함되어 있으므로 업로드하지 않습니다.
+## 데이터 전처리
+
+원본 데이터는 `data/raw_data/`에 두고, 전처리 결과는 `data/processed/` 아래에 저장합니다.
+
+```powershell
+python data\preprocessing.py
 
 ## Vectorstore 생성
 
@@ -184,7 +204,7 @@ OPENAI_API_KEY=sk-...
 기본 입력:
 
 ```text
-data/raw_data/processed/vectorstore/vector_documents.jsonl
+data/processed/json/vector_documents.jsonl
 ```
 
 기본 출력:
@@ -204,7 +224,7 @@ python data\build_vectorstore.py --reset --smoke-test
 ```powershell
 python data\build_vectorstore.py `
   --project-root "." `
-  --jsonl-path "data/raw_data/processed/vectorstore/vector_documents.jsonl" `
+  --jsonl-path "data/processed/json/vector_documents.jsonl" `
   --chroma-dir "data/vectorstore/chroma_db" `
   --embedding-model "text-embedding-3-small" `
   --reset `
@@ -223,7 +243,8 @@ python data\build_vectorstore.py `
 -> answer, sources, warnings 반환
 ```
 
-SQL 검색기는 현재 파이프라인에 연결할 수 있는 자리만 있습니다. 실제 SQL 조회 구현은 `RagPipeline(sql_retriever=...)` 형태로 별도 검색기를 주입해야 합니다. SQL 검색기가 없을 때는 설정에 따라 vector 검색으로 fallback합니다.
+SQL 검색기는 `src/rag/sql_tool.py`의 `SQLTool`을 통해 MySQL과 연결됩니다.  
+`create_default_pipeline(include_sql=True)`를 사용하면 SQLTool 연결을 시도하고, SQL 결과가 없거나 SQL 연결이 실패한 경우 설정에 따라 Vector 검색으로 fallback합니다.
 
 ## 기본 사용법
 
