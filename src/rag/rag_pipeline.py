@@ -3,6 +3,7 @@ from __future__ import annotations
 import sys
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
+from time import perf_counter
 from typing import TYPE_CHECKING, Any, Callable, Protocol
 
 CURRENT_FILE = Path(__file__).resolve()
@@ -33,6 +34,8 @@ if TYPE_CHECKING:
 
 
 SqlSearchFn = Callable[[QueryAnalysis], "SqlQueryResult"]
+TokenCallback = Callable[[str], None]
+StatusCallback = Callable[[str], None]
 
 
 class SqlRetrieverLike(Protocol):
@@ -47,9 +50,14 @@ class RagPipelineConfig:
     include_debug_context: bool = False
     raise_search_errors: bool = False
     raise_generation_errors: bool = False
+    preload_vector_retriever: bool = False
+    preload_answer_generator: bool = False
     empty_answer_message: str = (
-        "제공된 자료에서 질문에 대한 근거를 찾을 수 없습니다. "
-        "학과명이나 알고 싶은 정보 유형을 더 구체적으로 입력해주세요."
+        "제공된 자료에서 질문에 대한 충분한 근거를 찾을 수 없습니다. "
+        "학과명이나 알고 싶은 정보 유형을 더 구체적으로 입력해주세요.\n\n"
+        "정확하고 최신 정보는 KAIST 공식 홈페이지 또는 입학처에서 확인하는 것을 권장합니다.\n"
+        "- KAIST 공식 홈페이지: https://www.kaist.ac.kr/kr/\n"
+        "- KAIST 입학처: https://admission.kaist.ac.kr/home"
     )
 
 
@@ -175,6 +183,21 @@ class RagPipeline:
         self._vector_retriever = vector_retriever
         self._context_builder = context_builder
         self._answer_generator = answer_generator
+        self.last_warm_up_result: dict[str, Any] | None = None
+
+        if (
+            self.config.preload_vector_retriever
+            or self.config.preload_answer_generator
+        ):
+            self.last_warm_up_result = self.warm_up(
+                include_vector_retriever=self.config.preload_vector_retriever,
+                include_answer_generator=self.config.preload_answer_generator,
+                include_context_builder=False,
+                raise_errors=(
+                    self.config.raise_search_errors
+                    or self.config.raise_generation_errors
+                ),
+            )
 
     def classify_question(
         self,
@@ -185,6 +208,100 @@ class RagPipeline:
             question=question,
             previous_department_code=previous_department_code,
         )
+
+    def warm_up(
+        self,
+        include_vector_retriever: bool = True,
+        include_answer_generator: bool = False,
+        include_context_builder: bool = True,
+        sample_question: str | None = None,
+        previous_department_code: str | None = None,
+        raise_errors: bool = False,
+    ) -> dict[str, Any]:
+        result: dict[str, Any] = {
+            "ok": True,
+            "components": {},
+            "warnings": [],
+        }
+
+        def record_component(
+            name: str,
+            callback: Callable[[], Any],
+        ) -> Any:
+            started_at = perf_counter()
+
+            try:
+                value = callback()
+            except Exception as exc:
+                elapsed_seconds = round(perf_counter() - started_at, 3)
+                message = str(exc)
+
+                result["ok"] = False
+                result["components"][name] = {
+                    "ok": False,
+                    "elapsed_seconds": elapsed_seconds,
+                    "message": message,
+                }
+                result["warnings"].append(
+                    f"{name} warm-up 중 오류가 발생했습니다: {message}"
+                )
+
+                if raise_errors:
+                    raise
+
+                return None
+
+            elapsed_seconds = round(perf_counter() - started_at, 3)
+            result["components"][name] = {
+                "ok": True,
+                "elapsed_seconds": elapsed_seconds,
+            }
+
+            return value
+
+        vector_retriever = None
+
+        if include_vector_retriever or sample_question:
+            vector_retriever = record_component(
+                "vector_retriever",
+                self._get_vector_retriever,
+            )
+
+        if sample_question and vector_retriever is not None:
+            def run_sample_vector_search() -> Any:
+                return vector_retriever.retrieve(
+                    question=sample_question,
+                    previous_department_code=previous_department_code,
+                    force_vector_search=True,
+                )
+
+            sample_result = record_component(
+                "sample_vector_search",
+                run_sample_vector_search,
+            )
+
+            if sample_result is not None:
+                result["components"]["sample_vector_search"].update(
+                    {
+                        "status": sample_result.status,
+                        "result_count": len(sample_result.results),
+                    }
+                )
+
+        if include_answer_generator:
+            record_component(
+                "answer_generator",
+                self._get_answer_generator,
+            )
+
+        if include_context_builder:
+            record_component(
+                "context_builder",
+                self._get_context_builder,
+            )
+
+        self.last_warm_up_result = result
+        return result
 
     def search(
         self,
@@ -352,6 +469,112 @@ class RagPipeline:
                 raw_context=built_context.context,
             )
 
+    def generate_answer_streaming(
+        self,
+        question: str,
+        built_context: BuiltContext,
+        analysis: QueryAnalysis,
+        on_token: TokenCallback | None = None,
+    ) -> GeneratedAnswer:
+        def emit(text: str) -> None:
+            if on_token:
+                on_token(text)
+
+        policy_decision = self._check_answer_policy(
+            question=question,
+            analysis=analysis,
+        )
+
+        if not policy_decision.allowed:
+            from src.rag.answer_generator import GeneratedAnswer
+
+            emit(policy_decision.message)
+            return GeneratedAnswer(
+                answer=policy_decision.message,
+                sources=[],
+                warnings=self._deduplicate_strings(
+                    [*built_context.warnings, policy_decision.reason]
+                ),
+                raw_context=built_context.context,
+            )
+
+        if analysis.route == "clarify":
+            from src.rag.answer_generator import GeneratedAnswer
+
+            answer = (
+                analysis.clarifying_message
+                or "질문을 조금 더 구체적으로 입력해주세요."
+            )
+            emit(answer)
+            return GeneratedAnswer(
+                answer=answer,
+                sources=built_context.sources,
+                warnings=built_context.warnings,
+                raw_context=built_context.context,
+            )
+
+        if not built_context.sources:
+            from src.rag.answer_generator import GeneratedAnswer
+
+            emit(self.config.empty_answer_message)
+            return GeneratedAnswer(
+                answer=self.config.empty_answer_message,
+                sources=built_context.sources,
+                warnings=built_context.warnings,
+                raw_context=built_context.context,
+            )
+
+        try:
+            chunks = []
+
+            for chunk in self._get_answer_generator().stream_generate(
+                question=question,
+                built_context=built_context,
+                analysis=analysis,
+            ):
+                chunks.append(chunk)
+                emit(chunk)
+
+            answer = "".join(chunks).strip()
+
+            if not answer:
+                answer = self.config.empty_answer_message
+                emit(answer)
+
+            from src.rag.answer_generator import GeneratedAnswer
+
+            return GeneratedAnswer(
+                answer=answer,
+                sources=built_context.sources,
+                warnings=built_context.warnings,
+                raw_context=built_context.context,
+            )
+        except Exception as exc:
+            if self.config.raise_generation_errors:
+                raise
+
+            built_context.warnings = self._deduplicate_strings(
+                [
+                    *built_context.warnings,
+                    f"답변 생성 중 오류가 발생했습니다: {exc}",
+                ]
+            )
+
+            answer = (
+                "답변 생성 중 오류가 발생했습니다. "
+                "검색 결과와 환경 설정을 확인해주세요."
+            )
+            emit(answer)
+
+            from src.rag.answer_generator import GeneratedAnswer
+
+            return GeneratedAnswer(
+                answer=answer,
+                sources=built_context.sources,
+                warnings=built_context.warnings,
+                raw_context=built_context.context,
+            )
+
     def run(
         self,
         question: str,
@@ -404,6 +627,84 @@ class RagPipeline:
             built_context=built_context,
             analysis=analysis,
         )
+
+        return RagPipelineResult(
+            question=question,
+            analysis=analysis,
+            built_context=built_context,
+            generated_answer=generated_answer,
+            vector_result=search_result.vector_result,
+            sql_result=search_result.sql_result,
+            warnings=built_context.warnings,
+        )
+
+    def run_streaming(
+        self,
+        question: str,
+        previous_department_code: str | None = None,
+        on_token: TokenCallback | None = None,
+        on_status: StatusCallback | None = None,
+    ) -> RagPipelineResult:
+        def status(message: str) -> None:
+            if on_status:
+                on_status(message)
+
+        status("질문 유형을 분석하는 중입니다.")
+        analysis = self.classify_question(
+            question=question,
+            previous_department_code=previous_department_code,
+        )
+
+        policy_decision = self._check_answer_policy(
+            question=question,
+            analysis=analysis,
+        )
+
+        if not policy_decision.allowed:
+            status("답변 안전 정책을 적용하는 중입니다.")
+            built_context = self.build_context(
+                analysis=analysis,
+                warnings=[policy_decision.reason],
+            )
+            generated_answer = self.generate_answer_streaming(
+                question=question,
+                built_context=built_context,
+                analysis=analysis,
+                on_token=on_token,
+            )
+
+            return RagPipelineResult(
+                question=question,
+                analysis=analysis,
+                built_context=built_context,
+                generated_answer=generated_answer,
+                warnings=generated_answer.warnings,
+            )
+
+        status("관련 문서를 검색하는 중입니다.")
+        search_result = self.search(
+            question=question,
+            analysis=analysis,
+            previous_department_code=previous_department_code,
+        )
+
+        status("답변 context를 구성하는 중입니다.")
+        built_context = self.build_context(
+            analysis=analysis,
+            vector_result=search_result.vector_result,
+            sql_result=search_result.sql_result,
+            warnings=search_result.warnings,
+        )
+
+        status("답변을 생성하는 중입니다.")
+        generated_answer = self.generate_answer_streaming(
+            question=question,
+            built_context=built_context,
+            analysis=analysis,
+            on_token=on_token,
+        )
+
+        status("답변 생성이 완료되었습니다.")
 
         return RagPipelineResult(
             question=question,

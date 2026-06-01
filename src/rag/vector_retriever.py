@@ -292,6 +292,8 @@ class VectorRetriever:
 
         self.embedding_model = OpenAIEmbeddings(
             model=self.config.embedding_model,
+            request_timeout=30,
+            max_retries=2,
         )
 
         self.vectorstore = Chroma(
