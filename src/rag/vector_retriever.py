@@ -54,7 +54,8 @@ class VectorRetrieverConfig:
     embedding_model: str = "text-embedding-3-small"
 
     search_k: int = 5
-    fetch_k: int = 10
+    fetch_k: int = 25
+    candidate_multiplier: int = 4
     min_results_before_fallback: int = 2
 
     use_rewritten_question: bool = True
@@ -292,6 +293,8 @@ class VectorRetriever:
 
         self.embedding_model = OpenAIEmbeddings(
             model=self.config.embedding_model,
+            request_timeout=30,
+            max_retries=2,
         )
 
         self.vectorstore = Chroma(
@@ -353,11 +356,17 @@ class VectorRetriever:
             items=items,
         )
 
+        final_items = self._select_final_results(
+            analysis=analysis,
+            question=analysis.normalized_question,
+            items=reranked_items,
+        )
+
         return VectorRetrievalResult(
             status="searched",
             message="Vectorstore 검색이 완료되었습니다.",
             analysis=analysis,
-            results=reranked_items[: self.config.search_k],
+            results=final_items,
             used_query=search_query,
             used_filter=analysis.metadata_filter,
             used_fallback=used_fallback,
@@ -504,7 +513,7 @@ class VectorRetriever:
                 seen_keys.add(key)
                 results.append(item)
 
-                if len(results) >= self.config.search_k:
+                if len(results) >= self._candidate_limit():
                     break
 
             if self._should_stop_search(
@@ -529,7 +538,7 @@ class VectorRetriever:
         if not self.config.use_fallback:
             return True
 
-        if current_result_count >= self.config.search_k:
+        if current_result_count >= self._candidate_limit():
             return True
 
         if self.config.fallback_trigger_mode == "only_when_empty":
@@ -564,6 +573,146 @@ class VectorRetriever:
             key=lambda item: item.score if item.score is not None else float("inf"),
         )
 
+
+    def _candidate_limit(self) -> int:
+        multiplier = max(self.config.candidate_multiplier, 1)
+
+        return max(
+            self.config.search_k,
+            min(self.config.fetch_k, self.config.search_k * multiplier),
+        )
+
+    def _select_final_results(
+        self,
+        analysis: QueryAnalysis,
+        question: str,
+        items: list[RetrievedVectorDocument],
+    ) -> list[RetrievedVectorDocument]:
+        if analysis.intent != "admission_info":
+            return items[: self.config.search_k]
+
+        return self._diversify_admission_results(
+            question=question,
+            items=items,
+        )
+
+    def _diversify_admission_results(
+        self,
+        question: str,
+        items: list[RetrievedVectorDocument],
+    ) -> list[RetrievedVectorDocument]:
+        selected: list[RetrievedVectorDocument] = []
+        selected_keys: set[tuple[str, str, str]] = set()
+        ranked_items = self._rank_admission_items_for_question(
+            question=question,
+            items=items,
+        )
+
+        priority_types = [
+            "eligibility",
+            "schedule",
+            "advisor_matching",
+            "scholarship",
+        ]
+
+        for admission_type in priority_types:
+            for item in ranked_items:
+                metadata = item.document.metadata
+
+                if metadata.get("admission_type") != admission_type:
+                    continue
+
+                key = self._make_admission_selection_key(item)
+
+                if key in selected_keys:
+                    continue
+
+                selected.append(item)
+                selected_keys.add(key)
+                break
+
+        for item in ranked_items:
+            if len(selected) >= self.config.search_k:
+                break
+
+            key = self._make_admission_selection_key(item)
+
+            if key in selected_keys:
+                continue
+
+            selected.append(item)
+            selected_keys.add(key)
+
+        return selected[: self.config.search_k]
+
+    def _rank_admission_items_for_question(
+        self,
+        question: str,
+        items: list[RetrievedVectorDocument],
+    ) -> list[RetrievedVectorDocument]:
+        original_rank = {
+            id(item): index
+            for index, item in enumerate(items)
+        }
+
+        return sorted(
+            items,
+            key=lambda item: (
+                self._admission_question_match_score(question, item),
+                -original_rank[id(item)],
+            ),
+            reverse=True,
+        )
+
+    def _admission_question_match_score(
+        self,
+        question: str,
+        item: RetrievedVectorDocument,
+    ) -> float:
+        metadata = item.document.metadata
+        title = str(metadata.get("title") or "")
+        section = str(metadata.get("section") or "")
+        admission_type = str(metadata.get("admission_type") or "")
+
+        score = 0.0
+
+        if "석사" in question:
+            if title == "석사과정":
+                score += 5.0
+            elif "석박사" in title or "석·박" in title:
+                score += 2.0
+            elif "박사" in title:
+                score -= 3.0
+
+        if "박사" in question and "석사" not in question and "박사" in title:
+            score += 3.0
+
+        if any(keyword in question for keyword in ["지원 자격", "지원자격", "자격"]):
+            if admission_type == "eligibility" or section == "지원 자격":
+                score += 2.0
+
+        if any(keyword in question for keyword in ["일정", "접수", "전형"]):
+            if admission_type == "schedule":
+                score += 2.0
+
+        if item.rerank_score:
+            score += item.rerank_score
+        elif item.score is not None:
+            score += 1 / (1 + max(item.score, 0.0))
+
+        return score
+
+    def _make_admission_selection_key(
+        self,
+        item: RetrievedVectorDocument,
+    ) -> tuple[str, str, str]:
+        metadata = item.document.metadata
+
+        return (
+            str(metadata.get("admission_type") or ""),
+            str(metadata.get("section") or ""),
+            str(metadata.get("title") or ""),
+        )
     def _search_chroma_once(
         self,
         search_query: str,
@@ -638,3 +787,4 @@ def run_examples() -> None:
 
 if __name__ == "__main__":
     run_examples()
+

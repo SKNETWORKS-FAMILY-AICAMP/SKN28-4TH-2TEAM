@@ -1,3 +1,11 @@
+import os
+
+# Windows hnswlib/chromadb OpenMP 크래시 방지 - 반드시 다른 import보다 먼저 설정
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
+os.environ.setdefault("MKL_NUM_THREADS", "1")
+os.environ.setdefault("ANONYMIZED_TELEMETRY", "False")
+
 import base64
 from pathlib import Path
 
