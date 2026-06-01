@@ -480,6 +480,37 @@ def process_pending_question(question: str) -> None:
     st.session_state.is_processing = False
     st.rerun()
 
+st.markdown('<div class="section-title">What Users Can Do</div>', unsafe_allow_html=True)
+
+u1, u2, u3 = st.columns(3)
+
+with u1:
+    st.markdown(
+        '<div class="mini-card">'
+        '<h3>입학 정보 탐색</h3>'
+        '<p>지원 과정, 제출 서류, 모집 안내처럼 흩어진 정보를 질문으로 확인합니다.</p>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+
+with u2:
+    st.markdown(
+        '<div class="mini-card">'
+        '<h3>연구 분야 비교</h3>'
+        '<p>학과와 연구 키워드를 기준으로 관심 분야를 빠르게 살펴봅니다.</p>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+
+with u3:
+    st.markdown(
+        '<div class="mini-card">'
+        '<h3>교수진·교과목 확인</h3>'
+        '<p>교수진, 교과목, 행사 데이터를 챗봇 답변과 출처 카드로 연결합니다.</p>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+
 st.markdown('<div class="section-title">Quick Questions</div>', unsafe_allow_html=True)
 control_col, spacer_col = st.columns([1, 3])
 with control_col:
@@ -503,21 +534,11 @@ with q3:
         queue_question("관심 교수님을 고를 때 어떤 기준으로 보면 좋나요?")
         st.rerun()
 
-q4, q5, q6 = st.columns(3, gap="medium")
-with q4:
-    if st.button("교과목 정보 알려줘", use_container_width=True, disabled=st.session_state.is_processing):
-        queue_question("KAIST AI College 교과목에는 어떤 것들이 있나요?")
-        st.rerun()
-with q5:
-    if st.button("설명회나 행사가 있나요?", use_container_width=True, disabled=st.session_state.is_processing):
-        queue_question("KAIST AI College 관련 설명회나 행사가 있나요?")
-        st.rerun()
-with q6:
-    if st.button("RAG 서비스 설명해줘", use_container_width=True, disabled=st.session_state.is_processing):
-        queue_question("이 RAG 챗봇 서비스는 어떤 방식으로 작동하나요?")
-        st.rerun()
 
-st.markdown('<div class="section-title">Chat</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="section-title" style="font-size:1.5rem; margin-top:2rem; margin-bottom:1rem;">💬 Chat</div>',
+    unsafe_allow_html=True,
+)
 for message in st.session_state.messages:
     render_message(message)
 
@@ -587,3 +608,4 @@ with nav2:
         unsafe_allow_html=True,
     )
     st.page_link("pages/2_Departments.py", label="Departments 보기", use_container_width=True)
+
