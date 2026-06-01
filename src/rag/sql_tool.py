@@ -84,11 +84,15 @@ class SQLTool:
     TABLE_HINT_MAP = {
         "courses": "course",
         "professors": "person",
-        "office_contacts": "asset",
+        "people": "person",
+        "office_contacts": "office_contacts",
         "admissions": "admission",
         "events": "event",
         "assets": "asset",
         "departments": "department",
+        "kaist_profile": "kaist_profile",
+        "kaist_statistics": "kaist_statistics",
+        "kaist_links": "kaist_links",
     }
 
     def __init__(self, config: SQLToolConfig | None = None) -> None:
@@ -522,14 +526,22 @@ class SQLTool:
                     sql = f"""
                     SELECT
                         'asset' AS result_source,
-                        a.*,
-                        d.dept_name
+                        a.dept,
+                        d.dept_name,
+                        a.category,
+                        a.topic,
+                        a.content_type,
+                        a.asset_type,
+                        a.text AS contact_text,
+                        a.url,
+                        a.source_url
                     FROM asset AS a
                     LEFT JOIN department AS d
                         ON d.dept = a.dept
-                    WHERE {where_clause}
+                    WHERE ...
                     ORDER BY
-                        a.dept
+                        a.dept,
+                        a.topic
                     LIMIT %s
                     """
                 else:
@@ -545,7 +557,7 @@ class SQLTool:
                 params.append(self._limit())
                 rows.extend(self._fetch_all(conn, sql, tuple(params)))
 
-            if has_person:
+            if has_person and analysis.department_code and not rows:
                 person_columns = self._columns(conn, person_table)
                 params = []
 
@@ -607,10 +619,10 @@ class SQLTool:
                 rows.extend(self._fetch_all(conn, sql, tuple(params)))
 
         return self._result(
-            table_name="asset/person",
+            table_name="office_contacts",
             rows=rows[: self._limit()],
             analysis=analysis,
-            message="연락처/사무실 정보 조회가 완료되었습니다.",
+            message="학과 사무실/연락처 정보 조회가 완료되었습니다.",
             warnings=warnings,
         )
 

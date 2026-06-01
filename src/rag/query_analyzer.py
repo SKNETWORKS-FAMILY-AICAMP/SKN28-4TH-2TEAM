@@ -212,6 +212,11 @@ UNSUPPORTED_KAIST_DEPARTMENT_KEYWORDS = [
 INTENT_EXAMPLES = [
     IntentExample("AI컴퓨팅학과 석사 지원 자격 알려줘", "admission_info"),
     IntentExample("AX학과 입학 요건 알려줘", "admission_info"),
+    # 특정 학과를 지정하지 않아도 수집된 학과사무실 목록 조회는 가능하게 처리
+    IntentExample("KAIST 학과 사무실 전화번호 알려줘", "office_contact_info"),
+    IntentExample("카이스트 학과사무실 연락처 알려줘", "office_contact_info"),
+    IntentExample("학과사무실 전화번호 목록 보여줘", "office_contact_info"),
+    IntentExample("학과 행정실 연락처 알려줘", "office_contact_info"),
     IntentExample("AI시스템학과 대학원 모집 일정 알려줘", "admission_info"),
     IntentExample("AI미래학과 제출 서류 알려줘", "admission_info"),
     IntentExample("입학 조건 알려줘", "admission_info", "missing_department"),
@@ -226,7 +231,6 @@ INTENT_EXAMPLES = [
     IntentExample("지도교수 찾고 싶어", "person_info", "missing_department"),
     IntentExample("AI시스템학과 학과 사무실 전화번호", "office_contact_info"),
     IntentExample("AX학과 사무실 위치 알려줘", "office_contact_info"),
-    IntentExample("학과 행정실 연락처 알려줘", "office_contact_info", "missing_department"),
     IntentExample("AI컴퓨팅학과 설명회 일정 알려줘", "event_info"),
     IntentExample("AX학과 공지사항 알려줘", "event_info"),
     IntentExample("학과 입시설명회 정보 알려줘", "event_info", "missing_department"),
@@ -957,6 +961,16 @@ class QuestionAnalyzer:
         )
 
         if has_kaist_keyword and department is None:
+            # 이미 명확한 KAIST 기본/통계/링크/학과사무실 질문으로 분류된 경우
+            # semantic example matching이 department_scope로 덮어쓰지 않도록 막는다.
+            if intent_rule and intent_rule.intent in {
+                "kaist_profile_info",
+                "kaist_statistics_info",
+                "kaist_link_info",
+                "office_contact_info",
+            }:
+                return False
+
             return True
 
         broad_words = [
@@ -976,6 +990,17 @@ class QuestionAnalyzer:
             "그 학과",
         ]
 
+        # 이미 명확한 intent가 잡힌 질문은 semantic example이
+        # too_broad 등으로 덮어쓰지 않도록 제한한다.
+        if intent_rule.intent in {
+            "course_info",
+            "person_info",
+            "admission_info",
+            "event_info",
+            "office_contact_info",
+        }:
+            return False
+
         return (
             department is None
             and any(word in lowered_question for word in broad_words)
@@ -983,8 +1008,6 @@ class QuestionAnalyzer:
             in {
                 "department_overview",
                 "asset_or_link_info",
-                "person_info",
-                "office_contact_info",
                 "general_info",
             }
         )
@@ -996,6 +1019,15 @@ class QuestionAnalyzer:
     ) -> tuple[RouteType, str]:
         if intent_rule is None:
             return "clarify", "질문 의도를 분류하지 못했습니다."
+
+        # KAIST 기본정보/통계/공식 링크는 SQL 테이블을 별도로 만들지 않고
+        # VectorStore 문서 검색으로 처리한다.
+        if intent_rule.intent in {
+            "kaist_profile_info",
+            "kaist_statistics_info",
+            "kaist_link_info",
+        }:
+            return "vector", "KAIST 기본/통계/링크 정보는 문서 기반 검색으로 처리합니다."
 
         lowered_question = normalized_question.lower()
 
@@ -1203,6 +1235,26 @@ class QuestionAnalyzer:
         department_code: str | None,
     ) -> bool:
         if department_code:
+            return False
+
+        # 학과사무실/연락처 질문은 "카이스트 학과"라는 표현이 있어도
+        # 학과 범위 질문이 아니라 office_contact_info로 처리해야 한다.
+        office_contact_keywords = [
+            "학과사무실",
+            "학과 사무실",
+            "행정실",
+            "전화번호",
+            "전화",
+            "연락처",
+            "위치",
+            "건물",
+            "office",
+            "contact",
+            "phone",
+            "location",
+        ]
+
+        if any(keyword in lowered_question for keyword in office_contact_keywords):
             return False
 
         scope_keywords = [
@@ -1431,7 +1483,13 @@ def run_examples() -> None:
         "AI시스템학과 교과목 목록과 각 과목 설명도 알려줘",
         "AX학과 교수진 이메일 목록 보여줘",
         "AX학과 교수 연구분야도 설명해줘",
+
+        # office_contact_info 테스트
         "KAIST 학과 사무실 전화번호 알려줘",
+        "학과사무실 전화번호 목록 보여줘",
+        "카이스트 학과 행정실 연락처 알려줘",
+        "AI시스템학과 학과 사무실 전화번호 알려줘",
+
         "AI컴퓨팅학과 학과설명회 정보 알려줘",
         "교수진도 알려줘",
         "자료 다운로드 링크 알려줘",

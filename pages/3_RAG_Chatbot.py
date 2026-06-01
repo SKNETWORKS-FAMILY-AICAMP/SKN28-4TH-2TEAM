@@ -18,7 +18,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from components.styles import load_css
 from components.layout import render_topbar, render_page_header, render_source_cards, render_back_home
 from src.rag.query_analyzer import DEPARTMENTS
-from src.rag.rag_pipeline import RagPipeline, RagPipelineConfig
+from src.rag.rag_pipeline import RagPipeline, create_default_pipeline
 
 st.set_page_config(
     page_title="RAG Chatbot | KAIST AI RAG Guide",
@@ -75,8 +75,12 @@ if not st.session_state.get("pending_user_question") and not st.session_state.ge
 
 @st.cache_resource(show_spinner=False)
 def get_pipeline() -> RagPipeline:
-    pipeline = RagPipeline(config=RagPipelineConfig(preload_vector_retriever=True))
-    return pipeline
+    return create_default_pipeline(
+        include_sql=True,
+        include_debug_context=False,
+        preload_vector_retriever=True,
+        preload_answer_generator=False,
+    )
 
 
 def format_sources_for_cards(sources):

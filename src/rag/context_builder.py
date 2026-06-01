@@ -21,7 +21,7 @@ class ContextBuilderConfig:
     max_chars_per_vector_doc: int = 1500
     max_total_context_chars: int = 12000
     include_debug_info: bool = False
-    include_question_analysis: bool = True
+    include_question_analysis: bool = False
 
 
 @dataclass
@@ -85,35 +85,33 @@ class ContextBuilder:
     ) -> BuiltContext:
         vector_context = self._build_vector_context(vector_result)
         sql_context = self._build_sql_context(sql_result)
-
         warnings = self._collect_warnings(
             vector_result=vector_result,
             sql_result=sql_result,
         )
-
+        # fallback으로 가져온 vector 문서는 원래 질문 의도와 다를 수 있으므로
+        # warning 목록뿐 아니라 실제 LLM context에도 명시한다.
+        if vector_result and getattr(vector_result, "used_fallback", False):
+            vector_context = self._prepend_fallback_warning_to_context(
+                vector_context=vector_context,
+                analysis=analysis,
+            )
         sources = self._collect_sources(
             vector_result=vector_result,
             sql_result=sql_result,
         )
-
         context_parts = []
-
         if self.config.include_question_analysis:
             context_parts.append(self._build_question_context(analysis))
-
         context_parts.extend([sql_context, vector_context])
-
         context = "\n\n".join(
             part
             for part in context_parts
             if part.strip()
         )
-
         context = self._limit_context(context)
-
         if not context.strip():
             context = "사용 가능한 검색 결과가 없습니다."
-
         return BuiltContext(
             context=context,
             vector_context=vector_context,
@@ -133,6 +131,26 @@ class ContextBuilder:
             f"content_type: {analysis.content_type or 'unknown'}\n"
             "</internal_question_analysis>"
         )
+
+    def _prepend_fallback_warning_to_context(
+        self,
+        vector_context: str,
+        analysis: QueryAnalysis,
+    ) -> str:
+        if not vector_context.strip():
+            return vector_context
+
+        expected_content_type = analysis.content_type or "unknown"
+
+        warning = (
+            "[검색 주의]\n"
+            f"원래 질문에서 기대한 문서유형은 '{expected_content_type}'입니다.\n"
+            "하지만 해당 조건과 정확히 일치하는 검색 결과가 부족하여 fallback 검색 결과가 포함되었습니다.\n"
+            "아래 Vector 문서는 보조 참고 자료일 수 있으며, 질문과 직접 관련 없는 문서유형이 섞여 있을 수 있습니다.\n"
+            "답변을 생성할 때는 원 질문과 직접 관련된 근거만 사용하고, 근거가 부족하면 부족하다고 명시하세요."
+        )
+
+        return f"{warning}\n\n{vector_context}"
 
     def _build_vector_context(
         self,
@@ -232,6 +250,25 @@ class ContextBuilder:
 
         return "\n".join(lines) + "\n"
 
+    def _get_sql_table_label(self, table_name: str) -> str:
+        table_name_map = {
+            "admissions": "입학 정보",
+            "courses": "교과목 정보",
+            "course_track_map": "교과목-트랙 매핑 정보",
+            "people": "교수진/구성원 정보",
+            "professors": "교수진/구성원 정보",
+            "person": "교수진/구성원 정보",
+            "office_contacts": "학과 사무실 연락처",
+            "department_offices": "학과 사무실 연락처",
+            "events": "행사/공지 정보",
+            "assets": "자료/링크 정보",
+            "kaist_profile": "KAIST 기본 정보",
+            "kaist_statistics": "KAIST 통계 정보",
+            "kaist_links": "KAIST 공식 링크 정보",
+        }
+
+        return table_name_map.get(table_name, table_name)
+
     def _build_sql_context(
         self,
         sql_result: SqlQueryResult | None,
@@ -240,22 +277,28 @@ class ContextBuilder:
             return ""
 
         if sql_result.is_empty():
+            table_label = self._get_sql_table_label(sql_result.table_name)
+
             return (
                 "[SQL 조회 결과]\n"
-                f"table: {sql_result.table_name}\n"
+                f"table: {table_label}\n"
+                f"raw_table: {sql_result.table_name}\n"
                 "조회된 행이 없습니다."
             )
 
         columns = self._get_sql_columns(sql_result)
         rows = sql_result.rows[: self.config.max_sql_rows]
 
+        table_label = self._get_sql_table_label(sql_result.table_name)
+
         lines = [
             "[SQL 조회 결과]",
-            f"table: {sql_result.table_name}",
+            f"table: {table_label}",
+            f"raw_table: {sql_result.table_name}",
         ]
 
         if sql_result.conditions:
-            lines.append(f"conditions: {sql_result.conditions}")
+            lines.append(f"조회 조건: {sql_result.conditions}")
 
         lines.append("")
         lines.append("| " + " | ".join(columns) + " |")
@@ -330,7 +373,7 @@ class ContextBuilder:
         sources = []
 
         if vector_result:
-            for item in vector_result.results:
+            for item in vector_result.results[: self.config.max_vector_docs]:
                 sources.append(
                     self._source_from_vector_item(item)
                 )

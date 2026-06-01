@@ -80,53 +80,7 @@ CREATE TABLE stg_quality (metric TEXT, value TEXT, note TEXT);
 --   IGNORE 1 LINES                      첫 줄(헤더) 건너뜀
 --   CHARACTER SET utf8mb4               한글 깨짐 방지
 -- =====================================================================
-LOAD DATA LOCAL INFILE 'csv/_clean/people_clean.csv'
-  INTO TABLE stg_people CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'csv/_clean/courses_clean.csv'
-  INTO TABLE stg_courses CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'csv/_clean/admissions_clean.csv'
-  INTO TABLE stg_admissions CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'csv/_clean/events_clean.csv'
-  INTO TABLE stg_events CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'csv/_clean/assets_clean.csv'
-  INTO TABLE stg_assets CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'csv/_clean/attachments_clean.csv'
-  INTO TABLE stg_attachments CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'csv/_clean/course_track_map.csv'
-  INTO TABLE stg_course_track_map CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'csv/_clean/rag_documents.csv'
-  INTO TABLE stg_rag_documents CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'csv/_clean/rag_chunks.csv'
-  INTO TABLE stg_rag_chunks CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'csv/_clean/quality_report.csv'
-  INTO TABLE stg_quality CHARACTER SET utf8mb4
+SET utf8mb4
   FIELDS TERMINATED BY ',' ENCLOSED BY '"'
   LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
 
@@ -143,10 +97,50 @@ UNION
 SELECT DISTINCT dept, dept_name FROM stg_courses
 UNION
 SELECT DISTINCT dept, dept_name FROM stg_admissions
-UNION
-SELECT DISTINCT dept, dept_name FROM stg_assets
-UNION
-SELECT DISTINCT dept, dept_name FROM stg_rag_documents;
+UNIONLOAD DATA LOCAL INFILE 'csv/_clean/people_clean.csv'
+  INTO TABLE stg_people CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/people.csv'
+  INTO TABLE stg_people CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/courses.csv'
+  INTO TABLE stg_courses CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/admissions.csv'
+  INTO TABLE stg_admissions CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/events.csv'
+  INTO TABLE stg_events CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/assets.csv'
+  INTO TABLE stg_assets CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/attachments.csv'
+  INTO TABLE stg_attachments CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/course_track_map.csv'
+  INTO TABLE stg_course_track_map CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/quality_report.csv'
+  INTO TABLE stg_quality CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
 
 -- 3-2) person : dept_name 열만 빼고 그대로 옮긴다. (빈 문자열은 NULL 로 정리)
 INSERT IGNORE INTO person

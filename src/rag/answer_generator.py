@@ -87,6 +87,43 @@ PERSONAL_PROFILE_KEYWORDS = [
     "면접",
 ]
 
+INTENT_EXPECTED_CONTENT_TYPES = {
+    "admission_info": {"admission"},
+    "course_info": {"course"},
+    "person_info": {"person"},
+    "office_contact_info": {"office_contact"},
+    "event_info": {"event"},
+    "asset_or_link_info": {"link", "mixed_media", "attachment"},
+    "kaist_profile_info": {"kaist_profile"},
+    "kaist_statistics_info": {"kaist_statistics"},
+    "kaist_link_info": {"link"},
+}
+
+INTENT_EXPECTED_SQL_TABLES = {
+    "admission_info": {"admissions", "admission"},
+    "course_info": {"courses", "course"},
+    "person_info": {"people", "person", "professors"},
+    "office_contact_info": {"office_contacts", "department_offices"},
+    "event_info": {"events", "event"},
+    "asset_or_link_info": {"assets", "asset", "kaist_links"},
+    "kaist_profile_info": {"kaist_profile"},
+    "kaist_statistics_info": {"kaist_statistics"},
+    "kaist_link_info": {"kaist_links"},
+}
+
+INTENT_KOREAN_LABELS = {
+    "admission_info": "입학 정보",
+    "course_info": "교과목 정보",
+    "person_info": "교수진/구성원 정보",
+    "office_contact_info": "학과 사무실 연락처",
+    "event_info": "행사/공지 정보",
+    "asset_or_link_info": "자료/링크 정보",
+    "department_overview": "학과 소개 정보",
+    "kaist_profile_info": "KAIST 기본 정보",
+    "kaist_statistics_info": "KAIST 통계 정보",
+    "kaist_link_info": "KAIST 공식 링크 정보",
+}
+
 ADMISSION_DECISION_JUDGEMENT_KEYWORDS = [
     "합격",
     "붙",
@@ -250,6 +287,15 @@ class AnswerGenerator:
         if not built_context.sources:
             return self._empty_answer(built_context)
 
+        if analysis and not self._has_direct_evidence(
+            analysis=analysis,
+            built_context=built_context,
+        ):
+            return self._no_direct_evidence_answer(
+                analysis=analysis,
+                built_context=built_context,
+            )
+
         messages = self.prompt.format_messages(
             question=question,
             context=built_context.context,
@@ -304,6 +350,16 @@ class AnswerGenerator:
             yield self._empty_answer(built_context).answer
             return
 
+        if analysis and not self._has_direct_evidence(
+            analysis=analysis,
+            built_context=built_context,
+        ):
+            yield self._no_direct_evidence_answer(
+                analysis=analysis,
+                built_context=built_context,
+            ).answer
+            return
+
         messages = self.prompt.format_messages(
             question=question,
             context=built_context.context,
@@ -346,6 +402,9 @@ class AnswerGenerator:
 16. 질문이 너무 넓거나 비교 기준이 없거나 이전 맥락의 지시어가 불명확하면, 추측해서 답하지 말고 필요한 정보를 짧게 되물으세요.
 17. 수집되지 않은 KAIST 학과나 불충분한 정보에 대해서는 충분한 자료가 없다고 말하고 KAIST 공식 홈페이지와 입학처 확인을 권고하세요.
 18. KAIST와 무관한 질문은 답변하지 말고 이 챗봇의 답변 범위가 KAIST 및 수집된 KAIST AI 관련 학과 자료라고 안내하세요.
+19. [검색 주의] 또는 fallback 경고가 있으면, fallback 문서를 질문의 직접 근거로 사용하지 마세요. 질문한 정보 유형과 문서유형이 다르면 "제공된 자료에서 직접 확인할 수 없습니다"라고 답하세요.
+20. 예를 들어 교과목 질문인데 입학 문서만 검색된 경우, 입학 문서를 근거로 교과목을 추측하지 마세요.
+21. SQL 조회 결과가 비어 있고 Vector 문서도 질문한 정보유형과 직접 일치하지 않으면, 자료 부족으로 답하세요.
 """.strip()
 
     def _human_prompt(self) -> str:
@@ -380,6 +439,121 @@ class AnswerGenerator:
             warnings=built_context.warnings,
             raw_context=built_context.context,
         )
+
+    def _has_direct_evidence(
+        self,
+        analysis: QueryAnalysis,
+        built_context: BuiltContext,
+    ) -> bool:
+        """
+        질문 intent에 직접 대응하는 근거가 sources 안에 있는지 확인합니다.
+
+        예:
+        - course_info 질문이면 course 문서 또는 courses SQL 결과가 있어야 함
+        - person_info 질문이면 person 문서 또는 people/person SQL 결과가 있어야 함
+        - fallback으로 admission 문서만 들어온 경우 course_info 근거로 인정하지 않음
+        """
+        if analysis.route == "clarify":
+            return True
+
+        if analysis.intent in {"general_info", "department_overview"}:
+            return True
+
+        expected_content_types = INTENT_EXPECTED_CONTENT_TYPES.get(
+            analysis.intent,
+            set(),
+        )
+        expected_sql_tables = INTENT_EXPECTED_SQL_TABLES.get(
+            analysis.intent,
+            set(),
+        )
+
+        if not expected_content_types and not expected_sql_tables:
+            return True
+
+        for source in built_context.sources:
+            if source.source_type == "vector":
+                source_content_type = (
+                    source.content_type
+                    or source.metadata.get("content_type")
+                    or ""
+                )
+
+                if source_content_type in expected_content_types:
+                    return True
+
+            if source.source_type == "sql":
+                table_name = str(
+                    source.metadata.get("table_name")
+                    or source.title
+                    or source.source
+                    or ""
+                )
+
+                conditions = source.metadata.get("conditions") or {}
+                condition_content_type = conditions.get("content_type")
+
+                if table_name in expected_sql_tables:
+                    return True
+
+                if condition_content_type in expected_content_types:
+                    return True
+
+        return False
+
+    def _no_direct_evidence_answer(
+        self,
+        analysis: QueryAnalysis,
+        built_context: BuiltContext,
+    ) -> GeneratedAnswer:
+        intent_label = INTENT_KOREAN_LABELS.get(
+            analysis.intent,
+            "요청한 정보",
+        )
+
+        department_text = (
+            f"{analysis.department_name}의 "
+            if analysis.department_name
+            else ""
+        )
+
+        answer = (
+            f"제공된 자료에서 {department_text}{intent_label}에 대한 직접적인 근거를 찾을 수 없습니다.\n\n"
+            "검색 과정에서 보조 참고 문서가 함께 조회되었을 수 있지만, "
+            "질문한 정보 유형과 직접 일치하지 않는 문서는 근거로 사용하지 않았습니다.\n\n"
+            "학과명이나 정보 유형을 다시 확인하거나, 공식 홈페이지와 입학처 자료를 확인해주세요."
+        )
+
+        warnings = [
+            *built_context.warnings,
+            (
+                f"질문 intent='{analysis.intent}'에 직접 대응하는 "
+                "SQL 결과 또는 Vector 문서를 찾지 못했습니다."
+            ),
+        ]
+
+        return GeneratedAnswer(
+            answer=answer,
+            sources=built_context.sources,
+            warnings=self._deduplicate_strings(warnings),
+            raw_context=built_context.context,
+        )
+
+    def _deduplicate_strings(self, values: list[str]) -> list[str]:
+        seen = set()
+        results = []
+
+        for value in values:
+            if not value:
+                continue
+
+            if value in seen:
+                continue
+
+            seen.add(value)
+            results.append(value)
+
+        return results
 
     def _build_task_instruction(
         self,

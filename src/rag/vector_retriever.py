@@ -60,7 +60,7 @@ class VectorRetrieverConfig:
 
     use_rewritten_question: bool = True
     use_fallback: bool = True
-    fallback_trigger_mode: FallbackTriggerMode = "only_when_empty"
+    fallback_trigger_mode: FallbackTriggerMode = "below_min_results"
     use_lightweight_reranker: bool = True
 
     @property
@@ -420,14 +420,26 @@ class VectorRetriever:
         return "\n\n".join(blocks)
 
     def _validate_settings(self) -> None:
-        if not self.config.chroma_dir.exists():
+        chroma_dir = self.config.chroma_dir
+
+        if not chroma_dir.exists():
             raise FileNotFoundError(
-                f"Chroma DB 폴더를 찾을 수 없습니다: {self.config.chroma_dir}"
+                f"Chroma DB 폴더를 찾을 수 없습니다: {chroma_dir}\n"
+                "먼저 아래 명령어로 vectorstore를 생성하세요:\n"
+                "python data/build_vectorstore.py --reset --smoke-test"
+            )
+
+        if not any(chroma_dir.iterdir()):
+            raise FileNotFoundError(
+                f"Chroma DB 폴더가 비어 있습니다: {chroma_dir}\n"
+                "먼저 아래 명령어로 vectorstore를 생성하세요:\n"
+                "python data/build_vectorstore.py --reset --smoke-test"
             )
 
         if not os.getenv("OPENAI_API_KEY"):
             raise EnvironmentError(
-                "OPENAI_API_KEY가 설정되어 있지 않습니다."
+                "OPENAI_API_KEY가 설정되어 있지 않습니다. "
+                ".env 파일 또는 환경변수에 OPENAI_API_KEY를 설정하세요."
             )
 
     def _select_search_query(self, analysis: QueryAnalysis) -> str:
@@ -573,7 +585,6 @@ class VectorRetriever:
             key=lambda item: item.score if item.score is not None else float("inf"),
         )
 
-
     def _candidate_limit(self) -> int:
         multiplier = max(self.config.candidate_multiplier, 1)
 
@@ -713,6 +724,7 @@ class VectorRetriever:
             str(metadata.get("section") or ""),
             str(metadata.get("title") or ""),
         )
+    
     def _search_chroma_once(
         self,
         search_query: str,
@@ -755,7 +767,7 @@ def run_examples() -> None:
         min_results_before_fallback=2,
         use_rewritten_question=True,
         use_fallback=True,
-        fallback_trigger_mode="only_when_empty",
+        fallback_trigger_mode="below_min_results",
         use_lightweight_reranker=True,
     )
 
@@ -773,7 +785,10 @@ def run_examples() -> None:
     ]
 
     for question in example_questions:
-        result = retriever.retrieve(question)
+        result = retriever.retrieve(
+            question,
+            force_vector_search=True,
+        )
 
         print("=" * 100)
         print(f"질문: {question}")

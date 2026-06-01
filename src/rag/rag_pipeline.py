@@ -46,7 +46,7 @@ class SqlRetrieverLike(Protocol):
 @dataclass
 class RagPipelineConfig:
     use_vector_when_sql_unavailable: bool = True
-    use_vector_when_sql_empty: bool = False
+    use_vector_when_sql_empty: bool = True
     include_debug_context: bool = False
     raise_search_errors: bool = False
     raise_generation_errors: bool = False
@@ -817,13 +817,47 @@ class RagPipeline:
 
         return results
 
+def create_default_pipeline(
+    include_sql: bool = True,
+    include_debug_context: bool = False,
+    preload_vector_retriever: bool = False,
+    preload_answer_generator: bool = False,
+) -> RagPipeline:
+    """
+    앱과 테스트 코드에서 공통으로 사용할 기본 RAG Pipeline을 생성합니다.
+
+    include_sql=True인 경우 SQLTool 연결을 시도합니다.
+    SQLTool 연결 실패 시에도 Vector 기반 RAG는 계속 사용할 수 있도록 처리합니다.
+    """
+    sql_retriever = None
+
+    if include_sql:
+        try:
+            from src.rag.sql_tool import SQLTool
+
+            sql_retriever = SQLTool()
+        except Exception:
+            sql_retriever = None
+
+    config = RagPipelineConfig(
+        use_vector_when_sql_unavailable=True,
+        use_vector_when_sql_empty=True,
+        include_debug_context=include_debug_context,
+        preload_vector_retriever=preload_vector_retriever,
+        preload_answer_generator=preload_answer_generator,
+    )
+
+    return RagPipeline(
+        config=config,
+        sql_retriever=sql_retriever,
+    )
 
 def answer_question(
     question: str,
     previous_department_code: str | None = None,
     pipeline: RagPipeline | None = None,
 ) -> RagPipelineResult:
-    pipeline = pipeline or RagPipeline()
+    pipeline = pipeline or create_default_pipeline()
 
     return pipeline.run(
         question=question,
@@ -837,10 +871,47 @@ def answer_question_dict(
     pipeline: RagPipeline | None = None,
     include_debug_context: bool | None = None,
 ) -> dict[str, Any]:
-    pipeline = pipeline or RagPipeline()
+    pipeline = pipeline or create_default_pipeline(
+        include_debug_context=bool(include_debug_context),
+    )
 
     return pipeline.run_dict(
         question=question,
         previous_department_code=previous_department_code,
         include_debug_context=include_debug_context,
     )
+
+def run_examples() -> None:
+    pipeline = create_default_pipeline(
+        include_sql=True,
+        include_debug_context=True,
+        preload_vector_retriever=False,
+        preload_answer_generator=False,
+    )
+
+    questions = [
+        "AI컴퓨팅학과 석사 지원 자격 알려줘",
+        "AX학과 교수 이메일 알려줘",
+        "AI시스템학과 교과목 설명해줘",
+        "KAIST 학과사무실 전화번호 알려줘",
+    ]
+
+    for question in questions:
+        print("=" * 100)
+        print(f"질문: {question}")
+
+        result = pipeline.run_dict(
+            question=question,
+            include_debug_context=True,
+        )
+
+        print("route:", result["route"])
+        print("intent:", result["intent"])
+        print("department_code:", result["department_code"])
+        print("answer:", result["answer"][:500])
+        print("sources:", result["sources"][:3])
+        print("warnings:", result["warnings"])
+
+
+if __name__ == "__main__":
+    run_examples()
