@@ -8,6 +8,7 @@ os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 os.environ.setdefault("MKL_NUM_THREADS", "1")
 os.environ.setdefault("ANONYMIZED_TELEMETRY", "False")
 
+import base64
 import streamlit as st
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -16,25 +17,61 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from components.styles import load_css
-from components.layout import render_topbar, render_page_header, render_source_cards, render_back_home
+from components.layout import render_topbar, render_source_cards
 from src.rag.query_analyzer import DEPARTMENTS
 from src.rag.rag_pipeline import RagPipeline, create_default_pipeline
 
 st.set_page_config(
-    page_title="RAG Chatbot | KAIST AI RAG Guide",
-    page_icon="💬",
+    page_title="KAIST AI College RAG Guide",
+    page_icon="🤖",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
 load_css()
 render_topbar()
-render_back_home()
 
-render_page_header(
-    kicker="RAG CHATBOT",
-    title="KAIST AI College RAG Chatbot",
-    description="입학, 연구 분야, 교수진, 교과목, 행사 정보를 검색 결과와 출처 기반으로 답변합니다.",
+
+def html(markup: str):
+    st.markdown(markup, unsafe_allow_html=True)
+
+
+def image_to_base64(image_path: str) -> str:
+    path = PROJECT_ROOT / image_path
+    if not path.exists():
+        return ""
+    return base64.b64encode(path.read_bytes()).decode("utf-8")
+
+
+kaist_img_base64 = image_to_base64("assets/kaist.jpg")
+kaist_img_tag = (
+    f'<img src="data:image/jpeg;base64,{kaist_img_base64}" alt="KAIST AI College image">'
+    if kaist_img_base64
+    else '<div class="image-fallback">KAIST Image Not Found</div>'
+)
+
+html(
+    '<section class="hero-card">'
+    '<div class="hero-copy">'
+    '<div class="hero-kicker">KAIST AI COLLEGE RAG GUIDE</div>'
+    '<h1 class="hero-title">'
+    'Explore <span class="blue-text">KAIST AI College</span><br>'
+    'with a RAG Chatbot'
+    '</h1>'
+    '<p class="hero-desc">'
+    '입학 정보, 학과·연구 분야, 교수진, 교과목 데이터를 '
+    '질문 기반으로 탐색하는 RAG 챗봇입니다.'
+    '</p>'
+    '<div class="badge-row">'
+    '<span class="badge">문서 기반 답변</span>'
+    '<span class="badge">출처 카드 제공</span>'
+    '<span class="badge">Streamlit Front-end</span>'
+    '</div>'
+    '</div>'
+    '<div class="hero-image-wrap">'
+    f'{kaist_img_tag}'
+    '</div>'
+    '</section>'
 )
 
 if "messages" not in st.session_state:
