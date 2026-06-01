@@ -331,13 +331,27 @@ def load_css():
             box-shadow: 0 10px 28px rgba(0, 91, 172, 0.06);
         }
 
+        /* 챗 섹션 전체 강조 */
+        .section-title:has(+ * .stChatMessage),
+        div[data-testid="stVerticalBlock"] > div:has(.stChatMessage) {
+            min-height: 420px;
+        }
+
         .stChatMessage {
             background: #ffffff !important;
             border: 1px solid var(--line);
             border-radius: 20px;
-            padding: 1rem;
-            box-shadow: 0 8px 24px rgba(0, 91, 172, 0.05);
+            padding: 1.4rem 1.6rem;
+            box-shadow: 0 8px 32px rgba(0, 91, 172, 0.08);
             color: #111111 !important;
+            font-size: 1.08rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* 챗 영역 최소 높이 확보 */
+        div[data-testid="stChatMessageContainer"] {
+            min-height: 560px;
         }
         
         .stChatMessage p,

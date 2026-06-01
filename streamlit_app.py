@@ -23,6 +23,8 @@ st.set_page_config(
 
 load_css()
 
+st.switch_page("pages/3_RAG_Chatbot.py")
+
 
 def html(markup: str):
     st.markdown(markup, unsafe_allow_html=True)
