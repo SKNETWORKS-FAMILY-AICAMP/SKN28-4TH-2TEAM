@@ -24,7 +24,6 @@ from src.rag.query_analyzer import QuestionAnalyzer, QueryAnalysis
 if TYPE_CHECKING:
     from langchain_core.documents import Document
 
-
 VectorSearchStatus = Literal[
     "searched",
     "skipped_sql_route",
@@ -45,6 +44,47 @@ FallbackTriggerMode = Literal[
     "below_min_results",
 ]
 
+# ============================================================
+# 검색 scope 정책
+# ============================================================
+
+AI_COLLEGE_DEPT_CODES = {
+    "aic",
+    "ai_systems",
+    "ax",
+    "fx",
+}
+
+AI_COLLEGE_DEPT_NAMES = {
+    "AI컴퓨팅학과",
+    "AI시스템학과",
+    "AX학과",
+    "AI미래학과",
+}
+
+AI_COLLEGE_SCOPE_KEYWORDS = [
+    "AI대학",
+    "AI 대학",
+    "KAIST AI대학",
+    "카이스트 AI대학",
+    "AI 관련 학과",
+    "전체 학과",
+    "모든 학과",
+    "각 학과",
+    "학과별",
+    "학과들",
+    "학과들을",
+]
+
+KAIST_GLOBAL_SOURCE_TYPES = {
+    "csv_kaist_profile",
+    "csv_kaist_statistics",
+    "csv_kaist_link",
+}
+
+KAIST_OFFICE_SOURCE_TYPES = {
+    "csv_department_office",
+}
 
 @dataclass
 class VectorRetrieverConfig:
@@ -83,6 +123,7 @@ class RetrievedVectorDocument:
             "rerank_score": self.rerank_score,
             "search_stage": self.search_stage,
             "metadata": {
+                "source_type": metadata.get("source_type"),
                 "dept": metadata.get("dept"),
                 "dept_name": metadata.get("dept_name"),
                 "content_type": metadata.get("content_type"),
@@ -336,6 +377,8 @@ class VectorRetriever:
         items, attempts, used_fallback, warnings = self._search_with_fallback(
             search_query=search_query,
             search_plan=search_plan,
+            analysis=analysis,
+            question=analysis.normalized_question,
         )
 
         if not items:
@@ -481,10 +524,153 @@ class VectorRetriever:
 
         return plan
 
+    def _is_ai_college_scope_question(self, question: str) -> bool:
+        question = str(question)
+
+        return any(
+            keyword in question
+            for keyword in AI_COLLEGE_SCOPE_KEYWORDS
+        )
+
+    def _is_kaist_global_question(self, question: str) -> bool:
+        question = str(question)
+
+        kaist_keywords = [
+            "KAIST",
+            "카이스트",
+            "한국과학기술원",
+        ]
+
+        global_info_keywords = [
+            "대표 번호",
+            "대표번호",
+            "주소",
+            "영문명",
+            "영문약자",
+            "설립일",
+            "재학생",
+            "졸업생",
+            "교직원",
+            "공식 홈페이지",
+            "입학처",
+            "캠퍼스맵",
+            "도서관",
+            "학사일정",
+        ]
+
+        return (
+            any(keyword in question for keyword in kaist_keywords)
+            and any(keyword in question for keyword in global_info_keywords)
+        )
+
+    def _is_kaist_office_question(self, question: str) -> bool:
+        question = str(question)
+
+        kaist_keywords = [
+            "KAIST",
+            "카이스트",
+            "한국과학기술원",
+        ]
+
+        office_keywords = [
+            "전체 학과사무실",
+            "전체 학과 사무실",
+            "학과사무실 목록",
+            "학과 사무실 목록",
+            "모든 학과 사무실",
+            "학과별 사무실",
+            "학과별 연락처",
+        ]
+
+        return (
+            any(keyword in question for keyword in kaist_keywords)
+            and any(keyword in question for keyword in office_keywords)
+        )
+
+    def _is_allowed_item_for_question(
+        self,
+        item: RetrievedVectorDocument,
+        analysis: QueryAnalysis,
+        question: str,
+    ) -> bool:
+        """
+        vectorstore에는 KAIST 전체 데이터가 들어 있을 수 있다.
+        따라서 질문 scope에 따라 답변 context에 넣을 문서를 제한한다.
+        """
+
+        metadata = item.document.metadata or {}
+
+        dept = str(metadata.get("dept", "") or "").strip()
+        dept_name = str(metadata.get("dept_name", "") or "").strip()
+        department_code_meta = str(metadata.get("department_code", "") or "").strip()
+        department = str(metadata.get("department", "") or "").strip()
+        source_type = str(metadata.get("source_type", "") or "").strip()
+
+        # 1. 특정 학과 질문이면 해당 학과 문서만 허용
+        if analysis.department_code:
+            return (
+                dept == analysis.department_code
+                or department_code_meta == analysis.department_code
+            )
+
+        # 2. KAIST 전체 학과사무실 질문이면 학과사무실 데이터 허용
+        if self._is_kaist_office_question(question):
+            return source_type in KAIST_OFFICE_SOURCE_TYPES
+
+        # 3. KAIST 기본정보 질문이면 KAIST 기본정보/통계/링크만 허용
+        if self._is_kaist_global_question(question):
+            return source_type in KAIST_GLOBAL_SOURCE_TYPES
+
+        # 4. AI대학 전체 질문이면 AI대학 4개 학과 문서만 허용
+        if self._is_ai_college_scope_question(question):
+            if dept in AI_COLLEGE_DEPT_CODES:
+                return True
+
+            if department_code_meta in AI_COLLEGE_DEPT_CODES:
+                return True
+
+            if dept_name in AI_COLLEGE_DEPT_NAMES:
+                return True
+
+            if department in AI_COLLEGE_DEPT_NAMES:
+                return True
+
+            # AI대학 질문 중 홈페이지/입학처/링크/주소 같은 보조 정보는
+            # KAIST 기본정보 문서를 허용한다.
+            if source_type in KAIST_GLOBAL_SOURCE_TYPES:
+                if any(
+                    keyword in question
+                    for keyword in ["홈페이지", "입학처", "링크", "URL", "주소"]
+                ):
+                    return True
+
+            return False
+
+        # 5. 일반 질문은 기존 검색 결과 허용
+        return True
+
+    def _filter_items_for_question(
+        self,
+        items: list[RetrievedVectorDocument],
+        analysis: QueryAnalysis,
+        question: str,
+    ) -> list[RetrievedVectorDocument]:
+        return [
+            item
+            for item in items
+            if self._is_allowed_item_for_question(
+                item=item,
+                analysis=analysis,
+                question=question,
+            )
+        ]
+
     def _search_with_fallback(
         self,
         search_query: str,
         search_plan: list[tuple[SearchStage, dict[str, Any] | None]],
+        analysis: QueryAnalysis,
+        question: str,
     ) -> tuple[
         list[RetrievedVectorDocument],
         list[SearchAttempt],
@@ -506,6 +692,12 @@ class VectorRetriever:
                 search_query=search_query,
                 metadata_filter=metadata_filter,
                 search_stage=search_stage,
+            )
+
+            stage_results = self._filter_items_for_question(
+            items=stage_results,
+            analysis=analysis,
+            question=question,
             )
 
             attempts.append(
