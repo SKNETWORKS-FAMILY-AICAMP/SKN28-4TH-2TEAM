@@ -268,17 +268,6 @@ def load_css():
             color: var(--muted);
         }
 
-        /* ── Department equal-height cards ──
-           .info-card.dept-card 로 클래스를 두 개 겹쳐 우선순위를 높임.
-           이렇게 하지 않으면 아래쪽 .info-card{min-height:150px} 에 덮여
-           이 높이가 무시됨. 숫자만 바꾸면 카드 높이가 바뀜. */
-        /* 학과 카드 높이/정렬은 카드 HTML의 인라인 style(설명 <p>의
-           min-height)로 제어한다. Streamlit 프론트엔드 마크다운이 중첩
-           div/클래스를 평탄화할 수 있어 인라인 style이 가장 안정적이다. */
-        .info-card.dept-card {
-            box-sizing: border-box;
-        }
-
         /* ── Section title ── */
         .section-title {
             font-size: 1.35rem;
@@ -347,6 +336,122 @@ def load_css():
             margin: 0;
             font-size: 0.92rem;
             color: var(--muted);
+        }
+
+
+        /* ── Department page: fixed 2x2 card height ── */
+        .department-overview-card {
+            height: 220px;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .department-overview-card .department-icon {
+            font-size: 2rem;
+            line-height: 1;
+            margin-bottom: 1.05rem;
+        }
+
+        .department-overview-card h3 {
+            margin: 0 0 0.72rem 0;
+        }
+
+        .department-overview-card p {
+            margin: 0;
+            flex: 1;
+        }
+
+        .department-overview-card .card-link-wrap {
+            margin-top: 0.75rem;
+        }
+
+        .department-overview-card .card-link {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--kaist-blue);
+        }
+
+        /* ── Department page: chair cards ── */
+        .faculty-chair-card {
+            height: 150px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-bottom: 1.05rem;
+        }
+
+        .faculty-chair-card .faculty-dept-label {
+            font-size: 0.75rem;
+            color: var(--kaist-blue);
+            font-weight: 800;
+            margin-bottom: 0.65rem;
+        }
+
+        .faculty-chair-card h3 {
+            margin: 0;
+        }
+
+        .faculty-chair-card p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+
+
+        /* ── Department page: compact course cards ── */
+        .course-list-wrap {
+            max-width: 820px;
+        }
+
+        .compact-course-card {
+            min-height: 58px !important;
+            padding: 0.82rem 1.2rem !important;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.52rem !important;
+        }
+
+        .compact-course-card .course-line {
+            display: flex;
+            align-items: baseline;
+            gap: 0.42rem;
+            flex-wrap: wrap;
+            line-height: 1.35;
+        }
+
+        .compact-course-card .course-title,
+        .compact-course-card .course-title:visited {
+            color: var(--kaist-blue) !important;
+            font-size: 1.08rem !important;
+            font-weight: 900 !important;
+            letter-spacing: -0.035em;
+        }
+
+        .compact-course-card .course-title:hover {
+            color: var(--kaist-blue-2) !important;
+        }
+
+        .compact-course-card .course-meta {
+            color: var(--muted);
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .compact-course-card h3 {
+            margin: 0 !important;
+            font-size: 0.98rem !important;
+            line-height: 1.35 !important;
+            font-weight: 900;
+        }
+
+        .course-dept {
+            color: var(--muted);
+            font-weight: 700;
         }
 
         /* ── Page header ── */
@@ -587,39 +692,6 @@ def load_css():
             transform: translateY(-2px);
             box-shadow: 0 12px 28px rgba(0, 91, 172, 0.28);
             color: #ffffff !important;
-        }
-
-        /* ── Back nav button ── */
-        .back-nav div[data-testid="stPageLink"] {
-            width: auto !important;
-        }
-
-        .back-nav .stPageLink a,
-        .back-nav div[data-testid="stPageLink"] a {
-            background: transparent !important;
-            color: var(--kaist-blue) !important;
-            border: 1px solid var(--line) !important;
-            box-shadow: none !important;
-            font-weight: 600 !important;
-            font-size: 0.88rem !important;
-            min-height: 34px !important;
-            padding: 0.35rem 0.85rem !important;
-            width: auto !important;
-            display: inline-flex !important;
-            border-radius: 10px !important;
-            margin-bottom: 0.75rem;
-        }
-
-        .back-nav .stPageLink a:hover,
-        .back-nav div[data-testid="stPageLink"] a:hover {
-            background: var(--kaist-light) !important;
-            box-shadow: none !important;
-            transform: none !important;
-        }
-
-        .back-nav .stPageLink a *,
-        .back-nav div[data-testid="stPageLink"] a * {
-            color: var(--kaist-blue) !important;
         }
 
         .stPageLink a *,
