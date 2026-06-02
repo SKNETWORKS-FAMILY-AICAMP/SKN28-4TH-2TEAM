@@ -19,6 +19,7 @@ from components.styles import load_css
 from components.layout import render_topbar, render_page_header, render_source_cards, render_back_home
 from src.rag.query_analyzer import DEPARTMENTS
 from src.rag.rag_pipeline import RagPipeline, RagPipelineConfig
+from src.rag.sql_retriever import CsvSqlRetriever
 
 st.set_page_config(
     page_title="RAG Chatbot | KAIST AI RAG Guide",
@@ -75,7 +76,10 @@ if not st.session_state.get("pending_user_question") and not st.session_state.ge
 
 @st.cache_resource(show_spinner=False)
 def get_pipeline() -> RagPipeline:
-    pipeline = RagPipeline(config=RagPipelineConfig(preload_vector_retriever=True))
+    pipeline = RagPipeline(
+        config=RagPipelineConfig(preload_vector_retriever=False),
+        sql_retriever=CsvSqlRetriever(),
+    )
     return pipeline
 
 
