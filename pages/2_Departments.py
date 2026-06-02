@@ -41,17 +41,20 @@ if departments:
         source_url = dept.get("source_url", "")
         link = f'<a href="{source_url}" target="_blank" style="font-size:0.8rem;">홈페이지 바로가기 →</a>' if source_url else ""
         with col:
-            st.markdown(
-                f"""
-                <div class="info-card start-card">
-                    <div style="font-size:2rem; margin-bottom:8px;">{icon}</div>
-                    <h3 style="margin-bottom:6px;">{dept_name}</h3>
-                    <p style="margin-bottom:10px;">{summary}</p>
-                    {link}
-                </div>
-                """,
-                unsafe_allow_html=True,
+            # Streamlit은 마크다운을 프론트엔드에서 렌더링하므로 중첩 div/클래스가
+            # 평탄화될 수 있다. 반면 '인라인 style'은 그대로 살아남으므로,
+            # 설명 <p>에 min-height를 직접 줘서 1줄/2줄 설명 모두 같은 높이를
+            # 차지하게 한다. 그러면 바로 뒤의 '홈페이지 바로가기'가 모든 카드에서
+            # 같은 줄에 정렬된다. (설명이 3줄로 길어지면 min-height를 키우면 됨)
+            card_html = (
+                '<div class="info-card start-card dept-card">'
+                f'<div style="font-size:2rem; margin-bottom:8px;">{icon}</div>'
+                f'<h3 style="margin-bottom:6px;">{dept_name}</h3>'
+                f'<p style="margin-bottom:10px; min-height:3em;">{summary}</p>'
+                f'{link}'
+                '</div>'
             )
+            st.markdown(card_html, unsafe_allow_html=True)
 else:
     st.info("학과 소개 데이터를 찾을 수 없습니다.")
 
@@ -90,7 +93,7 @@ if courses:
         course_type = course.get("course_type", "")
         credit = course.get("credit", "")
         source_url = course.get("source_url", "")
-        title = f'<a href="{source_url}" target="_blank">{course_code} {course_name}</a>' if source_url else f"{course_code} {course_name}"
+        title = f'<a href="{source_url}" target="_blank">{course_name} ({course_code})</a>' if source_url else f"{course_name} ({course_code})"
         st.markdown(
             f"""
             <div class="info-card">

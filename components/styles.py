@@ -268,6 +268,17 @@ def load_css():
             color: var(--muted);
         }
 
+        /* ── Department equal-height cards ──
+           .info-card.dept-card 로 클래스를 두 개 겹쳐 우선순위를 높임.
+           이렇게 하지 않으면 아래쪽 .info-card{min-height:150px} 에 덮여
+           이 높이가 무시됨. 숫자만 바꾸면 카드 높이가 바뀜. */
+        /* 학과 카드 높이/정렬은 카드 HTML의 인라인 style(설명 <p>의
+           min-height)로 제어한다. Streamlit 프론트엔드 마크다운이 중첩
+           div/클래스를 평탄화할 수 있어 인라인 style이 가장 안정적이다. */
+        .info-card.dept-card {
+            box-sizing: border-box;
+        }
+
         /* ── Section title ── */
         .section-title {
             font-size: 1.35rem;
@@ -576,6 +587,39 @@ def load_css():
             transform: translateY(-2px);
             box-shadow: 0 12px 28px rgba(0, 91, 172, 0.28);
             color: #ffffff !important;
+        }
+
+        /* ── Back nav button ── */
+        .back-nav div[data-testid="stPageLink"] {
+            width: auto !important;
+        }
+
+        .back-nav .stPageLink a,
+        .back-nav div[data-testid="stPageLink"] a {
+            background: transparent !important;
+            color: var(--kaist-blue) !important;
+            border: 1px solid var(--line) !important;
+            box-shadow: none !important;
+            font-weight: 600 !important;
+            font-size: 0.88rem !important;
+            min-height: 34px !important;
+            padding: 0.35rem 0.85rem !important;
+            width: auto !important;
+            display: inline-flex !important;
+            border-radius: 10px !important;
+            margin-bottom: 0.75rem;
+        }
+
+        .back-nav .stPageLink a:hover,
+        .back-nav div[data-testid="stPageLink"] a:hover {
+            background: var(--kaist-light) !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        .back-nav .stPageLink a *,
+        .back-nav div[data-testid="stPageLink"] a * {
+            color: var(--kaist-blue) !important;
         }
 
         .stPageLink a *,

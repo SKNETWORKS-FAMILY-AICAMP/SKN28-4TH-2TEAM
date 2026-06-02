@@ -24,7 +24,13 @@ courses_df = load_csv("courses.csv")
 people_df = load_csv("people.csv")
 events_df = load_csv("events.csv")
 assets_df = load_csv("assets.csv")
-rag_chunks_df = pd.DataFrame()  # rag_chunks 미제공
+try:
+    import chromadb
+    _chroma_client = chromadb.PersistentClient(path=str(BASE_DIR / "vectorstore" / "chroma_db"))
+    _rag_chunk_count = _chroma_client.get_collection("kaist_graduate_info").count()
+except Exception:
+    _rag_chunk_count = 0
+rag_chunks_df = pd.DataFrame(range(_rag_chunk_count), columns=["id"])
 rag_documents_df = pd.DataFrame()  # rag_documents 미제공
 course_track_df = load_csv("course_track_map.csv")
 
@@ -81,12 +87,12 @@ def get_departments():
         {
             "dept_name": "AI시스템학과",
             "summary": "지능형 소프트웨어, AI 플랫폼, 응용 시스템 설계를 중심으로 한 학과입니다.",
-            "source_url": "https://ais.kaist.ac.kr",
+            "source_url": "https://ai-systems.kaist.ac.kr",
         },
         {
             "dept_name": "AI미래학과",
             "summary": "미래 사회 문제와 AI 융합 연구를 연결하는 학제간 융합 학과입니다.",
-            "source_url": "https://aif.kaist.ac.kr",
+            "source_url": "https://fx.kaist.ac.kr",
         },
         {
             "dept_name": "AX학과",
