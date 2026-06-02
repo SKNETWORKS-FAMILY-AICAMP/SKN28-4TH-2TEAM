@@ -2,7 +2,7 @@ from pathlib import Path
 import pandas as pd
 
 BASE_DIR = Path(__file__).resolve().parent
-RAW_DIR = BASE_DIR / "raw"
+RAW_DIR = BASE_DIR / "processed" / "csv"
 
 DEPT_LABELS = {
     "aic": "AI컴퓨팅학과",
@@ -19,13 +19,13 @@ def load_csv(filename: str) -> pd.DataFrame:
     return pd.read_csv(path)
 
 
-admissions_df = load_csv("admissions_clean.csv")
-courses_df = load_csv("courses_clean.csv")
-people_df = load_csv("people_clean.csv")
-events_df = load_csv("events_clean.csv")
-assets_df = load_csv("assets_clean.csv")
-rag_chunks_df = load_csv("rag_chunks.csv")
-rag_documents_df = load_csv("rag_documents.csv")
+admissions_df = load_csv("admissions.csv")
+courses_df = load_csv("courses.csv")
+people_df = load_csv("people.csv")
+events_df = load_csv("events.csv")
+assets_df = load_csv("assets.csv")
+rag_chunks_df = pd.DataFrame()  # rag_chunks 미제공
+rag_documents_df = pd.DataFrame()  # rag_documents 미제공
 course_track_df = load_csv("course_track_map.csv")
 
 
@@ -46,46 +46,81 @@ def get_data_summary():
     }
 
 
-def get_departments():
-    if assets_df.empty or "dept" not in assets_df.columns:
-        return [
-            {"dept_name": "AI컴퓨팅학과", "summary": "AI 알고리즘, 컴퓨팅 기반 기술, 데이터 처리 역량을 중심으로 한 학과 소개 영역입니다.", "source_url": ""},
-            {"dept_name": "AI시스템학과", "summary": "AI 시스템, 지능형 소프트웨어, 플랫폼과 응용 시스템을 중심으로 한 학과 소개 영역입니다.", "source_url": ""},
-            {"dept_name": "AI미래학과", "summary": "미래 사회 문제와 AI 융합 연구를 연결하는 학과 소개 영역입니다.", "source_url": ""},
-            {"dept_name": "AX학과", "summary": "AI 전환과 산업·사회 적용을 중심으로 한 융합 학과 소개 영역입니다.", "source_url": ""},
-        ]
+def get_department_heads():
+    """학과당 대표 교수 1인 반환 (학과장 우선, 없으면 전임교수·중점교원·교수 순)."""
+    if people_df.empty:
+        return []
+    DEPT_ORDER = ["AI컴퓨팅학과", "AI시스템학과", "AI미래학과", "AX학과"]
+    ROLE_PRIORITY = ["학과장", "전임교수", "중점교원", "교수"]
+    cols = ["dept_name", "name_ko", "role_normalized", "homepage"]
+    available = [c for c in cols if c in people_df.columns]
+    result = []
+    for dept_name in DEPT_ORDER:
+        dept_rows = people_df[people_df["dept_name"] == dept_name]
+        if dept_rows.empty:
+            continue
+        selected = None
+        for role in ROLE_PRIORITY:
+            match = dept_rows[dept_rows["role_normalized"] == role]
+            if not match.empty:
+                selected = match.iloc[0]
+                break
+        if selected is None:
+            selected = dept_rows.iloc[0]
+        result.append(selected[available].fillna("").to_dict())
+    return result
 
-    departments = []
-    for dept, dept_name in DEPT_LABELS.items():
-        dept_assets = assets_df[assets_df["dept"] == dept]
-        text_col = "text" if "text" in dept_assets.columns else None
-        intro_texts = dept_assets[text_col].dropna().astype(str).head(3).tolist() if text_col else []
-        source_url = ""
-        if "source_url" in dept_assets.columns and not dept_assets.empty and dept_assets["source_url"].dropna().shape[0] > 0:
-            source_url = safe_text(dept_assets["source_url"].dropna().iloc[0])
-        departments.append({
-            "dept": dept,
-            "dept_name": dept_name,
-            "summary": " ".join(intro_texts)[:500] if intro_texts else "소개 데이터가 준비 중입니다.",
-            "source_url": source_url,
-        })
-    return departments
+
+def get_departments():
+    return [
+        {
+            "dept_name": "AI컴퓨팅학과",
+            "summary": "AI 알고리즘, 머신러닝, 컴퓨팅 기반 기술, 데이터 처리 역량을 중심으로 한 학과입니다.",
+            "source_url": "https://aic.kaist.ac.kr",
+        },
+        {
+            "dept_name": "AI시스템학과",
+            "summary": "지능형 소프트웨어, AI 플랫폼, 응용 시스템 설계를 중심으로 한 학과입니다.",
+            "source_url": "https://ais.kaist.ac.kr",
+        },
+        {
+            "dept_name": "AI미래학과",
+            "summary": "미래 사회 문제와 AI 융합 연구를 연결하는 학제간 융합 학과입니다.",
+            "source_url": "https://aif.kaist.ac.kr",
+        },
+        {
+            "dept_name": "AX학과",
+            "summary": "AI 전환(AI Transformation)과 산업·사회 적용을 중심으로 한 융합 학과입니다.",
+            "source_url": "https://ax.kaist.ac.kr",
+        },
+    ]
+
+
+def _sample_by_dept(df: "pd.DataFrame", cols: list, limit: int) -> list:
+    """학과별 균등 샘플링."""
+    available_cols = [c for c in cols if c in df.columns]
+    sub = df[available_cols].fillna("")
+    if "dept" not in df.columns:
+        return sub.head(limit).to_dict("records")
+    depts = df["dept"].unique()
+    per_dept = max(1, limit // len(depts))
+    frames = [sub[df["dept"] == d].head(per_dept) for d in depts]
+    import pandas as pd
+    return pd.concat(frames).head(limit).to_dict("records")
 
 
 def get_representative_people(limit=9):
     if people_df.empty:
         return []
-    cols = ["dept_name", "name", "role", "research_area", "homepage", "source_url"]
-    available_cols = [col for col in cols if col in people_df.columns]
-    return people_df[available_cols].fillna("").head(limit).to_dict("records")
+    cols = ["dept_name", "name", "name_ko", "role", "research_area", "homepage", "source_url"]
+    return _sample_by_dept(people_df, cols, limit)
 
 
-def get_representative_courses(limit=10):
+def get_representative_courses(limit=12):
     if courses_df.empty:
         return []
     cols = ["dept_name", "course_level", "course_code", "course_name", "course_type", "credit", "source_url"]
-    available_cols = [col for col in cols if col in courses_df.columns]
-    return courses_df[available_cols].fillna("").head(limit).to_dict("records")
+    return _sample_by_dept(courses_df, cols, limit)
 
 
 def search_chunks(query: str, limit=3):
