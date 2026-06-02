@@ -70,6 +70,7 @@ class SQLToolConfig:
             connect_timeout=int(os.getenv("KAIST_MYSQL_CONNECT_TIMEOUT", "5")),
         )
 
+SUPPORTED_AI_COLLEGE_DEPT_CODES = ("aic", "ai_systems", "ax", "fx")
 
 class SQLTool:
     """
@@ -136,6 +137,15 @@ class SQLTool:
 
             if task_hint == "department_overview":
                 return self._query_departments(analysis)
+
+            if task_hint == "kaist_profile_lookup":
+                return self._query_kaist_profile(analysis)
+
+            if task_hint == "kaist_statistics_lookup":
+                return self._query_kaist_statistics(analysis)
+
+            if task_hint == "kaist_link_lookup":
+                return self._query_kaist_links(analysis)
 
             return self._unsupported_task_result(analysis)
 
@@ -246,7 +256,10 @@ class SQLTool:
             params.append(dept)
             return f"{alias}.dept = %s"
 
-        return "1=1"
+        placeholders = ", ".join(["%s"] * len(SUPPORTED_AI_COLLEGE_DEPT_CODES))
+        params.extend(SUPPORTED_AI_COLLEGE_DEPT_CODES)
+
+        return f"{alias}.dept IN ({placeholders})"
 
     def _build_select_columns(
         self,
@@ -538,7 +551,7 @@ class SQLTool:
                     FROM asset AS a
                     LEFT JOIN department AS d
                         ON d.dept = a.dept
-                    WHERE ...
+                    WHERE {where_clause}
                     ORDER BY
                         a.dept,
                         a.topic
@@ -876,6 +889,201 @@ class SQLTool:
             analysis=analysis,
             message="학과 정보 조회가 완료되었습니다.",
         )
+
+    def _query_kaist_profile(self, analysis: QueryAnalysis) -> SqlQueryResult:
+        table_name = "kaist_profile"
+
+        with self._connect() as conn:
+            if not self._table_exists(conn, table_name):
+                return self._missing_table_result(table_name, analysis)
+
+            rows = self._fetch_all(
+                conn=conn,
+                sql=f"""
+                SELECT *
+                FROM {table_name}
+                LIMIT %s
+                """,
+                params=(self._limit(),),
+            )
+
+        rows = self._filter_rows_by_alias(
+            rows=rows,
+            key_column="item",
+            question=analysis.normalized_question,
+            aliases={
+                "학교명": ["학교명", "이름", "한국과학기술원"],
+                "영문약자": ["영문약자", "약자"],
+                "영문명": ["영문명", "영어 이름", "영어명", "korea advanced"],
+                "창립일": ["창립일", "설립일", "개교일", "언제 설립"],
+                "색상": ["색상", "상징색", "컬러"],
+                "주소": ["주소", "위치", "어디"],
+                "대표 번호": ["대표 번호", "대표번호", "전화", "전화번호"],
+                "대표 팩스번호": ["팩스", "팩스번호"],
+                "설립이념": ["설립이념", "이념", "역사", "설립 배경"],
+            },
+        )
+
+        return self._result(
+            table_name=table_name,
+            rows=rows,
+            analysis=analysis,
+            message="KAIST 기본 정보 조회가 완료되었습니다.",
+        )
+
+    def _query_kaist_statistics(self, analysis: QueryAnalysis) -> SqlQueryResult:
+        table_name = "kaist_statistics"
+
+        with self._connect() as conn:
+            if not self._table_exists(conn, table_name):
+                return self._missing_table_result(table_name, analysis)
+
+            rows = self._fetch_all(
+                conn=conn,
+                sql=f"""
+                SELECT *
+                FROM {table_name}
+                LIMIT %s
+                """,
+                params=(self._limit(),),
+            )
+
+        rows = self._filter_kaist_statistics_rows(
+            rows=rows,
+            question=analysis.normalized_question,
+        )
+
+        return self._result(
+            table_name=table_name,
+            rows=rows,
+            analysis=analysis,
+            message="KAIST 통계 정보 조회가 완료되었습니다.",
+        )
+
+    def _query_kaist_links(self, analysis: QueryAnalysis) -> SqlQueryResult:
+        table_name = "kaist_links"
+
+        with self._connect() as conn:
+            if not self._table_exists(conn, table_name):
+                return self._missing_table_result(table_name, analysis)
+
+            rows = self._fetch_all(
+                conn=conn,
+                sql=f"""
+                SELECT *
+                FROM {table_name}
+                LIMIT %s
+                """,
+                params=(self._limit(),),
+            )
+
+        rows = self._filter_rows_by_alias(
+            rows=rows,
+            key_column="link_name",
+            question=analysis.normalized_question,
+            aliases={
+                "URL": ["공식 홈페이지", "홈페이지", "url", "웹사이트"],
+                "캠퍼스맵": ["캠퍼스맵", "캠퍼스 맵", "지도"],
+                "셔틀버스 실시간 위치 확인": ["셔틀버스", "셔틀", "버스"],
+                "도서관": ["도서관", "library"],
+                "문화행사": ["문화행사", "행사"],
+                "홍보동영상(2분, 2025)": ["홍보동영상", "동영상", "영상"],
+                "학사일정": ["학사일정", "일정", "캘린더"],
+            },
+        )
+
+        return self._result(
+            table_name=table_name,
+            rows=rows,
+            analysis=analysis,
+            message="KAIST 공식 링크 조회가 완료되었습니다.",
+        )
+
+    def _filter_rows_by_alias(
+        self,
+        rows: list[dict[str, Any]],
+        key_column: str,
+        question: str,
+        aliases: dict[str, list[str]],
+    ) -> list[dict[str, Any]]:
+        matched_keys = [
+            key
+            for key, keywords in aliases.items()
+            if any(keyword.lower() in question.lower() for keyword in keywords)
+        ]
+
+        if not matched_keys:
+            return rows
+
+        return [
+            row
+            for row in rows
+            if str(row.get(key_column, "")) in matched_keys
+        ]
+
+    def _filter_kaist_statistics_rows(
+        self,
+        rows: list[dict[str, Any]],
+        question: str,
+    ) -> list[dict[str, Any]]:
+        group_aliases = {
+            "졸업생": ["졸업생", "졸업자", "동문"],
+            "재학생": ["재학생", "학생 수", "학생수", "재학"],
+            "교직원": ["교직원", "교수", "직원"],
+        }
+        level_aliases = {
+            "전체": ["전체", "총", "모두"],
+            "학사": ["학사", "학부"],
+            "석사": ["석사"],
+            "석박통합": ["석박통합", "석박사통합"],
+            "박사": ["박사"],
+            "교수": ["교수"],
+            "직원": ["직원"],
+        }
+
+        groups = self._matched_alias_keys(question, group_aliases)
+        levels = self._matched_alias_keys(question, level_aliases)
+        filtered_rows = rows
+
+        if groups:
+            filtered_rows = [
+                row
+                for row in filtered_rows
+                if str(row.get("stat_group", "")) in groups
+            ]
+
+        if levels:
+            filtered_rows = [
+                row
+                for row in filtered_rows
+                if str(row.get("level", "")) in levels
+            ]
+
+        if not filtered_rows and groups:
+            filtered_rows = [
+                row
+                for row in rows
+                if str(row.get("stat_group", "")) in groups
+            ]
+
+        return filtered_rows
+
+    def _matched_alias_keys(
+        self,
+        question: str,
+        aliases: dict[str, list[str]],
+    ) -> list[str]:
+        normalized_question = "".join(question.lower().split())
+
+        return [
+            key
+            for key, keywords in aliases.items()
+            if any(
+                keyword.lower() in question.lower()
+                or "".join(keyword.lower().split()) in normalized_question
+                for keyword in keywords
+            )
+        ]
 
     # ============================================================
     # Result helpers

@@ -356,8 +356,10 @@ class RagPipeline:
 
         if should_search_vector:
             try:
+                retrieval_question = analysis.rewritten_question or question
+
                 vector_result = self._get_vector_retriever().retrieve(
-                    question=question,
+                    question=retrieval_question,
                     previous_department_code=previous_department_code,
                     force_vector_search=force_vector_search,
                 )
