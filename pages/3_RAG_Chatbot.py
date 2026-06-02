@@ -436,46 +436,81 @@ def queue_question(question: str) -> None:
 
 def process_pending_question(question: str) -> None:
     st.session_state._answer_in_progress = True
+
+    # 1. 사용자 메시지 즉시 표시
     user_message = {"role": "user", "content": question, "sources": [], "warnings": []}
     st.session_state.messages.append(user_message)
     render_message(user_message)
 
     with st.chat_message("assistant"):
-        with st.spinner("답변을 생성하는 중입니다..."):
-            try:
-                payload = build_answer_payload(question=question)
-            except BaseException as exc:
-                exc_type = type(exc).__name__
-                exc_mod = type(exc).__module__ or ""
-                if "streamlit" in exc_mod.lower() or exc_type in (
-                    "RerunException", "StopException", "StreamlitStopException",
-                    "RerunData", "StopExecutionException",
-                ):
-                    st.session_state._answer_in_progress = False
-                    raise
-                payload = {
-                    "role": "assistant",
-                    "content": "답변 생성 중 오류가 발생했습니다. 환경 설정과 vectorstore 상태를 확인해주세요.",
-                    "sources": [],
-                    "warnings": [str(exc)],
-                }
+        status_placeholder = st.empty()
+        stream_placeholder = st.empty()
 
-        st.markdown(payload["content"])
+        full_text = ""
+        final_answer = ""
+        final_sources = []
+        final_warnings = []
 
-        if payload.get("cached"):
-            st.caption("이전 동일 질문의 답변을 다시 사용했습니다.")
+        try:
+            pipeline = get_pipeline()
+            previous_department_code = st.session_state.previous_department_code
 
-        if payload.get("warnings"):
+            def on_status(msg: str):
+                status_placeholder.caption(f"⏳ {msg}")
+
+            def on_token(token: str):
+                nonlocal full_text
+                full_text += token
+                stream_placeholder.markdown(full_text + "▌")
+
+            result = pipeline.run_streaming(
+                question=question,
+                previous_department_code=previous_department_code,
+                on_token=on_token,
+                on_status=on_status,
+            )
+
+            status_placeholder.empty()
+            final_answer = result.answer
+            stream_placeholder.markdown(final_answer)
+
+            if result.department_code:
+                st.session_state.previous_department_code = result.department_code
+
+            remember_clarification_if_needed(result=result, original_question=question)
+
+            final_sources = format_sources_for_cards(result.sources)
+            final_warnings = result.warnings
+
+        except BaseException as exc:
+            exc_type = type(exc).__name__
+            exc_mod = type(exc).__module__ or ""
+            if "streamlit" in exc_mod.lower() or exc_type in (
+                "RerunException", "StopException", "StreamlitStopException",
+                "RerunData", "StopExecutionException",
+            ):
+                st.session_state._answer_in_progress = False
+                raise
+            status_placeholder.empty()
+            final_answer = "답변 생성 중 오류가 발생했습니다."
+            stream_placeholder.error(final_answer)
+            final_warnings = [str(exc)]
+
+        if final_warnings:
             with st.expander("오류 내용"):
-                for w in payload["warnings"]:
+                for w in final_warnings:
                     st.write(w)
 
-        if payload.get("sources"):
-            render_source_cards(payload["sources"])
+        if final_sources:
+            render_source_cards(final_sources)
 
-        st.session_state.messages.append(payload)
+        st.session_state.messages.append({
+            "role": "assistant",
+            "content": final_answer,
+            "sources": final_sources,
+            "warnings": final_warnings,
+        })
 
-    # 처리 완료: 플래그 초기화 후 rerun → chat_input이 disabled=False로 재렌더링됨
     st.session_state._answer_in_progress = False
     st.session_state.is_processing = False
     st.rerun()

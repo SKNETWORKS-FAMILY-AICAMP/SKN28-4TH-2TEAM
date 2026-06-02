@@ -14,7 +14,6 @@ def render_topbar():
                     <div class="brand-subtitle">Document-grounded guide for prospective students</div>
                 </div>
             </div>
-            <div class="demo-pill">Presentation Demo · Local CSV</div>
         </div>
         """,
         unsafe_allow_html=True,
