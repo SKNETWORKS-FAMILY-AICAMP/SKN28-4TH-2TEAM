@@ -18,6 +18,7 @@ AmbiguityType = Literal[
     "personal_recommendation",
     "unclear_reference",
     "unsupported_kaist_department",
+    "unsupported_fact",
     "off_topic",
 ]
 
@@ -171,6 +172,37 @@ DEPARTMENTS = [
             "fx",
         ],
     ),
+]
+
+AI_COLLEGE_SCOPE_KEYWORDS = [
+    "AI대학",
+    "AI 대학",
+    "KAIST AI대학",
+    "카이스트 AI대학",
+    "AI 관련 학과",
+    "수집된 AI 관련 학과",
+    "전체 학과",
+    "모든 학과",
+    "각 학과",
+    "학과별",
+    "학과들",
+    "학과들을",
+]
+
+UNSUPPORTED_FACT_KEYWORDS = [
+    "경쟁률",
+    "등록금",
+    "평균 연봉",
+    "연봉",
+    "취업률",
+    "논문 실적",
+    "논문 순위",
+    "실적 순위",
+    "합격 가능성",
+    "합격 확률",
+    "가장 합격하기 쉬운",
+    "장학금 지급 금액",
+    "대기업 취업 가능성",
 ]
 
 KAIST_OFFICIAL_URL = "https://www.kaist.ac.kr/kr/"
@@ -490,6 +522,21 @@ INTENT_RULES = [
             "특징",
             "비전",
             "목표",
+            "AI대학",
+            "AI 대학",
+            "KAIST AI대학",
+            "카이스트 AI대학",
+            "AI 관련 학과",
+            "학과별",
+            "학과들",
+            "학과들을",
+            "전체 학과",
+            "각 학과",
+            "졸업",
+            "이수",
+            "수료",
+            "논문",
+            "요건",
             "overview",
             "about",
             "description",
@@ -655,11 +702,22 @@ class QuestionAnalyzer:
     ) -> QueryAnalysis:
         original_question = question
         normalized_question = self._normalize_question(question)
+        lowered_question = normalized_question.lower()
 
-        department = self._find_department(
-            normalized_question=normalized_question,
-            previous_department_code=previous_department_code,
+        matched_departments = self._find_all_departments(
+            normalized_question=normalized_question
         )
+
+        if len(matched_departments) == 1:
+            department = matched_departments[0]
+        elif len(matched_departments) >= 2:
+            department = None
+        else:
+            department = self._find_department(
+                normalized_question=normalized_question,
+                previous_department_code=previous_department_code,
+            )
+
         unsupported_department_name = self._find_unsupported_department_name(
             normalized_question=normalized_question,
             matched_department=department,
@@ -668,16 +726,19 @@ class QuestionAnalyzer:
         intent_rule, matched_keywords = self._find_intent_rule(
             normalized_question=normalized_question,
         )
+
         example_match = self._find_semantic_intent_match(
             normalized_question=normalized_question,
             intent_rule=intent_rule,
             department=department,
             unsupported_department_name=unsupported_department_name,
         )
+
         forced_ambiguity_type = None
 
         if example_match:
             example = example_match.example
+
             if (
                 example.ambiguity_type == "unsupported_kaist_department"
                 and not unsupported_department_name
@@ -703,7 +764,11 @@ class QuestionAnalyzer:
         department_code = department.code if department else None
 
         intent = intent_rule.intent if intent_rule else "general_info"
-        intent_description = intent_rule.description if intent_rule else "일반 정보 질문"
+        intent_description = (
+            intent_rule.description
+            if intent_rule
+            else "일반 정보 질문"
+        )
         content_type = intent_rule.content_type if intent_rule else None
 
         route, route_reason = self._decide_route(
@@ -722,6 +787,7 @@ class QuestionAnalyzer:
         )
 
         missing_fields = self._find_missing_fields(
+            normalized_question=normalized_question,
             department_code=department_code,
             content_type=content_type,
             intent=intent,
@@ -781,8 +847,16 @@ class QuestionAnalyzer:
             intent_description=intent_description,
             content_type=content_type,
             metadata_filter=metadata_filter,
-            sql_table_hint=intent_rule.sql_table_hint if intent_rule else None,
-            sql_task_hint=intent_rule.sql_task_hint if intent_rule else None,
+            sql_table_hint=(
+                intent_rule.sql_table_hint
+                if intent_rule
+                else None
+            ),
+            sql_task_hint=(
+                intent_rule.sql_task_hint
+                if intent_rule
+                else None
+            ),
             sql_conditions=sql_conditions,
             needs_sql=route in {"sql", "hybrid"},
             needs_vector=route in {"vector", "hybrid"},
@@ -791,14 +865,26 @@ class QuestionAnalyzer:
             missing_fields=missing_fields,
             clarifying_message=clarifying_message,
             matched_keywords=matched_keywords,
-            semantic_match_intent=example_match.example.intent if example_match else None,
+            semantic_match_intent=(
+                example_match.example.intent
+                if example_match
+                else None
+            ),
             semantic_match_ambiguity_type=(
                 example_match.example.ambiguity_type
                 if example_match
                 else None
             ),
-            semantic_match_score=example_match.score if example_match else None,
-            semantic_match_example=example_match.example.text if example_match else None,
+            semantic_match_score=(
+                example_match.score
+                if example_match
+                else None
+            ),
+            semantic_match_example=(
+                example_match.example.text
+                if example_match
+                else None
+            ),
         )
 
     def _normalize_question(self, question: str) -> str:
@@ -892,8 +978,13 @@ class QuestionAnalyzer:
         lowered_question = normalized_question.lower()
 
         if "홈페이지" in lowered_question:
-            if any(keyword in lowered_question for keyword in ["kaist", "카이스트", "한국과학기술원"]):
-                kaist_link_rule = self._get_intent_rule_by_intent("kaist_link_info")
+            if any(
+                keyword in lowered_question
+                for keyword in ["kaist", "카이스트", "한국과학기술원"]
+            ):
+                kaist_link_rule = self._get_intent_rule_by_intent(
+                    "kaist_link_info"
+                )
 
                 if kaist_link_rule:
                     return kaist_link_rule, ["카이스트 홈페이지"]
@@ -908,8 +999,13 @@ class QuestionAnalyzer:
                 "professor",
             ]
 
-            if not any(keyword in lowered_question for keyword in person_specific_keywords):
-                asset_rule = self._get_intent_rule_by_intent("asset_or_link_info")
+            if not any(
+                keyword in lowered_question
+                for keyword in person_specific_keywords
+            ):
+                asset_rule = self._get_intent_rule_by_intent(
+                    "asset_or_link_info"
+                )
 
                 if asset_rule:
                     return asset_rule, ["홈페이지"]
@@ -923,6 +1019,22 @@ class QuestionAnalyzer:
 
             if matched_keywords:
                 return rule, matched_keywords
+
+        if self._is_compare_question(lowered_question):
+            overview_rule = self._get_intent_rule_by_intent(
+                "department_overview"
+            )
+
+            if overview_rule:
+                return overview_rule, ["comparison"]
+
+        if self._is_interest_based_recommendation_question(lowered_question):
+            overview_rule = self._get_intent_rule_by_intent(
+                "department_overview"
+            )
+
+            if overview_rule:
+                return overview_rule, ["recommendation"]
 
         return None, []
 
@@ -955,6 +1067,13 @@ class QuestionAnalyzer:
 
         if intent_rule is None:
             return True
+
+        if intent_rule.intent in {
+            "kaist_profile_info",
+            "kaist_statistics_info",
+            "kaist_link_info",
+        }:
+            return False
 
         lowered_question = normalized_question.lower()
 
@@ -1090,13 +1209,22 @@ class QuestionAnalyzer:
         intent_rule: IntentRule | None,
     ) -> str:
         parts = [normalized_question]
-
+    
+        lowered_question = normalized_question.lower()
+        matched_departments = self._find_all_departments(normalized_question)
+    
         if department_name and department_name not in normalized_question:
             parts.append(department_name)
-
+    
+        if len(matched_departments) >= 2:
+            parts.extend(department.name for department in matched_departments)
+    
+        if not department_name and self._is_all_ai_department_scope_question(lowered_question):
+            parts.extend(department.name for department in self.departments)
+    
         if intent_rule:
             parts.append(intent_rule.vector_search_terms)
-
+    
         return re.sub(r"\s+", " ", " ".join(parts)).strip()
 
     def _build_display_question(
@@ -1149,21 +1277,31 @@ class QuestionAnalyzer:
 
     def _find_missing_fields(
         self,
+        normalized_question: str,
         department_code: str | None,
         content_type: ContentType | None,
         intent: IntentType,
     ) -> list[str]:
         missing_fields = []
 
+        lowered_question = normalized_question.lower()
+
+        scope_resolved = (
+            self._is_all_ai_department_scope_question(lowered_question)
+            or self._is_multi_department_question(normalized_question)
+        )
+
         if intent == "general_info" and content_type is None:
-            missing_fields.append("intent_or_content_type")
+            if not scope_resolved:
+                missing_fields.append("intent_or_content_type")
 
         if content_type in {"course", "person", "admission", "event"}:
-            if department_code is None:
+            if department_code is None and not scope_resolved:
                 missing_fields.append("department")
 
         if intent == "department_overview" and department_code is None:
-            missing_fields.append("department")
+            if not scope_resolved:
+                missing_fields.append("department")
 
         return missing_fields
 
@@ -1179,7 +1317,17 @@ class QuestionAnalyzer:
     ) -> AmbiguityType | None:
         lowered_question = normalized_question.lower()
 
-        if forced_ambiguity_type:
+        scope_resolved = (
+            self._is_all_ai_department_scope_question(lowered_question)
+            or self._is_multi_department_question(normalized_question)
+        )
+
+        # 문서에 없을 가능성이 높은 정량/외부 정보는 too_broad가 아니라 unsupported_fact로 처리
+        if self._is_unsupported_fact_question(lowered_question):
+            return "unsupported_fact"
+
+        # semantic matcher가 too_broad로 잘못 강제하는 것을 방지
+        if forced_ambiguity_type and not scope_resolved:
             return forced_ambiguity_type
 
         if unsupported_department_name:
@@ -1191,26 +1339,28 @@ class QuestionAnalyzer:
         ):
             return "off_topic"
 
-        if self._is_personal_recommendation_question(lowered_question):
-            return "personal_recommendation"
-
         if self._is_unclear_reference_question(lowered_question, department_code):
             return "unclear_reference"
 
-        if self._is_compare_question(lowered_question) and not self._has_comparison_criterion(lowered_question):
-            return "comparison_criterion"
+        # 비교 대상이 명확하거나 전체 학과 비교면 되묻지 않음
+        if self._is_compare_question(lowered_question):
+            if not scope_resolved and not self._has_comparison_criterion(lowered_question):
+                return "comparison_criterion"
 
         if self._is_too_broad_question(lowered_question):
-            return "too_broad"
+            if not scope_resolved:
+                return "too_broad"
 
         if self._is_department_scope_question(lowered_question, department_code):
-            return "department_scope"
+            if not scope_resolved:
+                return "department_scope"
 
         if "department" in missing_fields:
             return "missing_department"
 
         if intent == "general_info" and content_type is None:
-            return "missing_intent"
+            if not scope_resolved:
+                return "missing_intent"
 
         return None
 
@@ -1230,6 +1380,7 @@ class QuestionAnalyzer:
             "personal_recommendation": "personal_goal_or_interest",
             "unclear_reference": "department",
             "unsupported_kaist_department": "supported_data_scope",
+            "unsupported_fact": "unsupported_fact",
             "off_topic": "domain",
         }
 
@@ -1239,6 +1390,71 @@ class QuestionAnalyzer:
             enriched_fields.append(field)
 
         return enriched_fields
+
+    def _find_all_departments(
+        self,
+        normalized_question: str,
+    ) -> list[DepartmentInfo]:
+        lowered_question = normalized_question.lower()
+        matched_departments = []
+    
+        for department in self.departments:
+            if any(keyword.lower() in lowered_question for keyword in department.keywords):
+                matched_departments.append(department)
+    
+        return matched_departments
+    
+    
+    def _is_all_ai_department_scope_question(
+        self,
+        lowered_question: str,
+    ) -> bool:
+        return any(keyword.lower() in lowered_question for keyword in AI_COLLEGE_SCOPE_KEYWORDS)
+    
+    
+    def _is_multi_department_question(
+        self,
+        normalized_question: str,
+    ) -> bool:
+        return len(self._find_all_departments(normalized_question)) >= 2
+    
+    
+    def _is_unsupported_fact_question(
+        self,
+        lowered_question: str,
+    ) -> bool:
+        return any(keyword in lowered_question for keyword in UNSUPPORTED_FACT_KEYWORDS)
+    
+    
+    def _is_interest_based_recommendation_question(
+        self,
+        lowered_question: str,
+    ) -> bool:
+        recommendation_keywords = [
+            "적합",
+            "맞아",
+            "맞을까",
+            "추천",
+            "관심",
+            "되고 싶은",
+            "목표",
+            "진로",
+        ]
+    
+        ai_college_keywords = [
+            "AI대학",
+            "AI 대학",
+            "학과",
+            "AI컴퓨팅",
+            "AI시스템",
+            "AX",
+            "AI미래",
+        ]
+    
+        return (
+            any(keyword.lower() in lowered_question for keyword in recommendation_keywords)
+            and any(keyword.lower() in lowered_question for keyword in ai_college_keywords)
+        )
 
     def _is_department_scope_question(
         self,
@@ -1467,6 +1683,13 @@ class QuestionAnalyzer:
             return (
                 "이전 대화에서 어떤 학과를 말하는지 확인하기 어렵습니다. 학과명을 다시 알려주세요.\n\n"
                 "예: AI컴퓨팅학과 교수진, AX학과 입학 정보"
+            )
+        
+        if ambiguity_type == "unsupported_fact":
+            return (
+                "제공된 문서에서 해당 정보는 확인되지 않습니다.\n\n"
+                "이 챗봇은 수집된 KAIST AI 관련 학과 자료를 바탕으로 답변합니다. "
+                "경쟁률, 등록금, 취업률, 평균 연봉, 합격 가능성처럼 문서에 근거가 없는 정보는 추측해서 답변하지 않습니다."
             )
 
         if "department" in missing_fields:

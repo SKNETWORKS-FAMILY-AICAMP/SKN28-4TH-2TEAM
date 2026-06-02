@@ -70,6 +70,7 @@ class SQLToolConfig:
             connect_timeout=int(os.getenv("KAIST_MYSQL_CONNECT_TIMEOUT", "5")),
         )
 
+SUPPORTED_AI_COLLEGE_DEPT_CODES = ("aic", "ai_systems", "ax", "fx")
 
 class SQLTool:
     """
@@ -255,7 +256,10 @@ class SQLTool:
             params.append(dept)
             return f"{alias}.dept = %s"
 
-        return "1=1"
+        placeholders = ", ".join(["%s"] * len(SUPPORTED_AI_COLLEGE_DEPT_CODES))
+        params.extend(SUPPORTED_AI_COLLEGE_DEPT_CODES)
+
+        return f"{alias}.dept IN ({placeholders})"
 
     def _build_select_columns(
         self,
@@ -547,7 +551,7 @@ class SQLTool:
                     FROM asset AS a
                     LEFT JOIN department AS d
                         ON d.dept = a.dept
-                    WHERE ...
+                    WHERE {where_clause}
                     ORDER BY
                         a.dept,
                         a.topic
