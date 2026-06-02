@@ -1,2 +1,12 @@
 streamlit
+python-dotenv
 pandas
+pymysql
+tqdm
+langchain
+langchain-core
+langchain-openai
+langchain-chroma
+chromadb
+openai
+pymupdf

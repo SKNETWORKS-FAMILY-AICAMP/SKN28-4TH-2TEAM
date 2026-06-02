@@ -9,10 +9,8 @@
 
 import re
 import json
-import shutil
 import hashlib
 from pathlib import Path
-from datetime import datetime
 
 import pandas as pd
 
@@ -24,13 +22,14 @@ import pandas as pd
 CURRENT_FILE = Path(__file__).resolve()
 PROJECT_ROOT = CURRENT_FILE.parents[1]
 
-# 원본 파일들이 들어있는 폴더입니다. 스크립트 위치 기준으로 프로젝트 루트를 계산합니다.
-BASE_DIR = PROJECT_ROOT / "data" / "raw_data"
+# 입력 원본 데이터
+RAW_DATA_DIR = PROJECT_ROOT / "data" / "raw_data"
 
-OUT_DIR = BASE_DIR / "processed"
-SQL_DIR = OUT_DIR / "sql"
-VECTOR_DIR = OUT_DIR / "vectorstore"
-REPORT_DIR = OUT_DIR / "reports"
+# 전처리 결과 저장 경로
+PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
+SQL_DIR = PROCESSED_DIR / "csv"
+VECTOR_DIR = PROCESSED_DIR / "json"
+REPORT_DIR = PROCESSED_DIR / "reports"
 
 for d in [SQL_DIR, VECTOR_DIR, REPORT_DIR]:
     d.mkdir(parents=True, exist_ok=True)
@@ -321,7 +320,7 @@ def chunk_text_by_paragraphs(text, max_chars=1200, overlap_chars=120):
 
 dfs = {}
 for key, filename in CSV_FILES.items():
-    path = BASE_DIR / filename
+    path = RAW_DATA_DIR / filename
     dfs[key] = read_csv_clean(path)
     print(f"[로드 완료] {key}: {dfs[key].shape} - {filename}")
 
@@ -631,7 +630,7 @@ save_csv(profile, SQL_DIR / "kaist_profile.csv")
 # 3-10. 학과사무실
 # ------------------------------------------------------------
 
-office_raw_path = BASE_DIR / CSV_FILES["department_offices"]
+office_raw_path = RAW_DATA_DIR / CSV_FILES["department_offices"]
 office_raw = pd.read_csv(office_raw_path, dtype=str, encoding="utf-8-sig")
 
 source_note = str(office_raw.columns[0]).strip()
@@ -1211,7 +1210,7 @@ def extract_pdf_docs(pdf_path: Path, base_meta: dict):
 pdf_page_reports = []
 
 for pdf_filename, meta in PDF_FILES.items():
-    pdf_path = BASE_DIR / pdf_filename
+    pdf_path = RAW_DATA_DIR / pdf_filename
     docs_from_pdf, reports = extract_pdf_docs(pdf_path, meta)
     vector_docs.extend(docs_from_pdf)
     pdf_page_reports.extend(reports)

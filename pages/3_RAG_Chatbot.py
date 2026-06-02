@@ -8,6 +8,7 @@ os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 os.environ.setdefault("MKL_NUM_THREADS", "1")
 os.environ.setdefault("ANONYMIZED_TELEMETRY", "False")
 
+import base64
 import streamlit as st
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -16,26 +17,61 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from components.styles import load_css
-from components.layout import render_topbar, render_page_header, render_source_cards, render_back_home
+from components.layout import render_topbar, render_source_cards
 from src.rag.query_analyzer import DEPARTMENTS
-from src.rag.rag_pipeline import RagPipeline, RagPipelineConfig
-from src.rag.sql_retriever import CsvSqlRetriever
+from src.rag.rag_pipeline import RagPipeline, create_default_pipeline
 
 st.set_page_config(
-    page_title="RAG Chatbot | KAIST AI RAG Guide",
-    page_icon="💬",
+    page_title="KAIST AI College RAG Guide",
+    page_icon="🤖",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
 load_css()
 render_topbar()
-render_back_home()
 
-render_page_header(
-    kicker="RAG CHATBOT",
-    title="KAIST AI College RAG Chatbot",
-    description="입학, 연구 분야, 교수진, 교과목, 행사 정보를 검색 결과와 출처 기반으로 답변합니다.",
+
+def html(markup: str):
+    st.markdown(markup, unsafe_allow_html=True)
+
+
+def image_to_base64(image_path: str) -> str:
+    path = PROJECT_ROOT / image_path
+    if not path.exists():
+        return ""
+    return base64.b64encode(path.read_bytes()).decode("utf-8")
+
+
+kaist_img_base64 = image_to_base64("assets/kaist.jpg")
+kaist_img_tag = (
+    f'<img src="data:image/jpeg;base64,{kaist_img_base64}" alt="KAIST AI College image">'
+    if kaist_img_base64
+    else '<div class="image-fallback">KAIST Image Not Found</div>'
+)
+
+html(
+    '<section class="hero-card">'
+    '<div class="hero-copy">'
+    '<div class="hero-kicker">KAIST AI COLLEGE RAG GUIDE</div>'
+    '<h1 class="hero-title">'
+    'Explore <span class="blue-text">KAIST AI College</span><br>'
+    'with a RAG Chatbot'
+    '</h1>'
+    '<p class="hero-desc">'
+    '입학 정보, 학과·연구 분야, 교수진, 교과목 데이터를 '
+    '질문 기반으로 탐색하는 RAG 챗봇입니다.'
+    '</p>'
+    '<div class="badge-row">'
+    '<span class="badge">문서 기반 답변</span>'
+    '<span class="badge">출처 카드 제공</span>'
+    '<span class="badge">Streamlit Front-end</span>'
+    '</div>'
+    '</div>'
+    '<div class="hero-image-wrap">'
+    f'{kaist_img_tag}'
+    '</div>'
+    '</section>'
 )
 
 if "messages" not in st.session_state:
@@ -76,11 +112,12 @@ if not st.session_state.get("pending_user_question") and not st.session_state.ge
 
 @st.cache_resource(show_spinner=False)
 def get_pipeline() -> RagPipeline:
-    pipeline = RagPipeline(
-        config=RagPipelineConfig(preload_vector_retriever=False),
-        sql_retriever=CsvSqlRetriever(),
+    return create_default_pipeline(
+        include_sql=True,
+        include_debug_context=False,
+        preload_vector_retriever=True,
+        preload_answer_generator=False,
     )
-    return pipeline
 
 
 def format_sources_for_cards(sources):
@@ -443,6 +480,37 @@ def process_pending_question(question: str) -> None:
     st.session_state.is_processing = False
     st.rerun()
 
+st.markdown('<div class="section-title">What Users Can Do</div>', unsafe_allow_html=True)
+
+u1, u2, u3 = st.columns(3)
+
+with u1:
+    st.markdown(
+        '<div class="mini-card">'
+        '<h3>입학 정보 탐색</h3>'
+        '<p>지원 과정, 제출 서류, 모집 안내처럼 흩어진 정보를 질문으로 확인합니다.</p>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+
+with u2:
+    st.markdown(
+        '<div class="mini-card">'
+        '<h3>연구 분야 비교</h3>'
+        '<p>학과와 연구 키워드를 기준으로 관심 분야를 빠르게 살펴봅니다.</p>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+
+with u3:
+    st.markdown(
+        '<div class="mini-card">'
+        '<h3>교수진·교과목 확인</h3>'
+        '<p>교수진, 교과목, 행사 데이터를 챗봇 답변과 출처 카드로 연결합니다.</p>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+
 st.markdown('<div class="section-title">Quick Questions</div>', unsafe_allow_html=True)
 control_col, spacer_col = st.columns([1, 3])
 with control_col:
@@ -466,21 +534,11 @@ with q3:
         queue_question("관심 교수님을 고를 때 어떤 기준으로 보면 좋나요?")
         st.rerun()
 
-q4, q5, q6 = st.columns(3, gap="medium")
-with q4:
-    if st.button("교과목 정보 알려줘", use_container_width=True, disabled=st.session_state.is_processing):
-        queue_question("KAIST AI College 교과목에는 어떤 것들이 있나요?")
-        st.rerun()
-with q5:
-    if st.button("설명회나 행사가 있나요?", use_container_width=True, disabled=st.session_state.is_processing):
-        queue_question("KAIST AI College 관련 설명회나 행사가 있나요?")
-        st.rerun()
-with q6:
-    if st.button("RAG 서비스 설명해줘", use_container_width=True, disabled=st.session_state.is_processing):
-        queue_question("이 RAG 챗봇 서비스는 어떤 방식으로 작동하나요?")
-        st.rerun()
 
-st.markdown('<div class="section-title">Chat</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="section-title" style="font-size:1.5rem; margin-top:2rem; margin-bottom:1rem;">💬 Chat</div>',
+    unsafe_allow_html=True,
+)
 for message in st.session_state.messages:
     render_message(message)
 
@@ -490,8 +548,20 @@ if pending_user_question:
     st.session_state.pending_user_question = None
     process_pending_question(pending_user_question)
 
-user_input = st.chat_input("KAIST AI College에 대해 질문해보세요.", disabled=st.session_state.is_processing)
-if user_input:
+input_col, btn_col = st.columns([8, 1])
+with input_col:
+    user_input = st.text_input(
+        label="질문 입력",
+        placeholder="KAIST AI College에 대해 질문해보세요.",
+        label_visibility="collapsed",
+        disabled=st.session_state.is_processing,
+        key="user_text_input",
+    )
+with btn_col:
+    send = st.button("전송", use_container_width=True, disabled=st.session_state.is_processing)
+
+if (send or user_input and st.session_state.get("_last_input") != user_input) and user_input:
+    st.session_state["_last_input"] = user_input
     queue_question(user_input)
     st.rerun()
 
@@ -512,3 +582,30 @@ with center:
         st.session_state.pending_user_question = None
         st.session_state.answer_cache = {}
         st.rerun()
+
+st.markdown('<div class="section-title">더 알아보기</div>', unsafe_allow_html=True)
+
+nav1, nav2 = st.columns(2)
+
+with nav1:
+    st.markdown(
+        '<div class="info-card start-card">'
+        '<div class="icon-box">🏛️</div>'
+        '<h3>AI College 소개</h3>'
+        '<p>서비스 목적, 데이터 구성, RAG Guide의 사용자 흐름을 확인합니다.</p>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+    st.page_link("pages/1_AI_College_Intro.py", label="AI College 소개 보기", use_container_width=True)
+
+with nav2:
+    st.markdown(
+        '<div class="info-card start-card">'
+        '<div class="icon-box">🔎</div>'
+        '<h3>Departments</h3>'
+        '<p>학과, 연구 분야, 교수진, 교과목 정보를 카드형 화면으로 탐색합니다.</p>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+    st.page_link("pages/2_Departments.py", label="Departments 보기", use_container_width=True)
+

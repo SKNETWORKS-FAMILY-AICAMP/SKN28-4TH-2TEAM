@@ -22,7 +22,7 @@ KAIST 대학원 정보 RAG용 Chroma vectorstore를 생성하는 스크립트입
 옵션 예시:
     python build_vectorstore.py --reset
     python build_vectorstore.py --project-root "."
-    python build_vectorstore.py --jsonl-path "data/raw_data/processed/vectorstore/vector_documents.jsonl"
+    python build_vectorstore.py --jsonl-path "data/processed/json/vector_documents.jsonl"
     python build_vectorstore.py --chroma-dir "data/vectorstore/chroma_db"
     python build_vectorstore.py --embedding-model text-embedding-3-small
     python build_vectorstore.py --drop-low-value-docs
@@ -54,7 +54,7 @@ if TYPE_CHECKING:
 CURRENT_FILE = Path(__file__).resolve()
 DEFAULT_PROJECT_ROOT = CURRENT_FILE.parents[1]
 DEFAULT_JSONL_REL_PATH = (
-    Path("data") / "raw_data" / "processed" / "vectorstore" / "vector_documents.jsonl"
+    Path("data") / "processed" / "json" / "vector_documents.jsonl"
 )
 DEFAULT_CHROMA_REL_DIR = Path("data") / "vectorstore" / "chroma_db"
 
@@ -483,6 +483,18 @@ def run_smoke_test(vector_store: Chroma) -> None:
             )
             print(doc.page_content[:500])
 
+def resolve_path(path: Path, project_root: Path) -> Path:
+    """
+    CLI에서 받은 경로를 안정적인 절대경로로 변환합니다.
+
+    - 절대경로면 그대로 사용
+    - 상대경로면 project_root 기준으로 변환
+    """
+    if path.is_absolute():
+        return path
+
+    return project_root / path
+
 
 # ============================================================
 # 9. CLI
@@ -504,7 +516,7 @@ def parse_args() -> argparse.Namespace:
         "--jsonl-path",
         type=Path,
         default=None,
-        help="vector_documents.jsonl 파일 경로. 생략하면 project-root/data/raw_data/processed/vectorstore/vector_documents.jsonl 사용",
+        help="vector_documents.jsonl 파일 경로. 생략하면 project-root/data/processed/json/vector_documents.jsonl 사용",
     )
 
     parser.add_argument(
@@ -567,10 +579,17 @@ def main() -> None:
 
     args = parse_args()
 
-    project_root: Path = args.project_root
+    project_root: Path = args.project_root.resolve()
 
-    jsonl_path: Path = args.jsonl_path or project_root / DEFAULT_JSONL_REL_PATH
-    chroma_dir: Path = args.chroma_dir or project_root / DEFAULT_CHROMA_REL_DIR
+    jsonl_path: Path = resolve_path(
+        args.jsonl_path or DEFAULT_JSONL_REL_PATH,
+        project_root,
+    )
+
+    chroma_dir: Path = resolve_path(
+        args.chroma_dir or DEFAULT_CHROMA_REL_DIR,
+        project_root,
+    )
 
     # 기본 동작은 reset=True.
     # --no-reset을 명시한 경우만 기존 DB에 추가 저장.
