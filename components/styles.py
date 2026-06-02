@@ -268,13 +268,15 @@ def load_css():
             color: var(--muted);
         }
 
-        /* ── Department equal-height cards ── */
-        .dept-card {
-            height: 220px;
+        /* ── Department equal-height cards ──
+           .info-card.dept-card 로 클래스를 두 개 겹쳐 우선순위를 높임.
+           이렇게 하지 않으면 아래쪽 .info-card{min-height:150px} 에 덮여
+           이 높이가 무시됨. 숫자만 바꾸면 카드 높이가 바뀜. */
+        /* 학과 카드 높이/정렬은 카드 HTML의 인라인 style(설명 <p>의
+           min-height)로 제어한다. Streamlit 프론트엔드 마크다운이 중첩
+           div/클래스를 평탄화할 수 있어 인라인 style이 가장 안정적이다. */
+        .info-card.dept-card {
             box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
         }
 
         /* ── Section title ── */
