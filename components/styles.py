@@ -268,6 +268,15 @@ def load_css():
             color: var(--muted);
         }
 
+        /* ── Department equal-height cards ── */
+        .dept-card {
+            height: 220px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
         /* ── Section title ── */
         .section-title {
             font-size: 1.35rem;
@@ -576,6 +585,39 @@ def load_css():
             transform: translateY(-2px);
             box-shadow: 0 12px 28px rgba(0, 91, 172, 0.28);
             color: #ffffff !important;
+        }
+
+        /* ── Back nav button ── */
+        .back-nav div[data-testid="stPageLink"] {
+            width: auto !important;
+        }
+
+        .back-nav .stPageLink a,
+        .back-nav div[data-testid="stPageLink"] a {
+            background: transparent !important;
+            color: var(--kaist-blue) !important;
+            border: 1px solid var(--line) !important;
+            box-shadow: none !important;
+            font-weight: 600 !important;
+            font-size: 0.88rem !important;
+            min-height: 34px !important;
+            padding: 0.35rem 0.85rem !important;
+            width: auto !important;
+            display: inline-flex !important;
+            border-radius: 10px !important;
+            margin-bottom: 0.75rem;
+        }
+
+        .back-nav .stPageLink a:hover,
+        .back-nav div[data-testid="stPageLink"] a:hover {
+            background: var(--kaist-light) !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        .back-nav .stPageLink a *,
+        .back-nav div[data-testid="stPageLink"] a * {
+            color: var(--kaist-blue) !important;
         }
 
         .stPageLink a *,

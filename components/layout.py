@@ -99,4 +99,6 @@ def render_source_cards(sources):
 
 
 def render_back_home():
+    st.markdown('<div class="back-nav">', unsafe_allow_html=True)
     st.page_link("streamlit_app.py", label="← Home으로 돌아가기")
+    st.markdown('</div>', unsafe_allow_html=True)

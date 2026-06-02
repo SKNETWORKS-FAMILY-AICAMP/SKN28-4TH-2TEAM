@@ -43,7 +43,7 @@ if departments:
         with col:
             st.markdown(
                 f"""
-                <div class="info-card start-card">
+                <div class="info-card start-card dept-card">
                     <div style="font-size:2rem; margin-bottom:8px;">{icon}</div>
                     <h3 style="margin-bottom:6px;">{dept_name}</h3>
                     <p style="margin-bottom:10px;">{summary}</p>
@@ -90,7 +90,7 @@ if courses:
         course_type = course.get("course_type", "")
         credit = course.get("credit", "")
         source_url = course.get("source_url", "")
-        title = f'<a href="{source_url}" target="_blank">{course_code} {course_name}</a>' if source_url else f"{course_code} {course_name}"
+        title = f'<a href="{source_url}" target="_blank">{course_name} ({course_code})</a>' if source_url else f"{course_name} ({course_code})"
         st.markdown(
             f"""
             <div class="info-card">
