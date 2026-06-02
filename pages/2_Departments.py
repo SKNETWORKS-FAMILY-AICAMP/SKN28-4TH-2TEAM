@@ -2,7 +2,7 @@ import streamlit as st
 
 from components.styles import load_css
 from components.layout import render_topbar, render_page_header, render_info_card, render_back_home
-from data.demo_knowledge import get_departments, get_representative_courses, get_representative_people
+from data.demo_knowledge import get_departments, get_representative_courses, get_department_heads
 
 st.set_page_config(
     page_title="Departments | KAIST AI RAG Guide",
@@ -24,43 +24,60 @@ render_page_header(
 st.markdown('<div class="section-title">Department Overview</div>', unsafe_allow_html=True)
 departments = get_departments()
 
-if departments:
-    for dept in departments:
-        st.markdown(
-            f"""
-            <div class="info-card">
-                <h3>{dept.get('dept_name', 'Department')}</h3>
-                <p>{dept.get('summary', '소개 데이터가 준비 중입니다.')}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-else:
-    st.info("학과 소개 데이터를 찾을 수 없습니다. data/raw 폴더에 CSV 파일을 넣어주세요.")
+DEPT_ICONS = {
+    "AI컴퓨팅학과": "🖥️",
+    "AI시스템학과": "⚙️",
+    "AI미래학과": "🔭",
+    "AX학과": "🔄",
+}
 
-st.markdown('<div class="section-title">Representative Faculty</div>', unsafe_allow_html=True)
-people = get_representative_people(limit=6)
-if people:
-    cols = st.columns(3, gap="medium")
-    for idx, person in enumerate(people):
-        with cols[idx % 3]:
-            name = person.get("name", "")
-            dept_name = person.get("dept_name", "")
-            role = person.get("role", "")
-            research_area = person.get("research_area", "")
-            homepage = person.get("homepage", "") or person.get("source_url", "")
-            title = f'<a href="{homepage}" target="_blank">{name}</a>' if homepage else name
+if departments:
+    col_a, col_b = st.columns(2, gap="medium")
+    for idx, dept in enumerate(departments):
+        col = col_a if idx % 2 == 0 else col_b
+        dept_name = dept.get("dept_name", "Department")
+        icon = DEPT_ICONS.get(dept_name, "🎓")
+        summary = dept.get("summary", "소개 데이터가 준비 중입니다.")
+        source_url = dept.get("source_url", "")
+        link = f'<a href="{source_url}" target="_blank" style="font-size:0.8rem;">홈페이지 바로가기 →</a>' if source_url else ""
+        with col:
             st.markdown(
                 f"""
-                <div class="info-card">
-                    <h3>{title}</h3>
-                    <p><strong>{dept_name}</strong><br>{role}<br>{research_area if research_area else 'Research area data is not available.'}</p>
+                <div class="info-card start-card">
+                    <div style="font-size:2rem; margin-bottom:8px;">{icon}</div>
+                    <h3 style="margin-bottom:6px;">{dept_name}</h3>
+                    <p style="margin-bottom:10px;">{summary}</p>
+                    {link}
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
 else:
-    st.info("교수진 데이터를 찾을 수 없습니다.")
+    st.info("학과 소개 데이터를 찾을 수 없습니다.")
+
+st.markdown('<div class="section-title">Representative Faculty</div>', unsafe_allow_html=True)
+heads = get_department_heads()
+if heads:
+    cols = st.columns(len(heads), gap="medium")
+    for idx, person in enumerate(heads):
+        with cols[idx]:
+            name = person.get("name_ko", "")
+            dept_name = person.get("dept_name", "")
+            homepage = person.get("homepage", "")
+            role_label = person.get("role_normalized", "교수")
+            title = f'<a href="{homepage}" target="_blank">{name}</a>' if homepage else name
+            st.markdown(
+                f"""
+                <div class="info-card start-card">
+                    <div style="font-size:0.75rem; color:#2563eb; font-weight:600; margin-bottom:6px;">{dept_name}</div>
+                    <h3 style="margin-bottom:4px;">{title}</h3>
+                    <p style="margin:0; font-size:0.85rem; color:#6b7280;">{role_label}</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+else:
+    st.info("교수진 정보를 확인할 수 없습니다.")
 
 st.markdown('<div class="section-title">Representative Courses</div>', unsafe_allow_html=True)
 courses = get_representative_courses(limit=6)

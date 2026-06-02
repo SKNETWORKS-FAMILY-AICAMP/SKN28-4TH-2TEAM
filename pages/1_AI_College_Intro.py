@@ -21,19 +21,10 @@ render_page_header(
     description="KAIST AI College 정보를 예비 지원자 관점에서 탐색할 수 있도록 구성한 문서 기반 안내 서비스입니다.",
 )
 
-col1, col2 = st.columns([1.2, 1], gap="medium")
-
-with col1:
-    render_info_card(
-        "서비스 목적",
-        "대학원 지원자는 공식 홈페이지, 모집요강, 교수진 소개, 연구실 페이지, 교과목 정보 등 여러 문서에 흩어진 정보를 직접 찾아야 합니다. 이 프로젝트는 이러한 정보를 질문 기반 인터페이스로 탐색하는 경험을 제공합니다.",
-    )
-
-with col2:
-    render_info_card(
-        "발표용 버전",
-        "본 앱은 외부 API나 실제 공식 시스템과 연동하지 않습니다. 수집·정리된 로컬 CSV 데이터를 기반으로 RAG 챗봇 서비스의 사용자 경험을 시연합니다.",
-    )
+render_info_card(
+    "서비스 목적",
+    "대학원 지원자는 공식 홈페이지, 모집요강, 교수진 소개, 연구실 페이지, 교과목 정보 등 여러 문서에 흩어진 정보를 직접 찾아야 합니다. 이 프로젝트는 이러한 정보를 질문 기반 인터페이스로 탐색하는 경험을 제공합니다.",
+)
 
 st.markdown('<div class="section-title">Core Experience</div>', unsafe_allow_html=True)
 
