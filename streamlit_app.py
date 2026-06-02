@@ -570,12 +570,6 @@ with q3:
         st.rerun()
 
 
-pending_user_question = st.session_state.pending_user_question
-
-if pending_user_question:
-    process_pending_question(pending_user_question)
-
-
 # =========================
 # Chat
 # =========================
@@ -584,12 +578,85 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# 고정 높이 → 처음부터 넓게 표시, 메시지가 넘치면 컨테이너 내부 스크롤
 chat_area = st.container(height=600, border=True)
+
+pending_user_question = st.session_state.pending_user_question
 
 with chat_area:
     for message in st.session_state.messages:
         render_message(message)
+
+    if pending_user_question:
+        # 사용자 메시지 즉시 표시
+        with st.chat_message("user"):
+            st.markdown(pending_user_question)
+
+        # 어시스턴트 스트리밍 응답
+        with st.chat_message("assistant"):
+            status_placeholder = st.empty()
+            stream_placeholder = st.empty()
+
+            buf = [""]  # nonlocal 대신 mutable 컨테이너 사용
+            final_answer = ""
+            final_sources = []
+            final_warnings = []
+
+            try:
+                pipeline = get_pipeline()
+
+                def on_status(msg: str):
+                    status_placeholder.caption(f"⏳ {msg}")
+
+                def on_token(token: str):
+                    buf[0] += token
+                    stream_placeholder.markdown(buf[0] + "▌")
+
+                result = pipeline.run_streaming(
+                    question=pending_user_question,
+                    previous_department_code=st.session_state.previous_department_code,
+                    on_token=on_token,
+                    on_status=on_status,
+                )
+
+                status_placeholder.empty()
+                final_answer = result.answer
+                stream_placeholder.markdown(final_answer)
+
+                if result.department_code:
+                    st.session_state.previous_department_code = result.department_code
+
+                remember_clarification_if_needed(result=result, original_question=pending_user_question)
+                final_sources = format_sources_for_cards(result.sources)
+                final_warnings = result.warnings
+
+            except BaseException as exc:
+                exc_type = type(exc).__name__
+                exc_mod = type(exc).__module__ or ""
+                if "streamlit" in exc_mod.lower() or exc_type in (
+                    "RerunException", "StopException", "StreamlitStopException",
+                    "RerunData", "StopExecutionException",
+                ):
+                    st.session_state._answer_in_progress = False
+                    raise
+                status_placeholder.empty()
+                final_answer = "답변 생성 중 오류가 발생했습니다."
+                stream_placeholder.error(final_answer)
+                final_warnings = [str(exc)]
+
+            if final_warnings:
+                with st.expander("오류 내용"):
+                    for w in final_warnings:
+                        st.write(w)
+
+            if final_sources:
+                render_source_cards(final_sources)
+
+        st.session_state.messages.append({"role": "user", "content": pending_user_question, "sources": [], "warnings": []})
+        st.session_state.messages.append({"role": "assistant", "content": final_answer, "sources": final_sources, "warnings": final_warnings})
+        st.session_state.pending_user_question = None
+        st.session_state._answer_in_progress = False
+        st.session_state.is_processing = False
+        st.rerun()
 
 
 with st.form(
