@@ -333,6 +333,8 @@ INTENT_RULES = [
             "대표 번호",
             "대표번호",
             "팩스",
+            "약자",
+            "영문약자",
             "설립일",
             "창립일",
             "영문명",
@@ -955,6 +957,14 @@ class QuestionAnalyzer:
             return True
 
         lowered_question = normalized_question.lower()
+
+        if intent_rule.intent in {
+            "kaist_profile_info",
+            "kaist_statistics_info",
+            "kaist_link_info",
+        }:
+            return False
+
         has_kaist_keyword = any(
             keyword in lowered_question
             for keyword in ["kaist", "카이스트", "한국과학기술원"]
@@ -1020,14 +1030,12 @@ class QuestionAnalyzer:
         if intent_rule is None:
             return "clarify", "질문 의도를 분류하지 못했습니다."
 
-        # KAIST 기본정보/통계/공식 링크는 SQL 테이블을 별도로 만들지 않고
-        # VectorStore 문서 검색으로 처리한다.
         if intent_rule.intent in {
             "kaist_profile_info",
             "kaist_statistics_info",
             "kaist_link_info",
         }:
-            return "vector", "KAIST 기본/통계/링크 정보는 문서 기반 검색으로 처리합니다."
+            return "sql", "KAIST 기본/통계/링크 정보는 정형 데이터 조회가 적합한 질문입니다."
 
         lowered_question = normalized_question.lower()
 
@@ -1047,6 +1055,9 @@ class QuestionAnalyzer:
             return "vector", "문서 기반 설명이나 근거가 필요한 질문입니다."
 
         if intent_rule.intent in {
+            "kaist_profile_info",
+            "kaist_statistics_info",
+            "kaist_link_info",
             "course_info",
             "person_info",
             "office_contact_info",

@@ -189,6 +189,7 @@ KAIST_MYSQL_PASSWORD=본인_mysql_비밀번호
 KAIST_MYSQL_DATABASE=kaist_ai
 KAIST_SQL_MAX_ROWS=100
 KAIST_MYSQL_CONNECT_TIMEOUT=5
+```
 
 ## 데이터 전처리
 
@@ -196,6 +197,15 @@ KAIST_MYSQL_CONNECT_TIMEOUT=5
 
 ```powershell
 python data\preprocessing.py
+```
+
+## MySQL DB 생성 및 적재
+
+`SQLTool`을 사용하는 `sql` route 질문을 확인하려면 MySQL DB를 먼저 생성하고 `data/processed/csv/` 데이터를 적재합니다.
+
+```powershell
+mysql -u your_user -pyour_password --local-infile=1 -e "source sql/01_schema.sql; source sql/02_load.sql; source sql/03_verify.sql"
+```
 
 ## Vectorstore 생성
 
