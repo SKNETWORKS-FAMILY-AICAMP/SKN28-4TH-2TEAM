@@ -1131,7 +1131,8 @@ class SQLTool:
                 f"port={self.config.port}",
                 f"user={self.config.user}",
                 f"database={self.config.database}",
-                "MySQL 서버 실행 여부, .env 접속 정보, DB 생성 여부를 확인하세요.",
+                "SQL DB에 연결하지 못해 벡터 검색 결과로 답변했습니다. "
+                "SQL을 사용하려면 MySQL 서버 실행, .env 접속 정보, DB 생성 여부를 확인하세요.",
             ],
         )
 

@@ -329,11 +329,13 @@ class RagPipeline:
 
             if sql_result is None:
                 warnings.append(
-                    "SQL 검색기가 아직 연결되어 있지 않아 SQL 조회를 건너뛰었습니다."
+                    "SQL 검색기가 연결되지 않아 SQL 조회를 건너뛰고 벡터 검색으로 답변했습니다. "
+                    "(개발 확인용 안내이며, 답변 자체에는 문제가 없습니다.)"
                 )
             elif sql_result.is_empty():
                 warnings.append(
-                    "SQL 조회 결과가 비어 있습니다."
+                    "SQL 조회 결과가 비어 있어 벡터 검색 결과로 답변했습니다. "
+                    "(개발 확인용 안내이며, 답변 자체에는 문제가 없습니다.)"
                 )
 
         should_search_vector = analysis.needs_vector
