@@ -544,29 +544,29 @@ q1, q2, q3 = st.columns(3, gap="medium")
 
 with q1:
     if st.button(
-        "입학 서류가 궁금해요",
+        "AI컴퓨팅학과 석사 지원 자격은?",
         use_container_width=True,
         disabled=st.session_state.is_processing,
     ):
-        queue_question("KAIST AI대학원 지원 시 어떤 서류가 필요한가요?")
+        queue_question("AI컴퓨팅학과 석사 지원 자격은 무엇인가요?")
         st.rerun()
 
 with q2:
     if st.button(
-        "연구 분야 알려줘",
+        "AI시스템학과 교과목과 설명 알려줘",
         use_container_width=True,
         disabled=st.session_state.is_processing,
     ):
-        queue_question("KAIST AI College에는 어떤 연구 분야가 있나요?")
+        queue_question("AI시스템학과 교과목 목록과 각 과목 설명을 알려줘")
         st.rerun()
 
 with q3:
     if st.button(
-        "교수님 찾는 기준은?",
+        "AX학과 교수진 이메일 목록 보여줘",
         use_container_width=True,
         disabled=st.session_state.is_processing,
     ):
-        queue_question("관심 교수님을 고를 때 어떤 기준으로 보면 좋나요?")
+        queue_question("AX학과 교수진 이메일 목록을 보여줘")
         st.rerun()
 
 

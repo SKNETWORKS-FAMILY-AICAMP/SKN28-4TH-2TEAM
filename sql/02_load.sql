@@ -80,10 +80,6 @@ CREATE TABLE stg_quality (metric TEXT, value TEXT, note TEXT);
 --   IGNORE 1 LINES                      첫 줄(헤더) 건너뜀
 --   CHARACTER SET utf8mb4               한글 깨짐 방지
 -- =====================================================================
-SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
 
 -- =====================================================================
 --  STEP 3. 정규화 테이블로 변환 적재 (INSERT ... SELECT)
@@ -96,11 +92,7 @@ SELECT DISTINCT dept, dept_name FROM stg_people
 UNION
 SELECT DISTINCT dept, dept_name FROM stg_courses
 UNION
-SELECT DISTINCT dept, dept_name FROM stg_admissions
-UNIONLOAD DATA LOCAL INFILE 'csv/_clean/people_clean.csv'
-  INTO TABLE stg_people CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+SELECT DISTINCT dept, dept_name FROM stg_admissions;
 
 LOAD DATA LOCAL INFILE 'data/processed/csv/people.csv'
   INTO TABLE stg_people CHARACTER SET utf8mb4
