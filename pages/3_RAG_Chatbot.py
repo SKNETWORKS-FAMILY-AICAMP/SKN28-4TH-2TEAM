@@ -561,8 +561,8 @@ with q1:
         queue_question("AI컴퓨팅학과 석사 지원 자격은 무엇인가요?")
         st.rerun()
 with q2:
-    if st.button("AI시스템학과 교과목과 설명 알려줘", use_container_width=True, disabled=st.session_state.is_processing):
-        queue_question("AI시스템학과 교과목 목록과 각 과목 설명을 알려줘")
+    if st.button("AI컴퓨팅학과 교과목과 설명 알려줘", use_container_width=True, disabled=st.session_state.is_processing):
+        queue_question("AI컴퓨팅학과 교과목 목록과 각 과목 설명도 알려줘")
         st.rerun()
 with q3:
     if st.button("AX학과 교수진 이메일 목록 보여줘", use_container_width=True, disabled=st.session_state.is_processing):
