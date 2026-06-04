@@ -52,11 +52,11 @@ if departments:
         with col:
             st.markdown(
                 f"""
-                <div class="info-card start-card department-overview-card">
-                    <div class="department-icon">{icon}</div>
-                    <h3>{dept_name}</h3>
-                    <p>{summary}</p>
-                    <div class="card-link-wrap">{link}</div>
+                <div class="info-card start-card department-overview-card" style="height:220px; min-height:220px; display:flex; flex-direction:column; justify-content:flex-start;">
+                    <div class="department-icon" style="font-size:2rem; line-height:1; margin-bottom:1.05rem;">{icon}</div>
+                    <h3 style="margin:0 0 0.72rem 0;">{dept_name}</h3>
+                    <p style="margin:0; min-height:3.2em;">{summary}</p>
+                    <div style="margin-top:0.75rem;">{link}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
