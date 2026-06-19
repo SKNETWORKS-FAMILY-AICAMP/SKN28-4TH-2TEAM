@@ -22,42 +22,62 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- =====================================================================
 DROP TABLE IF EXISTS stg_people, stg_courses, stg_admissions, stg_events,
                      stg_assets, stg_attachments, stg_course_track_map,
+                     stg_department_offices, stg_kaist_profile,
+                     stg_kaist_statistics, stg_kaist_links,
                      stg_rag_documents, stg_rag_chunks, stg_quality;
 
 CREATE TABLE stg_people (
     record_id TEXT, dept_name TEXT, dept TEXT, name TEXT, name_ko TEXT, name_en TEXT,
     role TEXT, role_normalized TEXT, faculty_group TEXT, email TEXT, phone TEXT,
     office TEXT, research_area TEXT, homepage TEXT, image_url TEXT,
-    source_url TEXT, crawled_at TEXT, missing_fields TEXT
+    source_url TEXT, crawled_at TEXT, missing_fields TEXT, person_id TEXT
 );
 CREATE TABLE stg_courses (
     record_id TEXT, dept_name TEXT, dept TEXT, course_level TEXT, course_code TEXT,
     course_name TEXT, course_type TEXT, credit TEXT, course_description TEXT,
-    raw_values TEXT, source_url TEXT, crawled_at TEXT, missing_fields TEXT
+    raw_values TEXT, source_url TEXT, crawled_at TEXT, missing_fields TEXT,
+    course_code_norm TEXT, course_id TEXT
 );
 CREATE TABLE stg_admissions (
     record_id TEXT, dept_name TEXT, dept TEXT, admission_type TEXT, page_title TEXT,
     section_title TEXT, title TEXT, content TEXT, schedule_date TEXT,
-    source_url TEXT, crawled_at TEXT, source_sheet TEXT, missing_fields TEXT
+    source_url TEXT, crawled_at TEXT, source_sheet TEXT, missing_fields TEXT,
+    admission_type_norm TEXT, schedule_date_raw TEXT, min_gpa TEXT, admission_id TEXT
 );
 CREATE TABLE stg_events (
     record_id TEXT, dept_name TEXT, dept TEXT, event_type TEXT, page_title TEXT,
     title TEXT, content TEXT, event_date TEXT, source_url TEXT,
-    crawled_at TEXT, missing_fields TEXT
+    crawled_at TEXT, missing_fields TEXT, event_id TEXT
 );
 CREATE TABLE stg_assets (
     record_id TEXT, dept_name TEXT, dept TEXT, category TEXT, topic TEXT, priority TEXT,
     content_type TEXT, asset_type TEXT, text TEXT, url TEXT, filename TEXT,
-    source_url TEXT, crawled_at TEXT, missing_fields TEXT
+    source_url TEXT, crawled_at TEXT, missing_fields TEXT,
+    asset_id TEXT, is_vector_candidate TEXT
 );
 CREATE TABLE stg_attachments (
     dept TEXT, board TEXT, post_id TEXT, filename TEXT, url TEXT, ext TEXT, size TEXT,
     content_type TEXT, download_status TEXT, local_path TEXT, text_extraction_status TEXT,
-    text_cache_path TEXT, text_preview TEXT, crawled_at TEXT, missing_fields TEXT
+    text_cache_path TEXT, text_preview TEXT, crawled_at TEXT, missing_fields TEXT,
+    attachment_id TEXT, use_text_preview_for_vectorstore TEXT, note TEXT
 );
 CREATE TABLE stg_course_track_map (
     dept_name TEXT, dept TEXT, course_code TEXT, course_name TEXT, track_name TEXT,
-    course_type TEXT, course_description TEXT, source_url TEXT, record_id TEXT, crawled_at TEXT
+    course_type TEXT, course_description TEXT, source_url TEXT, record_id TEXT, crawled_at TEXT,
+    course_code_norm TEXT, course_track_id TEXT, missing_fields TEXT
+);
+CREATE TABLE stg_department_offices (
+    program_name TEXT, phone TEXT, website TEXT, building_location TEXT,
+    office_id TEXT, source TEXT, source_page TEXT, missing_fields TEXT
+);
+CREATE TABLE stg_kaist_profile (
+    item TEXT, content TEXT, note TEXT, source_url TEXT, source TEXT
+);
+CREATE TABLE stg_kaist_statistics (
+    stat_group TEXT, level TEXT, value_raw TEXT, value_number TEXT, note TEXT, source TEXT
+);
+CREATE TABLE stg_kaist_links (
+    link_name TEXT, url TEXT, note TEXT, source TEXT
 );
 CREATE TABLE stg_rag_documents (
     doc_id TEXT, dept TEXT, dept_name TEXT, source_type TEXT, title TEXT,
@@ -75,11 +95,82 @@ CREATE TABLE stg_quality (metric TEXT, value TEXT, note TEXT);
 --  STEP 2. CSV → 스테이징 적재 (LOAD DATA LOCAL INFILE)
 --  옵션 의미:
 --   FIELDS TERMINATED BY ','           열 구분자는 콤마
---   OPTIONALLY ENCLOSED BY '"'          따옴표로 감싼 필드 지원 → 필드 안의 콤마/줄바꿈 보존
---   LINES TERMINATED BY '\r\n'          윈도우 줄끝(CRLF). 따옴표 안의 줄바꿈은 그대로 데이터.
+--   ENCLOSED BY '"'                     따옴표로 감싼 필드 지원 → 필드 안의 콤마/줄바꿈 보존
+--   LINES TERMINATED BY '\n'            현재 전처리 CSV 줄끝(LF).
 --   IGNORE 1 LINES                      첫 줄(헤더) 건너뜀
 --   CHARACTER SET utf8mb4               한글 깨짐 방지
 -- =====================================================================
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/people.csv'
+  INTO TABLE stg_people CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/courses.csv'
+  INTO TABLE stg_courses CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/admissions.csv'
+  INTO TABLE stg_admissions CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/events.csv'
+  INTO TABLE stg_events CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/assets.csv'
+  INTO TABLE stg_assets CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/attachments.csv'
+  INTO TABLE stg_attachments CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/course_track_map.csv'
+  INTO TABLE stg_course_track_map CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/department_offices.csv'
+  INTO TABLE stg_department_offices CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/kaist_profile.csv'
+  INTO TABLE stg_kaist_profile CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/kaist_statistics.csv'
+  INTO TABLE stg_kaist_statistics CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/kaist_links.csv'
+  INTO TABLE stg_kaist_links CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/rag_documents.csv'
+  INTO TABLE stg_rag_documents CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/rag_chunks.csv'
+  INTO TABLE stg_rag_chunks CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE 'data/processed/csv/quality_report.csv'
+  INTO TABLE stg_quality CHARACTER SET utf8mb4
+  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+  LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
 
 -- =====================================================================
 --  STEP 3. 정규화 테이블로 변환 적재 (INSERT ... SELECT)
@@ -88,51 +179,17 @@ CREATE TABLE stg_quality (metric TEXT, value TEXT, note TEXT);
 -- 3-1) department : 여러 스테이징에 흩어진 (dept, dept_name) 을 DISTINCT 로 한 번만 추출.
 --      UNION 은 자동으로 중복을 제거하므로 학과 4건만 남는다.
 INSERT INTO department (dept, dept_name)
-SELECT DISTINCT dept, dept_name FROM stg_people
+SELECT DISTINCT dept, dept_name FROM stg_people WHERE dept IS NOT NULL AND dept <> ''
 UNION
-SELECT DISTINCT dept, dept_name FROM stg_courses
+SELECT DISTINCT dept, dept_name FROM stg_courses WHERE dept IS NOT NULL AND dept <> ''
 UNION
-SELECT DISTINCT dept, dept_name FROM stg_admissions;
-
-LOAD DATA LOCAL INFILE 'data/processed/csv/people.csv'
-  INTO TABLE stg_people CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'data/processed/csv/courses.csv'
-  INTO TABLE stg_courses CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'data/processed/csv/admissions.csv'
-  INTO TABLE stg_admissions CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'data/processed/csv/events.csv'
-  INTO TABLE stg_events CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'data/processed/csv/assets.csv'
-  INTO TABLE stg_assets CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'data/processed/csv/attachments.csv'
-  INTO TABLE stg_attachments CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'data/processed/csv/course_track_map.csv'
-  INTO TABLE stg_course_track_map CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-
-LOAD DATA LOCAL INFILE 'data/processed/csv/quality_report.csv'
-  INTO TABLE stg_quality CHARACTER SET utf8mb4
-  FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-  LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+SELECT DISTINCT dept, dept_name FROM stg_admissions WHERE dept IS NOT NULL AND dept <> ''
+UNION
+SELECT DISTINCT dept, dept_name FROM stg_events WHERE dept IS NOT NULL AND dept <> ''
+UNION
+SELECT DISTINCT dept, dept_name FROM stg_assets WHERE dept IS NOT NULL AND dept <> ''
+UNION
+SELECT DISTINCT dept, dept_name FROM stg_course_track_map WHERE dept IS NOT NULL AND dept <> '';
 
 -- 3-2) person : dept_name 열만 빼고 그대로 옮긴다. (빈 문자열은 NULL 로 정리)
 INSERT IGNORE INTO person
@@ -177,6 +234,32 @@ SELECT dept, board, post_id, filename, url, ext,
        text_cache_path, text_preview, crawled_at, missing_fields
 FROM stg_attachments;
 
+-- 3-7-1) department_office : KAIST 전체 학과사무실/행정실 연락처
+INSERT IGNORE INTO department_office
+ (office_id, program_name, phone, website, building_location, source, source_page, missing_fields)
+SELECT office_id, program_name, NULLIF(phone,''), NULLIF(website,''),
+       NULLIF(building_location,''), source, source_page, missing_fields
+FROM stg_department_offices;
+
+-- 3-7-2) KAIST 기본정보/통계/링크
+INSERT IGNORE INTO kaist_profile (item, content, note, source_url, source)
+SELECT item, content, NULLIF(note,''), NULLIF(source_url,''), source
+FROM stg_kaist_profile
+WHERE item IS NOT NULL AND item <> '';
+
+INSERT IGNORE INTO kaist_statistics (stat_group, level, value_raw, value_number, note, source)
+SELECT stat_group, level, value_raw,
+       CAST(NULLIF(REPLACE(value_number, ',', ''),'') AS UNSIGNED),
+       NULLIF(note,''), source
+FROM stg_kaist_statistics
+WHERE stat_group IS NOT NULL AND stat_group <> ''
+  AND level IS NOT NULL AND level <> '';
+
+INSERT IGNORE INTO kaist_link (link_name, url, note, source)
+SELECT link_name, url, NULLIF(note,''), source
+FROM stg_kaist_links
+WHERE link_name IS NOT NULL AND link_name <> '';
+
 -- 3-8) track : 과목-트랙 매핑에서 (학과, 트랙명) 의 고유 목록만 뽑아 마스터를 만든다.
 --      track_id 는 AUTO_INCREMENT 로 자동 부여.
 INSERT INTO track (dept, track_name)
@@ -197,7 +280,7 @@ JOIN track  t ON t.dept = m.dept
 
 -- 3-10) rag_document
 INSERT IGNORE INTO rag_document
-SELECT doc_id, dept, source_type, title, NULLIF(source_url,''), NULLIF(source_board,''),
+SELECT doc_id, NULLIF(dept,''), source_type, title, NULLIF(source_url,''), NULLIF(source_board,''),
        crawled_at,
        CAST(CAST(NULLIF(chunk_count,'') AS DECIMAL(10,2)) AS UNSIGNED)  -- "1.0" → 1
 FROM stg_rag_documents;
@@ -225,5 +308,6 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 -- 필요 없으면 아래 주석을 풀어 스테이징 정리:
 -- DROP TABLE stg_people, stg_courses, stg_admissions, stg_events, stg_assets,
---            stg_attachments, stg_course_track_map, stg_rag_documents,
---            stg_rag_chunks, stg_quality;
+--            stg_attachments, stg_course_track_map, stg_department_offices,
+--            stg_kaist_profile, stg_kaist_statistics, stg_kaist_links,
+--            stg_rag_documents, stg_rag_chunks, stg_quality;

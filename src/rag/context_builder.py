@@ -253,18 +253,27 @@ class ContextBuilder:
     def _get_sql_table_label(self, table_name: str) -> str:
         table_name_map = {
             "admissions": "입학 정보",
+            "admission": "입학 정보",
             "courses": "교과목 정보",
+            "course": "교과목 정보",
             "course_track_map": "교과목-트랙 매핑 정보",
+            "department": "KAIST 학과/프로그램 목록",
             "people": "교수진/구성원 정보",
             "professors": "교수진/구성원 정보",
             "person": "교수진/구성원 정보",
             "office_contacts": "학과 사무실 연락처",
             "department_offices": "학과 사무실 연락처",
+            "department_office": "학과 사무실 연락처",
             "events": "행사/공지 정보",
+            "event": "행사/공지 정보",
             "assets": "자료/링크 정보",
+            "asset": "자료/링크 정보",
+            "attachment": "첨부파일/PDF 정보",
+            "attachments": "첨부파일/PDF 정보",
             "kaist_profile": "KAIST 기본 정보",
             "kaist_statistics": "KAIST 통계 정보",
             "kaist_links": "KAIST 공식 링크 정보",
+            "kaist_link": "KAIST 공식 링크 정보",
         }
 
         return table_name_map.get(table_name, table_name)

@@ -1,0 +1,578 @@
+﻿doc_id,dept,dept_name,source_type,title,source_url,source_board,crawled_at,chunk_count
+77093d88457bb3ac52554f45b2159864,aic,AI컴퓨팅학과,csv_admission,학부 (한국인),https://aic.kaist.ac.kr/#/admission-ug,입학처 홈,2026-05-26T13:24:44.960971+00:00,1
+9da8bc8edb35ba7311f6cda210454903,aic,AI컴퓨팅학과,csv_admission,학부 (외국인),https://aic.kaist.ac.kr/#/admission-ug,학부 (한국인),2026-05-26T13:24:44.960971+00:00,1
+f55596c10b9f5496d4775e2a73d63d5a,aic,AI컴퓨팅학과,csv_admission,석사과정,https://aic.kaist.ac.kr/#/admission-grad,지원 자격,2026-05-26T13:24:49.378406+00:00,2
+e3dcb4d55acf3c1a491bbc550cc261bc,aic,AI컴퓨팅학과,csv_admission,박사과정,https://aic.kaist.ac.kr/#/admission-grad,지원 자격,2026-05-26T13:24:49.378406+00:00,2
+a2ff0eaf30dd93e9e1e9897f83f4b9c4,aic,AI컴퓨팅학과,csv_admission,석박사 통합과정,https://aic.kaist.ac.kr/#/admission-grad,지원 자격,2026-05-26T13:24:49.378406+00:00,2
+43c581141d2d4ede29ff0428686d6870,aic,AI컴퓨팅학과,csv_admission,(KAIST석사재학생) 석박사 통합과정,https://aic.kaist.ac.kr/#/admission-grad,지원 자격,2026-05-26T13:24:49.378406+00:00,2
+7af73623f4fe63be6526390b2d2fca13,aic,AI컴퓨팅학과,csv_admission,(KAIST학사재학생) 학·석박통합연계과정,https://aic.kaist.ac.kr/#/admission-grad,지원 자격,2026-05-26T13:24:49.378406+00:00,2
+a92d12bbd75cdfe5fdebd24a9476bb94,aic,AI컴퓨팅학과,csv_admission,원서접수(서류제출 포함),https://aic.kaist.ac.kr/#/admission-grad,2026학년도 가을학기 입학 신입생 입학전형 일정표,2026-05-26T13:24:49.378406+00:00,1
+b4fe1679c6042153e72a2f983d60cb33,aic,AI컴퓨팅학과,csv_admission,2단계 전형(면접),https://aic.kaist.ac.kr/#/admission-grad,2026학년도 가을학기 입학 신입생 입학전형 일정표,2026-05-26T13:24:49.378406+00:00,1
+7b51790c5426e25c0a2778d2bf96c922,aic,AI컴퓨팅학과,csv_admission,원서접수(서류제출 포함),https://aic.kaist.ac.kr/#/admission-grad,2026학년도 가을학기 입학 (KAIST 학사 재학생 대상)학·석박통합연계과정 및 (KAIST 석사과정 재학생 대상) 석사·박사학위통합과정 입학전형 일정표,2026-05-26T13:24:49.378406+00:00,1
+42535d9999c8ce79061f0b0deb351c8f,aic,AI컴퓨팅학과,csv_admission,1단계 합격자 발표,https://aic.kaist.ac.kr/#/admission-grad,2026학년도 가을학기 입학 (KAIST 학사 재학생 대상)학·석박통합연계과정 및 (KAIST 석사과정 재학생 대상) 석사·박사학위통합과정 입학전형 일정표,2026-05-26T13:24:49.378406+00:00,1
+5a51a8ce7da1270dd1f6c94090156d45,aic,AI컴퓨팅학과,csv_admission,석사과정,https://aic.kaist.ac.kr/#/admission-grad,지도교수 신청 시기,2026-05-26T13:24:49.378406+00:00,1
+6a66ea7b7fc9d9afb5a81ed0cd0f6453,aic,AI컴퓨팅학과,csv_admission,박사과정,https://aic.kaist.ac.kr/#/admission-grad,지도교수 신청 시기,2026-05-26T13:24:49.378406+00:00,1
+35ce05950b8b4bf82c96252caf64b98b,aic,AI컴퓨팅학과,csv_admission,재학생 석박사통합과정,https://aic.kaist.ac.kr/#/admission-grad,지도교수 신청 시기,2026-05-26T13:24:49.378406+00:00,2
+9ec682313a1dd586cfce21bf16631e2e,aic,AI컴퓨팅학과,csv_admission,학·석박통합연계과정,https://aic.kaist.ac.kr/#/admission-grad,지도교수 신청 시기,2026-05-26T13:24:49.378406+00:00,1
+fb755f9610a25763ab8d73421bcf53c1,aic,AI컴퓨팅학과,csv_admission,국비 장학생,https://aic.kaist.ac.kr/#/admission-grad,학생 구분,2026-05-26T13:24:49.378406+00:00,1
+df71abfdc8305c73a0c739588f1fe9d5,aic,AI컴퓨팅학과,csv_admission,KAIST 장학생,https://aic.kaist.ac.kr/#/admission-grad,국비 장학생,2026-05-26T13:24:49.378406+00:00,1
+020fdd729923446984d8db593d6fb189,aic,AI컴퓨팅학과,csv_admission,일반 장학생,https://aic.kaist.ac.kr/#/admission-grad,KAIST 장학생,2026-05-26T13:24:49.378406+00:00,1
+9890f08b6997bb32a8ad2e323fa3e819,aic,AI컴퓨팅학과,csv_admission,지도 교수 신청 관련 사항,https://aic.kaist.ac.kr/#/admission-grad,지도 교수 신청 관련 사항,2026-05-26T13:24:49.378406+00:00,1
+f08859cb086e64f1facaf4657494bc2a,ai_systems,AI시스템학과,csv_admission,석박사 통합과정 Integrated MS-PhD,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+0ee80179828cd89a809d80dc8dc67bbb,ai_systems,AI시스템학과,csv_admission,(KAIST학사재학생) 학-석박통합연계과정 (KAIST Undergrad. Students) Integrated UG-MS-PhD Track,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+06998b61c617685825824722269830f9,ai_systems,AI시스템학과,csv_admission,전체 지원 (석박사/석박사통합 등) Application (All programs),https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+8c07f8f6c196acd501003d35ddd1c12f,ai_systems,AI시스템학과,csv_admission,2차 면접 (면접) 2nd Round (Interview),https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+d722157ac1bd1849d48b708f7b231586,ai_systems,AI시스템학과,csv_admission,원서접수(서류제출 포함) (석박사/석박사통합 대상) Application (All programs),https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+f90c2382310b76699c4fb293acf29e8f,ai_systems,AI시스템학과,csv_admission,1차 합격자 발표 1st Round Results,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+ffcb135c5557f7d5806adea9d27a5744,ai_systems,AI시스템학과,csv_admission,석사과정 Master's,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+93382ae6c633360c0352eb782f541242,ai_systems,AI시스템학과,csv_admission,재학생 석박사통합과정 KAIST MS Student Integrated MS-PhD Track,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+d84a1176dadb2d04334396dca29c78e2,ai_systems,AI시스템학과,csv_admission,학-석박통합연계과정 UG-MS-PhD Integrated,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+eeb7f1f58dc228753863b403504ae555,ai_systems,AI시스템학과,csv_admission,AI시스템학과 소개서 다운로드 Download AI Systems Brochure,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+5e65d054fc5ac9765b6b84166d3c8f49,ai_systems,AI시스템학과,csv_admission,국비 장학생,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+3294b3ce80e0c922aff2a328f8359e6a,ai_systems,AI시스템학과,csv_admission,KAIST 장학생,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+69f8cef69645035d81050a810fecf3b2,ai_systems,AI시스템학과,csv_admission,일반 장학생,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+8538e689ae3a47c8b30ed09a210131af,ai_systems,AI시스템학과,csv_admission,gradapply.kaist.ac.kr,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+f6b5714005ef6a65a9fa3a462ca90b39,ai_systems,AI시스템학과,csv_admission,국비로 입학한 학생은 AI시스템학과 모든 교수를 지도교수로 신청할 수 있습니다. 신청한 지도교수가 국비TO가 있고 학생지도를 희망할 경우 매칭이 됩니다.,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+00da584a6234357330a2faa54d06c2f7,ai_systems,AI시스템학과,csv_admission,교수의 연구비에서 지원받는 KAIST 장학생으로 입학한 학생은 연구비 지원 교수만이 지도교수가 될 수 있습니다.,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+32458131a2ca9e0e93640adcbe81e370,ai_systems,AI시스템학과,csv_admission,KAIST프로그램 장학생은 KAIST프로그램 참여 교수만을 지도교수로 신청할 수 있습니다.,https://ai-systems.kaist.ac.kr/admission-grad,대학원과정 입학 안내 Graduate Admission,2026-05-26T13:26:36.697547+00:00,1
+bd39f450a51efaba7b029c00510b9d4e,ax,AX학과,csv_admission,입학처 홈,https://ax.kaist.ac.kr/#/admission-ug,학사과정 입학 안내,2026-05-26T13:28:56.589155+00:00,1
+24814cd3ad3f6712139cd86e05d6d4a2,ax,AX학과,csv_admission,석사과정,https://ax.kaist.ac.kr/#/admission-grad,지원 자격,2026-05-26T13:29:00.877880+00:00,2
+41c95e809d31a1cdf272115b371fac2f,ax,AX학과,csv_admission,박사과정,https://ax.kaist.ac.kr/#/admission-grad,지원 자격,2026-05-26T13:29:00.877880+00:00,2
+beee8fa5fb16a70e2726bdd427689182,ax,AX학과,csv_admission,석박사 통합과정,https://ax.kaist.ac.kr/#/admission-grad,지원 자격,2026-05-26T13:29:00.877880+00:00,2
+c941233649c1094e3efc44e65026476c,ax,AX학과,csv_admission,(KAIST석사재학생) 석박사 통합과정,https://ax.kaist.ac.kr/#/admission-grad,지원 자격,2026-05-26T13:29:00.877880+00:00,2
+76e7cc1895bccfe690e932737cae2f48,ax,AX학과,csv_admission,(KAIST학사재학생) 학·석박통합연계과정,https://ax.kaist.ac.kr/#/admission-grad,지원 자격,2026-05-26T13:29:00.877880+00:00,2
+0c2fb8003287bde93bdddd7305e70a0c,ax,AX학과,csv_admission,원서접수(서류제출 포함),https://ax.kaist.ac.kr/#/admission-grad,2026학년도 가을학기 입학 신입생 입학전형 일정표,2026-05-26T13:29:00.877880+00:00,1
+da89beb110c2e9df17510933367e88f9,ax,AX학과,csv_admission,2단계 전형(면접),https://ax.kaist.ac.kr/#/admission-grad,2026학년도 가을학기 입학 신입생 입학전형 일정표,2026-05-26T13:29:00.877880+00:00,1
+da873f4c81889212db30e4d675cbde4a,ax,AX학과,csv_admission,원서접수(서류제출 포함),https://ax.kaist.ac.kr/#/admission-grad,2026학년도 가을학기 입학 (KAIST 학사 재학생 대상)학·석박통합연계과정 및 (KAIST 석사과정 재학생 대상) 석사·박사학위통합과정 입학전형 일정표,2026-05-26T13:29:00.877880+00:00,1
+aacc69f4e3a8d4c6aef98c81f3aff7ac,ax,AX학과,csv_admission,1단계 합격자 발표,https://ax.kaist.ac.kr/#/admission-grad,2026학년도 가을학기 입학 (KAIST 학사 재학생 대상)학·석박통합연계과정 및 (KAIST 석사과정 재학생 대상) 석사·박사학위통합과정 입학전형 일정표,2026-05-26T13:29:00.877880+00:00,1
+2c8587f6c4afbf6da2dbf38319244e71,ax,AX학과,csv_admission,석사과정,https://ax.kaist.ac.kr/#/admission-grad,지도교수 신청 시기,2026-05-26T13:29:00.877880+00:00,1
+061d5ef5e53a8fae061453de52da2067,ax,AX학과,csv_admission,박사과정,https://ax.kaist.ac.kr/#/admission-grad,지도교수 신청 시기,2026-05-26T13:29:00.877880+00:00,1
+1dc00283a6c759387a2222a6842bc353,ax,AX학과,csv_admission,재학생 석박사통합과정,https://ax.kaist.ac.kr/#/admission-grad,지도교수 신청 시기,2026-05-26T13:29:00.877880+00:00,2
+9410ab98f2d8599c3fc20d15f7f4f2a2,ax,AX학과,csv_admission,학·석박통합연계과정,https://ax.kaist.ac.kr/#/admission-grad,지도교수 신청 시기,2026-05-26T13:29:00.877880+00:00,1
+e309bec6ab22ce2f5e3ce3d32ec51191,ax,AX학과,csv_admission,국비 장학생,https://ax.kaist.ac.kr/#/admission-grad,학생 구분,2026-05-26T13:29:00.877880+00:00,1
+2ae8cd9e4fa75987e0681690779adf47,ax,AX학과,csv_admission,KAIST 장학생,https://ax.kaist.ac.kr/#/admission-grad,국비 장학생,2026-05-26T13:29:00.877880+00:00,1
+ad2d2fdb9d07d08f94240f7a752d1fe7,ax,AX학과,csv_admission,일반 장학생,https://ax.kaist.ac.kr/#/admission-grad,KAIST 장학생,2026-05-26T13:29:00.877880+00:00,1
+177585f7dcc3d80d3f7e0d4c6a4d48e2,ax,AX학과,csv_admission,지도 교수 신청 관련 사항,https://ax.kaist.ac.kr/#/admission-grad,지도 교수 신청 관련 사항,2026-05-26T13:29:00.877880+00:00,1
+67f1622240ccb9a962f2cc0d88c6adc1,fx,AI미래학과,csv_admission,모집과정,https://fx.kaist.ac.kr/#admission,2026학년도 가을학기 일반대학원 신입생 모집,2026-05-26T13:30:46.905542+00:00,1
+aa1ef66047247545cc5a943a520d86f7,fx,AI미래학과,csv_admission,원서접수 일정 (서류제출 포함),https://fx.kaist.ac.kr/#admission,모집과정,2026-05-26T13:30:46.905542+00:00,1
+0e493030b83ce61ea8c3f802f3d5f215,fx,AI미래학과,csv_admission,공통 전형 일정,https://fx.kaist.ac.kr/#admission,원서접수 일정 (서류제출 포함),2026-05-26T13:30:46.905542+00:00,1
+6e2ef607d4ec4741b2de71b074e34dbf,fx,AI미래학과,csv_admission,주요 지원자격,https://fx.kaist.ac.kr/#admission,공통 전형 일정,2026-05-26T13:30:46.905542+00:00,1
+634e00d4692f57fbe6091527f4912c62,fx,AI미래학과,csv_admission,2026학년도 가을학기 일반대학원 신입생 모집,https://fx.kaist.ac.kr/#admission,2026학년도 가을학기 일반대학원 신입생 모집,2026-05-26T13:30:46.905542+00:00,1
+72c95e2d97ba394e84c54b8e23fe943b,ai_systems,AI시스템학과,csv_admission,지원기간 Application Period,https://ai-systems.kaist.ac.kr/news,,2026-05-26T13:27:21.084886+00:00,1
+66e99f7aadc5e6877ec64b4072f966ef,ai_systems,AI시스템학과,csv_admission,1차 서류심사결과 발표 1st Round Results (Document Review),https://ai-systems.kaist.ac.kr/news,,2026-05-26T13:27:21.084886+00:00,1
+be123b6e2c78f84ace20393efa523295,ai_systems,AI시스템학과,csv_admission,2차 면접 2nd Round (Interview),https://ai-systems.kaist.ac.kr/news,,2026-05-26T13:27:21.084886+00:00,1
+94f74794f9491c0dc920a0399e4bdc89,aic,AI컴퓨팅학과,csv_course,인공지능 기초,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+0a52d9e755ffc8116ae6d6474e99b05e,aic,AI컴퓨팅학과,csv_course,인공지능 개론,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+0a29af88c75696269676a53bee885c1d,aic,AI컴퓨팅학과,csv_course,기계학습,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+004b958292e8918c478a62111eaa5ed8,aic,AI컴퓨팅학과,csv_course,시스템프로그래밍,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+88856dadefe7f460c236e575573fed59,aic,AI컴퓨팅학과,csv_course,인간-컴퓨터 상호작용 개론,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+c323d4aaac6dbedd06b564837f601e10,aic,AI컴퓨팅학과,csv_course,강화학습 개론,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+38b94e3a9027be8f97ed03696eba25bb,aic,AI컴퓨팅학과,csv_course,전산기조직,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+56e1f8dc0cd9ba55c235c0930f5ca83d,aic,AI컴퓨팅학과,csv_course,운영체제 및 실험,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+c94b552b0efe07b37a3de6379d41ddb8,aic,AI컴퓨팅학과,csv_course,그래프 기계학습 및 마이닝,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+68761f9aab1996d1a695b0f9100e0eab,aic,AI컴퓨팅학과,csv_course,3차원 데이터를 위한 기계학습,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+4ab6cf820a6de986e62b2a6fbcdd4a0b,aic,AI컴퓨팅학과,csv_course,웨어러블 사용자 인터페이스,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+4773666d8199747c29c44568aa191e2f,aic,AI컴퓨팅학과,csv_course,인공지능 및 기계학습,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+05b3a33b44e6852c26fe9ba0528c7310,aic,AI컴퓨팅학과,csv_course,컴퓨팅 특강 <리소스 효율적 AI 연구>,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+d4709664524fa08bd8d9ff8fb03068d7,aic,AI컴퓨팅학과,csv_course,인간과 컴퓨터 상호작용,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+3865f34a03cd896f2674939b98322083,aic,AI컴퓨팅학과,csv_course,사물인터넷 데이터 사이언스,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+59c8fc27a815ba0fdf35cb6725b1f1d5,aic,AI컴퓨팅학과,csv_course,인공지능 윤리,https://aic.kaist.ac.kr/#/education-courses,,2026-05-26T13:24:53.541543+00:00,1
+232e269c0e81d9527ea9e696afe737e4,ax,AX학과,csv_course,"AI를 위한 확률, 통계 및 최적화",https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+1e2fff1527fb1804409fa3575feff2b5,ax,AX학과,csv_course,AI모델 및 알고리즘의 이해,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+13e9be9580a7a44cb533e0bab4fe88a5,ax,AX학과,csv_course,AI 시스템 설계 및 플랫폼 구현,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+dc9bd467b91007ea44a229db9bbdeb74,ax,AX학과,csv_course,AI 철학: 윤리와 법,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+7a53d6582d981d521acdc25906901145,ax,AX학과,csv_course,AX 리빙랩 I,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+edf66fe24f9c94dea224caa4b208ff73,ax,AX학과,csv_course,AX 리빙랩 II,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+fd4314ec2a3a1f04989c1c24a2f2911e,ax,AX학과,csv_course,공학통계 I,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+efce8efde71252e719667164ae56611d,ax,AX학과,csv_course,데이터 구조 및 분석,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+5feeaf25314e5198f6cf183e7f8cd4fd,ax,AX학과,csv_course,공학통계 II,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+586d4e732d6d1d0b85e1b2a538b06ed3,ax,AX학과,csv_course,통계적 기계학습,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+ad431a4e87e48c0c53d0e3dd9c290749,ax,AX학과,csv_course,소프트웨어프로토타이핑,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+4d7d1e31866256702b764cb458b80281,ax,AX학과,csv_course,데이터 기반 의사결정 및 제어 방법론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+808683cb010cfc2b7ca4766972dd709d,ax,AX학과,csv_course,생화공 수치계산법,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+994ac28aa46a2ef52c0ff3292a751562,ax,AX학과,csv_course,공정모사와 제어,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+a9bf1783cf6f7a740357f52fcfd034ca,ax,AX학과,csv_course,생명화학공학특강: AI를 이용한 생화공 문제 해결,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+ab3321b61706802adb5dda12197408fa,ax,AX학과,csv_course,대사공학 및 합성생물학 입문,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+e5a62ad15f6a693f21cdec4581990346,ax,AX학과,csv_course,신소재특강: 전산재료과학개론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+daba7e53e888afb8aaed3bca12cdbceb,ax,AX학과,csv_course,생명공학을 위한 빅데이터 분석 및 기계학습,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,2
+13ad6d2fabb982b1222d7776d118282b,ax,AX학과,csv_course,생화학,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+1ef6b197665591a25e6e6c41e71885cf,ax,AX학과,csv_course,신경생물학 I,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+e5beff874e805239733913a64f7fd609,ax,AX학과,csv_course,신경생물학 II,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+adcd69a8ca8a874de66d23297829ca0d,ax,AX학과,csv_course,유전체학,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+3bde1c02797d2fbd5c4e7335e08076af,ax,AX학과,csv_course,생물통계학,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,2
+4c857e73add70cd9e7743954fc184f68,ax,AX학과,csv_course,고급신경생물학,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+ef2a90de256a230451a378471ed8cf72,ax,AX학과,csv_course,인공지능 화학,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,2
+c67b7869fb56c859bc7cc7265ae204cb,ax,AX학과,csv_course,제조 프로세스 혁신,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+bbe3108eb67ee1033fe77ee79c7cbc26,ax,AX학과,csv_course,생산관리 I,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+d1f48a2d45f6b412448d88d3a7eac405,ax,AX학과,csv_course,메카트로닉스 시스템 설계,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+e8017a95e421b3aee7a64e3b9777559f,ax,AX학과,csv_course,공학 설계,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+e56d69eb15be80deeb6db4abb496fc90,ax,AX학과,csv_course,OR: 최적화,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+83bc0c673b323c500d0452e9de805f7b,ax,AX학과,csv_course,시스템 모델링 제어,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+7e8690c4782106ab92c7844ecb091bdc,ax,AX학과,csv_course,자동제어,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+bd7eb7fea2c33be036b0deb2e20401c4,ax,AX학과,csv_course,시각지능개론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+74c26cc31e17aaa526ae50378b9f0efa,ax,AX학과,csv_course,로봇공학 개론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+58d7ed00f91225a612d984f9d551b0f1,ax,AX학과,csv_course,스마트시티와 디지털 인프라스트럭쳐 개론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+f7ad0de8db8d0fccd12311cd9c27a005,ax,AX학과,csv_course,사회기반시설물을 위한 센싱기술 개론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+b1b40caf1693c39b6103061eab3633f5,ax,AX학과,csv_course,환경 과학 및 공학개론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+1e37d551254838010c01450469d3eb7d,ax,AX학과,csv_course,도시건축학개론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+766b5c899f8b17f827749e62f2d7af12,ax,AX학과,csv_course,건설 및 환경공학 특강 <기후 시스템 과학과 완화 및 적응 방안>,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+5333b3f16d69bc38a5177484326d2bef,ax,AX학과,csv_course,인공지능과 스마트기술을 이용한 사회기반구조물 및 환경 설계,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+0743fcd139a7ab86f77fe63b6e4bae5e,ax,AX학과,csv_course,지리공간분석개론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+55044f490476a9f9eaafc5e6ad85cefc,ax,AX학과,csv_course,모빌리티시스템공학개론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+f0336a320a2e321f6d68cd9373c4a518,ax,AX학과,csv_course,구조물 안전진단을 위한 통계식 패턴인식 및 머신러닝,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+aa9461b293a757a2524ac1a8881597a8,ax,AX학과,csv_course,지속가능 물순환 공학,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+5a9f3c75235841c54732113bdd4baf27,ax,AX학과,csv_course,교통시스템을 위한 인공지능 적용,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+f09476e96cae36f82a58bf036d91d619,ax,AX학과,csv_course,통계분석론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+d0685c18a1e196c90900f57201db97ec,ax,AX학과,csv_course,마케팅원론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+3bf96921e5c6d431744eacbd8bc9bf64,ax,AX학과,csv_course,재무관리론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+09e29666a7313a6964a7ce2bf0c70511,ax,AX학과,csv_course,경영을 위한 인공지능 기초,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,2
+3b331137c0e64dd1a290b69e9f0fca2a,ax,AX학과,csv_course,게임이론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+93a8076ec90a6768c30936df87828078,ax,AX학과,csv_course,인공지능을 통한 비즈니스 솔루션,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+9ee7ed4457a764d01c3e57a13089bf30,ax,AX학과,csv_course,AI 특허,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+f0e06b260840fda3cdb427face547888,ax,AX학과,csv_course,신호 및 영상처리를 위한 프로그래밍,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+0c93dfe28cf013c234774a9b4124fd45,ax,AX학과,csv_course,스마트 제조를 위한 인공지능,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+fd05825a4e0551555b3058019d18a2c6,ax,AX학과,csv_course,생명과학을 위한 데이터기반 인공지능,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+44bccbae8f20dfd421e17cddab98753b,ax,AX학과,csv_course,AI 발명 및 특허 출원,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+a59ca92553f2ea6d9f5b7d87bb25f645,ax,AX학과,csv_course,AX의 특강,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+f26fe1d7a9cf3e34c76591be5aad632f,ax,AX학과,csv_course,"AI를 위한 고급 확률, 통계 및 최적화",https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+714b719e8d82ea6c4d62e7218afe9444,ax,AX학과,csv_course,AX 고급 리빙랩,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+050ae5d6ad660335c567b2bd0b40fe86,ax,AX학과,csv_course,계산과학을 위한 기계학습,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+218cd3de87ca11e888dfe8f36173eaf5,ax,AX학과,csv_course,추천시스템 및 그래프기계학습,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+663bcb630994b632bea4d74b88821bc5,ax,AX학과,csv_course,신경망이론 및 응용,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+6ce62e7d2568463e7a8938c045171a5e,ax,AX학과,csv_course,랜덤데이타: 해석 및 처리,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+bb7188f8f478eb1129ccfc58f8f1d036,ax,AX학과,csv_course,응용수학의 방법,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+8e9e2317b83207d39cc77162321ebd87,ax,AX학과,csv_course,자율주행 인공지능,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+e30a8371c24f1f5a2abcdea1aab46061,ax,AX학과,csv_course,자율주행 자동차 개론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+dd4957d4a3cac427136756ae3cf77e04,ax,AX학과,csv_course,수리생물학개론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+8169323eb6a08df5d81f682e0732edfb,ax,AX학과,csv_course,지속가능 기술시스템을 위한 데이터 과학 방법론,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+c48f1c458310e07ad9e0cc845e6bb18b,ax,AX학과,csv_course,고급경영통계,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+bdb0ac5156f8d7d1cacc027e32a56ad9,ax,AX학과,csv_course,고급계량분석,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+42af48a9b077aa625b2eed3c9bb9cc63,ax,AX학과,csv_course,논문연구 (석사),https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+90e6dada689d271e542aa38aa9464a43,ax,AX학과,csv_course,논문연구 (박사),https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+9326cc9853bb80843b7ec190a0dddd00,ax,AX학과,csv_course,AX의 특수논제,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+5db59e433758b48709b134e1ad42ce47,ax,AX학과,csv_course,건설 및 환경공학 특강,https://ax.kaist.ac.kr/#/education-courses,,2026-05-26T13:29:07.575376+00:00,1
+200fcc2a166c22691bab85621e613df8,fx,AI미래학과,csv_course,인공지능 기초,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+3f507bf110ba5258415a1256e5206ee6,fx,AI미래학과,csv_course,미래학 개론,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+20e5f6c5347ceb0b3c00e48be28fe117,fx,AI미래학과,csv_course,공학통계 I,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+29b02561a1e99d5f466ed3bd1b6a843f,fx,AI미래학과,csv_course,데이터 구조 및 분석,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+a166ce5f0d00651a065bc72bd06181c4,fx,AI미래학과,csv_course,환경과 지속가능성 개론,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+905a931e3d9c1cac781fc4af188ec78f,fx,AI미래학과,csv_course,기계학습,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+7b13ce4b1bacee9f3ede16b40e4426f7,fx,AI미래학과,csv_course,지식재산권 개요,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+5d388db59bd884c067f2c15a548c44df,fx,AI미래학과,csv_course,인공지능 개론,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+08d5f587bd41a58fbccc665bada099db,fx,AI미래학과,csv_course,기업가를 위한 법,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+d3999dddb45a7795e449ca4ce436650f,fx,AI미래학과,csv_course,"법, 기술, 혁신",https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+facd22e9552d46065344524584e12bf6,fx,AI미래학과,csv_course,글로벌 환경문제 통합평가론,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+d52df24fcf823de4d857bd9cdd970cda,fx,AI미래학과,csv_course,기후 및 환경보건 연구방법론,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+0938691ed496b63d68c52291e7f6a49c,fx,AI미래학과,csv_course,기후변화의 과학,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+ef21d38287aa090d88ed97a80983fb30,fx,AI미래학과,csv_course,특허분석과 발명출원,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+f380d09cf30ec6a7131ed971c05cc8fc,fx,AI미래학과,csv_course,인공지능 윤리,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+4627f5557f1e7e9a091f824c0928ecf3,aic,AI컴퓨팅학과,csv_person,이의진,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+c48b29c5786103197d54e9252054c51e,aic,AI컴퓨팅학과,csv_person,성민혁,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+05db470c2c1b55cecf0c8dd38b0a80f7,aic,AI컴퓨팅학과,csv_person,안성진,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+302706e674e9b71d9d1a54f88f861fdf,aic,AI컴퓨팅학과,csv_person,홍승훈,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+c96b1a7ac2802019e405c4b1a67b2869,aic,AI컴퓨팅학과,csv_person,황지영,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+41d6f11d630d07d4887d3d0d67e52a70,aic,AI컴퓨팅학과,csv_person,고인영,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+dfc29fcfa1b3158736d67b4822c8d246,aic,AI컴퓨팅학과,csv_person,문수복,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+7dba18e38cdb60f3510be17719828175,aic,AI컴퓨팅학과,csv_person,박노성,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+1bb7a1b1d565f8300c2708352cbcb6f7,aic,AI컴퓨팅학과,csv_person,박대형,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+982852bc7c3089603d670564a7d2cc3e,aic,AI컴퓨팅학과,csv_person,박종세,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+b6c927d5d6526ed87e0549c6a9000e12,aic,AI컴퓨팅학과,csv_person,박진아,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+9b14953920a538bacb71a30e0a6f1340,aic,AI컴퓨팅학과,csv_person,손수엘,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+5e4410efc4d3584ffc6940c9a7b9487e,aic,AI컴퓨팅학과,csv_person,시어링조셉,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+70f79c8a29c4acf3206dd7c8fcfd5042,aic,AI컴퓨팅학과,csv_person,송준화,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+461116652e79d7e9893d6537dd5dc914,aic,AI컴퓨팅학과,csv_person,오태현,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+96b2cbb88fd1e1ddc822f5ac5922aab6,aic,AI컴퓨팅학과,csv_person,오혜연,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+9f48c8a620e29f49d1e46e93ad2a146f,aic,AI컴퓨팅학과,csv_person,권영진,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+c9e41460e2fddf4b6451498b5dfecf95,aic,AI컴퓨팅학과,csv_person,유신,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+81235a7acdbe0282112bea3213e7389e,aic,AI컴퓨팅학과,csv_person,윤성의,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+4ed516633276dc6988dea9eafb57de4e,aic,AI컴퓨팅학과,csv_person,이기혁,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+692872db65718eaa493dc5516d4e74c3,aic,AI컴퓨팅학과,csv_person,이재길,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+2047044fea4f59035eb20174854dc934,aic,AI컴퓨팅학과,csv_person,조성호,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+23260821cb35395750d81cb460ae7aae,aic,AI컴퓨팅학과,csv_person,한준,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+f2b5a6b125561e04577b43b061995681,aic,AI컴퓨팅학과,csv_person,김대영,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+734d5d31797e9d0bee069820ca093382,aic,AI컴퓨팅학과,csv_person,김민수,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+fb8e1dde0b71ef71071c3ae9f21f2bf3,aic,AI컴퓨팅학과,csv_person,김민혁,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+f7618ad3bf3cb1e3354b4a5898d82b0a,aic,AI컴퓨팅학과,csv_person,김주호,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+972eb5376622c4659f8de664b53f7aa7,aic,AI컴퓨팅학과,csv_person,김태균,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+867c42252bea846fc927a0db5a67becc,aic,AI컴퓨팅학과,csv_person,김현우,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+f34ffc742c49894fc88bb0b9cd2bc234,aic,AI컴퓨팅학과,csv_person,류석영,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,1
+74bd56dccb01fec06d2e26929274291d,ai_systems,AI시스템학과,csv_person,권지민,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+174b428fef039801789f24564131dffb,ai_systems,AI시스템학과,csv_person,문재균,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+458b8059fc0a0b2fd9b3dbfc2bcb0d51,ai_systems,AI시스템학과,csv_person,이슬기,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+31073a2eb3154b3f27a70b631406bd4b,ai_systems,AI시스템학과,csv_person,이영주,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+26d84fe5878c15451f83edad9f884d86,ai_systems,AI시스템학과,csv_person,정완영,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+c922ad9710d2da0b19ebebf65d11695e,ai_systems,AI시스템학과,csv_person,제민규,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+1ef7b7a2571c7d51d61c98c4dd56e59f,ai_systems,AI시스템학과,csv_person,최정우,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+c343c24b00ed31d809e45c69a8f1df15,ai_systems,AI시스템학과,csv_person,강익성,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+9254a6974763068a078d421c75f5deff,ai_systems,AI시스템학과,csv_person,김주영,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+7509d41adf6ad771fa3e16f5f49e43c7,ai_systems,AI시스템학과,csv_person,김창익,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+3f7dc96c35be42ac111b183081f44825,ai_systems,AI시스템학과,csv_person,김훈,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+d7066cb87d30494392e6d21b6ed47ffd,ai_systems,AI시스템학과,csv_person,노용만,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+e5cf5e4ffd9fbcc200a3863c1d056817,ai_systems,AI시스템학과,csv_person,명현,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+c9c832e97b902abcc1c702abce42fb4a,ai_systems,AI시스템학과,csv_person,배준우,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+40c061c12fe322ccffe472212b3d821e,ai_systems,AI시스템학과,csv_person,배현민,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+5a21fbcf0c0bce3884f1f11e81211fbb,ai_systems,AI시스템학과,csv_person,백재일,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+25cfd690d98ccef40ff1789588bbc58e,ai_systems,AI시스템학과,csv_person,서창호,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+784202758028313632d80203c8810c85,ai_systems,AI시스템학과,csv_person,송영민,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+927383f55121b0a55e4043fee34137e8,ai_systems,AI시스템학과,csv_person,강준혁,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+8ee460e1350746f595fc93e6b0847bf4,ai_systems,AI시스템학과,csv_person,신영수,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+ad81f35d2eeb2ffffe6b1937e651c9aa,ai_systems,AI시스템학과,csv_person,심현철,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+d2f8e049cccaba8795887c3921f8d5f0,ai_systems,AI시스템학과,csv_person,안희진,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+fce6f5c844f7531a43e60039cb4a3433,ai_systems,AI시스템학과,csv_person,원유집,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+4c4693d1a6e11cf49c039e9b3d61e309,ai_systems,AI시스템학과,csv_person,유민수,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+982d8e476deaab748d1b69d2d656c200,ai_systems,AI시스템학과,csv_person,유승협,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+4e2e6b0ccfac197021762f4231be350c,ai_systems,AI시스템학과,csv_person,유창동,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+dd0d5af44bf5bb54977d297836e7c37c,ai_systems,AI시스템학과,csv_person,이성주,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+a89e0589d382c60dc3cc7b75692558e6,ai_systems,AI시스템학과,csv_person,이정용,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+d5eff4f868bd04bb0fbfa57b7631c888,ai_systems,AI시스템학과,csv_person,장동의,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+4d960d315ee7643096d43a8a28b9261d,ai_systems,AI시스템학과,csv_person,권경하,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+c5149ec264fc3baa4cff5ce9a843b5c9,ai_systems,AI시스템학과,csv_person,정명수,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+b2e908ad2868bbd77c286525a6c11ad7,ai_systems,AI시스템학과,csv_person,정혜원,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+9cfdb4635567448a81965572042c2369,ai_systems,AI시스템학과,csv_person,조성환,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+3c367fd4d6651b00e6b85ec197b91def,ai_systems,AI시스템학과,csv_person,최성율,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+6971736d4e6a9bd2914652be7c14b17b,ai_systems,AI시스템학과,csv_person,최신현,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+5ae5dd3b803c895eb95870f0cd3d3f05,ai_systems,AI시스템학과,csv_person,최준일,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+2142d4c09f6559a22dd611dff7d471cd,ai_systems,AI시스템학과,csv_person,최진석,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+d5c555886b1b084c3636fbff1e3e095e,ai_systems,AI시스템학과,csv_person,하정석,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+df27dcd4fa42514b1dfac2929118e7de,ai_systems,AI시스템학과,csv_person,한인수,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+594e9ded8b0e0ace3b7a46b25f408513,ai_systems,AI시스템학과,csv_person,Ian Oakley,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+e7ee998aa1f2f71fc0de987d9affea96,ai_systems,AI시스템학과,csv_person,김동준,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+466869c57046a99b48616a31bf286c04,ai_systems,AI시스템학과,csv_person,김봉진,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+4cd0497a58b83a1fe5bd53f4860697ec,ai_systems,AI시스템학과,csv_person,김상식,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+8845f77ac7700cc9ab118c0ae73ca805,ai_systems,AI시스템학과,csv_person,김성민,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+815fc8654a652d83d240e6f7810b9121,ai_systems,AI시스템학과,csv_person,김용대,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+7ca7c9f363d8d57b12162db8dc9169ad,ai_systems,AI시스템학과,csv_person,김용훈,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,1
+aa53680b51ae390f036eb0868e61a2e1,ax,AX학과,csv_person,강이룬,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+4f0ce1c7ced0ff7326a02d705dec3a3d,ax,AX학과,csv_person,김대겸,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+deaf4f12c2a7441551f92521355cca42,ax,AX학과,csv_person,이진준,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+b1aa962da89fa3cf45f1d8e7421c3b0b,ax,AX학과,csv_person,이탁연,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+60c34da5618800b679abc3650ae47ec3,ax,AX학과,csv_person,이흥규,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+b0bdf092cd268026de96aa12142a1787,ax,AX학과,csv_person,인소영,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+ed2cf09992c30654abe8951adada0fd7,ax,AX학과,csv_person,임경태,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+a8187876d067acd8f05b979b7d231661,ax,AX학과,csv_person,임리사,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+eae2e1a69566a4167b9dcd3abc42c365,ax,AX학과,csv_person,임성순,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+da30b16e819831922d7e280e2618d43b,ax,AX학과,csv_person,임정훈,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+46d88cca0b6ccf4056619ae1048627a1,ax,AX학과,csv_person,정승원,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+2ed6bf97cd8f92bf5c202ed99b84630e,ax,AX학과,csv_person,정인경,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+9f94cf38b9ea41bf0c06ae9e203d5564,ax,AX학과,csv_person,김동규,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+16410717134404187919f2f3eb78377d,ax,AX학과,csv_person,정현주,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+3ffbcff7ab96a1598cf69b4b34408492,ax,AX학과,csv_person,정형조,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+e6b02fa4c26eed55805a86f58c49c1c9,ax,AX학과,csv_person,조병관,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+28f999ef09d42a9b17d1fde81fb6e9c5,ax,AX학과,csv_person,조성아,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+58ae686b228a165d306916ecd0c0d84b,ax,AX학과,csv_person,조성호,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+5ad2923522857c6da1560155e1dfc1d4,ax,AX학과,csv_person,차승현,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+37bd7364e06eacfc0e69570c3627ab98,ax,AX학과,csv_person,최경록,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+0cc5abc747bfbe27c3b22f74da944eb0,ax,AX학과,csv_person,최하연,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+611ff832a0ed1f93fc2188d080cc3db1,ax,AX학과,csv_person,최현수,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+1ed69094e53845f1cf66b64ff38f33d4,ax,AX학과,csv_person,하경호,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+bb568426fcd4c7b5c370703d698ff0fc,ax,AX학과,csv_person,김동혁,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+112653f203e46f1075d3b4351f18e471,ax,AX학과,csv_person,한동훈,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+319ccb0c862717bc8fa58cf0c48ad5f7,ax,AX학과,csv_person,한명준,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+2862257f0e177dadde4f22b5b171dc8f,ax,AX학과,csv_person,한승헌,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+82f110137f6849d094227db7ebfb1e30,ax,AX학과,csv_person,한준,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+732248a447ffb4b40d913e859b097e7f,ax,AX학과,csv_person,한진수,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+a9d8710fde1a5b47553d51cb3b68976b,ax,AX학과,csv_person,한진희,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+af4ae4112b9db4fab1556cd601c57563,ax,AX학과,csv_person,허원도,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+faeeb50a51513ea259791069cc6c1e69,ax,AX학과,csv_person,홍기혁,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+7ab3eddef372f43908d99f222f374ed1,ax,AX학과,csv_person,홍승범,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+4d6b2e58f1a4ba652f312b826c3afa3e,ax,AX학과,csv_person,홍인기,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+02fe531d50ecd9701d673615bc09f98a,ax,AX학과,csv_person,김동훈,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+6eb5b40e7d502b689957f7a10ef39203,ax,AX학과,csv_person,홍정욱,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+10ba3f690df22b178c5ab8bb3e36e3ad,ax,AX학과,csv_person,Andrea Bianchi,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+7723d3e0e320f03789a523e4e9e83aeb,ax,AX학과,csv_person,김륜희,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+b340401c8701c65dd3a9909f94ba52ed,ax,AX학과,csv_person,김미소,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+90110ddf3249c936b8e258d745aecc39,ax,AX학과,csv_person,김민기,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+535c30dc76340b75c09d8636dc910315,ax,AX학과,csv_person,김산하,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+443e86df51b64228503e9d57c8f0aa9d,ax,AX학과,csv_person,김성수,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+ff879b2671e53d89c5585751bc088d28,ax,AX학과,csv_person,김성영,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+fd69be1f7e00ab04ab214eb649772691,ax,AX학과,csv_person,강형률,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+199fc0e14427925f316e1a84663761dd,ax,AX학과,csv_person,김영진,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+3879281c2b12f57fe8635cfc6b6ce49b,ax,AX학과,csv_person,김영철,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+2295ea06672b2e0880ea566d7130068c,ax,AX학과,csv_person,김용대,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+3b9496b25dd52eda2496d2d894c80a3d,ax,AX학과,csv_person,김우연,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+35392b7cb9e16f0e8b930a3c881d172b,ax,AX학과,csv_person,김인희,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+cb82b7c2dbec95ab2dc93bae038bfcf5,ax,AX학과,csv_person,김재경,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,2
+be2a40ff8841083d0800b4d0ec77ca4e,ax,AX학과,csv_person,김재홍,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+e8b731c335337c9de4056804a2970fe2,ax,AX학과,csv_person,김지태,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+06ac23582adf04055c14e5d24d5f1584,ax,AX학과,csv_person,김지한,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+6c8f1faf14cfc57dadedda0129362ba0,ax,AX학과,csv_person,경기욱,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+8e7307d70764d9eae8caabfda4484246,ax,AX학과,csv_person,김지효,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+7e00bed44ac7f61ed628d8b28b3d0be9,ax,AX학과,csv_person,김지희,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+f0b680d8a5c7da22af0f5cc387ebfc36,ax,AX학과,csv_person,김진수,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+d14edd3d3cf2baa4a5cf0e5e07d42106,ax,AX학과,csv_person,김진환,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+6ad76a293df5ad932827cbf2b6f6acf9,ax,AX학과,csv_person,김현우,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+510749974666e812578b6ce604905b9e,ax,AX학과,csv_person,김현정,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+08c848b004c23c4219aa2ed01b0e5fd2,ax,AX학과,csv_person,김현진,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+370e48e8b50dd0e4de07b91dd7cb5641,ax,AX학과,csv_person,김형준,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+643272a664432011393bc27c15998543,ax,AX학과,csv_person,김호민,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+2f7b15770be9a328a48a2cef87651ca4,ax,AX학과,csv_person,김희영,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+05d58bd6f879f692413b559122c1aec9,ax,AX학과,csv_person,고동연,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+55582e7279c8871d42a2b19aeba83f5b,ax,AX학과,csv_person,남영석,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+338474079d0e13cf090d976aa0ab77c2,ax,AX학과,csv_person,남윤성,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+60010ad3d348b824db924792fb1d2ad5,ax,AX학과,csv_person,남택진,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+e29f862f37e080e8059e671c0af65ceb,ax,AX학과,csv_person,노민균,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+56d5ecf0e5c83bd3ed8892001c6694a6,ax,AX학과,csv_person,노준용,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+1286f3df46617078362472e7d0350304,ax,AX학과,csv_person,명재욱,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+b01b32fd2c4f55f150e7b59511b1bd5c,ax,AX학과,csv_person,믹전해원,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+bde45daa2b31b08d9ab5053b0433c94f,ax,AX학과,csv_person,박성홍,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+f779981cccde8cb35f250f15aaf9b542,ax,AX학과,csv_person,박용근,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+839d6a3644d58871441fbcbf73e3eed1,ax,AX학과,csv_person,박용화,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+33f121ae7a172056a47159a1564a3e7a,ax,AX학과,csv_person,공경철,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+71462b7672ca8a1f18fdb8ceb5052641,ax,AX학과,csv_person,박인규,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+4f33e8e5f7609c6312a0d8675133b4b2,ax,AX학과,csv_person,박진규,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+86152751815c677aca9969a7df9c2220,ax,AX학과,csv_person,박찬영,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+641a6ff3589ef0d27c2e103198be0101,ax,AX학과,csv_person,배준환,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+fd00a1fd5650734d27f2f8815c2d6eb5,ax,AX학과,csv_person,백형렬,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+35247b695494a62ea53838f9a1d319df,ax,AX학과,csv_person,부찬희,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+14d97c6d9edc887de310f4788fabea14,ax,AX학과,csv_person,서동화,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+6e2467bd4cc8f23c9f32479d9d0c7090,ax,AX학과,csv_person,손종우,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+fce033f0114841d24ad7d461e6ba21b3,ax,AX학과,csv_person,송호승,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+909b0364ed0d2c729f78f4932cb6549b,ax,AX학과,csv_person,송환준,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+2cb5984d93a80820373b963e0e0f26d4,ax,AX학과,csv_person,공승현,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+65cc37b2dd6b1ef68dcea1bc236e53ca,ax,AX학과,csv_person,신동혁,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+0972272b1044165641bf8a0ad14d28b2,ax,AX학과,csv_person,신승훈,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+ea60a3830dfa29cbfdf97085da34ccce,ax,AX학과,csv_person,신은철,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+fa37b32b15e1b3c643883711a2334f46,ax,AX학과,csv_person,안승영,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+a4b39345de97c42ba7db2f68085cf908,ax,AX학과,csv_person,엄지용,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+77db99c3d2e26541896c329e07e76628,ax,AX학과,csv_person,여화수,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+e1df25149f8601cf7ec843cc296ea85e,ax,AX학과,csv_person,오왕열,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+f0f1da2916ec5215ec2fa24f4ce9232b,ax,AX학과,csv_person,오일권,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+d08396bee16e457b085580c5b4023704,ax,AX학과,csv_person,오태현,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+cdb520d988cabccaff5d0e4b4b99598b,ax,AX학과,csv_person,오현동,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+1ac557aa3beaeb4d056d494f361beef8,ax,AX학과,csv_person,구승범,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+6675c7a5bde839e6515837fff8727e6d,ax,AX학과,csv_person,우동현,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+f4011121d3b53c9570851317353b420c,ax,AX학과,csv_person,우운택,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+137d16e9ba88867669dd8c494c3ce727,ax,AX학과,csv_person,원유집,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+b59341808d72daec60938393f5a49c77,ax,AX학과,csv_person,유홍기,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+d523a0de2bb0716aa1d9c83778c0574f,ax,AX학과,csv_person,윤국진,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+770150fa59bb7861126a55b0925514de,ax,AX학과,csv_person,윤기준,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+e73eec83558f7b5ed59366a6450e950d,ax,AX학과,csv_person,윤보학,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+bb6ff4271e080031d8dfd59f873d1b04,ax,AX학과,csv_person,윤상호,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+201d78b926a045ded06d34288cad3e75,ax,AX학과,csv_person,윤용진,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+a05ecc90aebceb820e1f18cc71e98028,ax,AX학과,csv_person,윤정환,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+55b4d0964412d4f82ba901a79d3ffc80,ax,AX학과,csv_person,금동석,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+53b3d990bd45a08a5f72b5cbbb7345bc,ax,AX학과,csv_person,윤희택,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+4f347a1d003edfd200b37baaf23875cb,ax,AX학과,csv_person,이강택,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+4d237a5633bba1a5c63fc4dcd6938172,ax,AX학과,csv_person,이관수,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+03bbeef83cd77cf5656864667b12afc5,ax,AX학과,csv_person,이광록,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+4f8f53c3524de8bac7b8cdae13172c15,ax,AX학과,csv_person,이규리,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+e94f3e0440ab8afd8fbae342e85f26c6,ax,AX학과,csv_person,이병욱,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+85f822fabdbcd326e78893e66e6ddc3e,ax,AX학과,csv_person,이봉재,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+f13c93cb028bc1f45dabcb150d3580df,ax,AX학과,csv_person,이상엽,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+e39b44077bedc2279b64921ad7bbd3bd,ax,AX학과,csv_person,이선재,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+2efdba41caeb4452564f87f956fd64de,ax,AX학과,csv_person,이성희,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+5ee1266e0dc7ff209f84fc13587f4984,ax,AX학과,csv_person,김경국,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+c93a85d14134bd1a82459db0966eb7c0,ax,AX학과,csv_person,이수진,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+4f3264e64c7043b1b4f320125afe886d,ax,AX학과,csv_person,이승재,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+b062540fcb3f7c73c292461599c25ec0,ax,AX학과,csv_person,이승철,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+7342572a2650a67781d7b1023c1686e3,ax,AX학과,csv_person,이승희,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+0e2283fdeb5d4bebc918d3f96e24a526,ax,AX학과,csv_person,이영석,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+2b9299309c470c77ee6adffcba1bdd25,ax,AX학과,csv_person,이원재,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+383e4dc5020f7d98804f0b13fee036ed,ax,AX학과,csv_person,이윤구,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+a3da0c8fc4945fb8bd6272b06fcda4ca,ax,AX학과,csv_person,이정철,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+8c6f379074e0bb51f2d8c3df12924c54,ax,AX학과,csv_person,이종석,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+c363bec7008a139c203fff95af3b310e,ax,AX학과,csv_person,이진우,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+ffa5ffd1830cdf25e9813401e2eabbe6,ax,AX학과,csv_person,권석범,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+50651972a6ea73b58cd94f07a3328cc6,ax,AX학과,csv_person,김형철,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+cd0fc7801c158c24f640a7eeba18a4a0,ax,AX학과,csv_person,박주용,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+dd93c996cd85cc1015ed62033dc7ceb2,ax,AX학과,csv_person,백용욱,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+27f6b66a23571734d71aa733e27beed2,ax,AX학과,csv_person,정두영,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+67fc90c4b52aa809ebd24b9d9ce80b5d,ax,AX학과,csv_person,정학진,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+5925d30b9bea46105663af245804c30f,ax,AX학과,csv_person,최호용,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+307abab4cdcd593ad54450dda5546d19,ax,AX학과,csv_person,홍화정,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+679482ea0e56d69cedc658cce5c9225c,ax,AX학과,csv_person,유승화,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+7d1cc7ef90bd3d0121650800f0d3656e,ax,AX학과,csv_person,권태혁,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+ad15d53f9354beec8a53c706c64183ce,ax,AX학과,csv_person,김현욱,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+0708ea4686d9e779623f37c8c27d8b90,ax,AX학과,csv_person,문일철,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+4cc77cc0d1d24509024e1c6ee8a9af60,ax,AX학과,csv_person,송지준,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+8dfde78508e1402970d022eca232afdf,ax,AX학과,csv_person,이익진,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+c2191db1d022790f850f80e6ed673a00,ax,AX학과,csv_person,이철호,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+4cba4efecaac5a8e3c711c66a26c5173,ax,AX학과,csv_person,황준식,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,1
+c622beb64b35b8abff2a083b77abcb01,fx,AI미래학과,csv_person,강이연,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+16b997d7ada7ad0cd2399b39cf466308,fx,AI미래학과,csv_person,남택진,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+d7725a86f107f27af3553fe735c9a8e0,fx,AI미래학과,csv_person,박성필,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+b4de970b9719a147ef39daf65ef23201,fx,AI미래학과,csv_person,박태정,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+7f17adb2c2ee2f724f67146939ff89a8,fx,AI미래학과,csv_person,양재석,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+e6d62ad16aab751b3bd7d195c398d524,fx,AI미래학과,csv_person,이나래,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+27ada1a6ddceeb42d7de8cb081f846a7,fx,AI미래학과,csv_person,이상윤,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+46fe896889fbd54e5c40b0ede1d5376f,fx,AI미래학과,csv_person,이창주,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+35fafc11fa20580d4da8f284210517e6,fx,AI미래학과,csv_person,장기태,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+f760f8f35041fc1fc60908866abb3e13,fx,AI미래학과,csv_person,전주영,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+32624f88ef738b9709d59587dbb69cef,fx,AI미래학과,csv_person,김누리,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+9b6e0899e913aab36d768fbbb3ea8ac9,fx,AI미래학과,csv_person,정재민,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+dc5f07308e15380240dc8cbe628495f0,fx,AI미래학과,csv_person,조성아,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+f9f1559ac4db1e60f4c2f17d15ae0d49,fx,AI미래학과,csv_person,차승현,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+890c46bc117a52f36430a8aa310236c7,fx,AI미래학과,csv_person,한지영,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+8313113da9f8671be87e1ec8046a66ba,fx,AI미래학과,csv_person,김동우,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+66735c8ada55d05cb1e4dec7dff8a2a3,fx,AI미래학과,csv_person,김승겸,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+0b783fcc5c83a9f045a6e8e75a07a04c,fx,AI미래학과,csv_person,김정남,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+24a3f58be6fc9d75ee4d6d208d45b3ba,fx,AI미래학과,csv_person,김준형,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+9b6353fc2f205469fd61c1e90170eea1,fx,AI미래학과,csv_person,김창익,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+c549f7cb2af336132e4851b7b875b920,fx,AI미래학과,csv_person,김하나,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+d018a92f38d32cc7f9b60d29418a4e8b,fx,AI미래학과,csv_person,김형준,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+aa32799775efc50f901390c22ff6d644,fx,AI미래학과,csv_person,전우정,https://fx.kaist.ac.kr/#faculty,,2026-05-26T13:30:42.583181+00:00,1
+5e00250cd0ec6e3f409c75de33116099,aic,AI컴퓨팅학과,csv_event,2026 AI컴퓨팅학과 학과설명회,https://aic.kaist.ac.kr/#/notice,,2026-05-26T13:25:36.079032+00:00,1
+47a2141bfca7855655dad53d9c2c252d,ai_systems,AI시스템학과,csv_event,"2026학년도 가을학기 입시설명회 2026 Fall Semester Admission Info Session Department of AI Systems 일시 Date 2026. 03. 19. (목) 18:00 Mar. 19 (Thu), 2026 · 18:00 장소 Venue 정보전자공학동 1220호 Rm. 1220, Info & Electronics Bldg. Zoom 859 6781 5348",https://ai-systems.kaist.ac.kr/news,,2026-05-26T13:27:21.084886+00:00,1
+66315fa9c73af3129ac354af1677b1c3,ax,AX학과,csv_event,AX 학과 학과설명회 안내,https://ax.kaist.ac.kr/#/notice,,2026-05-26T13:29:54.936230+00:00,1
+7477785d05597e60dd3a184fe58621b7,fx,AI미래학과,csv_event,D-2 학과설명회 · 2026.05.28 (목) 오후 5:00 → × UPCOMING EVENT,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+a0ce0a9e8a9a80c2d55381b6c7ea22f7,,물리학과,csv_department_office,물리학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+114b5184663b2ad3e6c9a43b1464f86b,,수리과학과,csv_department_office,수리과학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+f3e6fe49a7d2f9f1720eb6f70e5f8d82,,화학과,csv_department_office,화학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+0d93f4aca83a3754eba774eb9c22b029,,양자대학원,csv_department_office,양자대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+f342d4cf0bcf3cabf1fbb9c7c0789c14,,생명과학과,csv_department_office,생명과학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+220f311d329c1919cc9745bd00e3ac99,,의과학대학원,csv_department_office,의과학대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+caefeee3a09ec37b1c328bc5357a4d8b,,뇌인지과학과,csv_department_office,뇌인지과학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+49f8f29e51d2ea4a1a69ae40329c74bb,,공학생물학대학원,csv_department_office,공학생물학대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+b61e8c4d6e3c0b858a2acdbaf88047f5,,줄기세포및재생생물학대학원,csv_department_office,줄기세포및재생생물학대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+050c0726a92cb3a1cf9c25e26ce8f25d,,기계공학과,csv_department_office,기계공학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+fa0bbc38876c34a7391bed75ae38ef27,,해양시스템대학원,csv_department_office,해양시스템대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+cc736137149f5c327c6f5ab8e229384c,,항공우주공학과,csv_department_office,항공우주공학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+a47d88a9188b796f45e1d68b377e4a4d,,우주탐사공학학제전공,csv_department_office,우주탐사공학학제전공,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+99ad313d423c639cf0444b382814d577,,전기및전자공학부,csv_department_office,전기및전자공학부,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+164315e17e1d1c1b0fa31ab1a5694c40,,로봇공학학제전공,csv_department_office,로봇공학학제전공,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+a163b1dc46a0cfd434c391579eddc866,,미래자동차학제전공,csv_department_office,미래자동차학제전공,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+c8c73be38861f311bb7d8090de5a7633,,반도체공학대학원,csv_department_office,반도체공학대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+4322901c6b90baab042807c1605ea2b4,,인공지능반도체대학원,csv_department_office,인공지능반도체대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+e478fd35b5059e7f46224c995d58b46f,,전산학부,csv_department_office,전산학부,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+ee6a4dd350f22881bb7a2a8ca2e5e2b0,,정보보호대학원,csv_department_office,정보보호대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+34ef9cd36a2782f355fc5a3b625d4f0a,,건설및환경공학과,csv_department_office,건설및환경공학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+6d1443a84055193bb3a73374442178cf,,환경에너지공학학제전공,csv_department_office,환경에너지공학학제전공,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+ed31da0a585090be60dcefe443dc75ec,,바이오및뇌공학과,csv_department_office,바이오및뇌공학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+e7c2adc83fdc2d919b1d2cb7813b8963,,뇌인지공학프로그램,csv_department_office,뇌인지공학프로그램,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+7fb977a365b5af09cc7c954027e98ed3,,산업디자인학과,csv_department_office,산업디자인학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+04e80d83f0fc5d15e7dc145a4f1f677c,,산업및시스템공학과,csv_department_office,산업및시스템공학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+49a9f863e0b400bcc8dbfc611b0f9d38,,데이터사이언스대학원,csv_department_office,데이터사이언스대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+3452cf28f3c575d5c7fe34d83c3681e8,,생명화학공학과,csv_department_office,생명화학공학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+c264738dec810ff3d03e0880feb61b23,,신소재공학과,csv_department_office,신소재공학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+7c073d988af921b26482f377bfa8c2bf,,원자력및양자공학과,csv_department_office,원자력및양자공학과,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+0c72d88a4363552e56a83287dc278c04,,조천식모빌리티대학원,csv_department_office,조천식모빌리티대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+8b1fc4b9b75530c7d508e313141ac348,,김재철AI대학원,csv_department_office,김재철AI대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+20472357b5cbca653e6bc17aa0f4372c,,KAIST-KIST-AI로봇대학원프로그램,csv_department_office,KAIST-KIST-AI로봇대학원프로그램,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+18ee9f2012c36ab4cb2bfed9bfb827cd,,녹색성장지속가능대학원,csv_department_office,녹색성장지속가능대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+e4889944f8ea7ae74c05b1569930a003,,메타버스대학원,csv_department_office,메타버스대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+ca1f3e635cf3d7adf285c633577b3516,,시스템아키텍트대학원,csv_department_office,시스템아키텍트대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+faff8b642a546c2a205222b750a03f6c,,디지털인문사회과학부,csv_department_office,디지털인문사회과학부,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+aef5a4257dc796c92f514771d529cfe6,,문화기술대학원,csv_department_office,문화기술대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+9082d752477b395ba58581439c64a6e9,,과학기술정책대학원,csv_department_office,과학기술정책대학원,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+258f8221fe88b33803f811b17430bd74,,경영공학부,csv_department_office,경영공학부,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+a5a5825c77801cdb1671ba3ca554fbff,,기술경영학부,csv_department_office,기술경영학부,*출처: 대학원과정_2026학년도 봄학기 입학 1차 대학원 모집요강.pdf (p22-23),,,1
+fac42a37bc05f2ce41f921255c86ee58,,KAIST,csv_kaist_profile,KAIST 기본정보,https://www.kaist.ac.kr/kr/,,,1
+a018c8f62be4c2c28419c82bf90385f0,,KAIST,csv_kaist_statistics,KAIST 통계 정보,https://www.kaist.ac.kr/kr/,,,1
+7c738b32c720b7e8a781652f997b598b,,KAIST,csv_kaist_link,URL,https://www.kaist.ac.kr/kr/,,,1
+3520b479c5f4a52af973b17158b76da5,,KAIST,csv_kaist_link,캠퍼스맵,https://www.kaist.ac.kr/kr/,,,1
+502a7f30f6e412d3bd60d65e711d2352,,KAIST,csv_kaist_link,셔틀버스 실시간 위치 확인,https://www.kaist.ac.kr/kr/,,,1
+b499707f7c6181f36968f753a103f6ac,,KAIST,csv_kaist_link,도서관,https://www.kaist.ac.kr/kr/,,,1
+50dc204b6c64d467cdfdceeba30923c5,,KAIST,csv_kaist_link,문화행사,https://www.kaist.ac.kr/kr/,,,1
+e1e608ad8cee2fef5648bb7b431e9be0,,KAIST,csv_kaist_link,"홍보동영상(2분, 2025)",https://www.kaist.ac.kr/kr/,,,1
+9ee0cfbcfe22bd0779246423a7c3fc4e,,KAIST,csv_kaist_link,학사일정,https://www.kaist.ac.kr/kr/,,,1
+f95725c2177007b37f2f5df146a95ca9,aic,AI컴퓨팅학과,csv_asset,Contact,https://aic.kaist.ac.kr/,,2026-05-26T13:24:27.752357+00:00,1
+dea5b4086e87253ae7ac1f51e3b4548b,aic,AI컴퓨팅학과,csv_asset,교수진,https://aic.kaist.ac.kr/#/people,,2026-05-26T13:24:41.029666+00:00,5
+a27a2eaca146374e5dda93703326897b,aic,AI컴퓨팅학과,csv_asset,학사과정 입학 안내 > 입학처 홈,https://aic.kaist.ac.kr/#/admission-ug,,2026-05-26T13:24:44.960971+00:00,1
+a8ee9d3f30ae48c9ea0512116c5dfde8,aic,AI컴퓨팅학과,csv_asset,학사과정 입학 안내 > 학부 (한국인),https://aic.kaist.ac.kr/#/admission-ug,,2026-05-26T13:24:44.960971+00:00,1
+c9c8c5130a6b9aee825cc15caec38daa,aic,AI컴퓨팅학과,csv_asset,Contact,https://aic.kaist.ac.kr/#/notice,,2026-05-26T13:25:36.079032+00:00,1
+b8a52345e8754fd5d4eb340d258aefa5,ai_systems,AI시스템학과,csv_asset,"인공지능 시스템의 미래를 설계하는 혁신의 중심, KAIST AI시스템학과 Designing the Future of AI Systems The Center of Innovation, KAIST Dept. of AI Systems > 최신 소식 Latest News",https://ai-systems.kaist.ac.kr/,,2026-05-26T13:26:12.858070+00:00,1
+f084f88cd9672e5dc5b30d5c5b376c01,ai_systems,AI시스템학과,csv_asset,"인공지능 시스템의 미래를 설계하는 혁신의 중심, KAIST AI시스템학과 Designing the Future of AI Systems The Center of Innovation, KAIST Dept. of AI Systems > 최신 소식 Latest News > Quick Links",https://ai-systems.kaist.ac.kr/,,2026-05-26T13:26:12.858070+00:00,2
+aed82406eb707e2ef7c9e517d15f428e,ai_systems,AI시스템학과,csv_asset,Contact,https://ai-systems.kaist.ac.kr/,,2026-05-26T13:26:12.858070+00:00,2
+698729916709261f3b4c9977ad0cae91,ai_systems,AI시스템학과,csv_asset,"인공지능 시스템의 미래를 설계하는 혁신의 중심, KAIST AI시스템학과 Designing the Future of AI Systems The Center of Innovation, KAIST Dept. of AI Systems",https://ai-systems.kaist.ac.kr/,,2026-05-26T13:26:12.858070+00:00,1
+a875616bce24e4880864599ef26d71fe,ai_systems,AI시스템학과,csv_asset,전임교수 Full-time Faculty,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+fd8a9be504363f955b8c53f0d0ccb428,ai_systems,AI시스템학과,csv_asset,전임교수 Full-time Faculty > 권지민 교수 Jimin Kwon,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+f9af980c9611b72c2dae0a8b66dc5a55,ai_systems,AI시스템학과,csv_asset,전임교수 Full-time Faculty > 문재균 교수 Jaekyun Moon,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+5f2700dbd300d0a18a71e72e4097584c,ai_systems,AI시스템학과,csv_asset,전임교수 Full-time Faculty > 이슬기 교수 Seulki Lee,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+825150569281c7ad8c71be53dbc81bfd,ai_systems,AI시스템학과,csv_asset,전임교수 Full-time Faculty > 이영주 교수 Youngjoo Lee,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+5a7879883be95da0c8ec7436291f994f,ai_systems,AI시스템학과,csv_asset,전임교수 Full-time Faculty > 정완영 교수 Wanyeong Jung,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+10312b9e2b46bc24dd1d152416cd53b2,ai_systems,AI시스템학과,csv_asset,전임교수 Full-time Faculty > 제민규 교수 Minkyu Je,https://ai-systems.kaist.ac.kr/faculty-fulltime,,2026-05-26T13:26:24.188231+00:00,1
+0f7123b5f461531e23986de1681dfa6d,ai_systems,AI시스템학과,csv_asset,겸임교수 Adjunct Faculty,https://ai-systems.kaist.ac.kr/faculty-adjunct,,2026-05-26T13:26:28.610341+00:00,39
+4c0052464ba0e7fa0785b0f5f9328ce3,ai_systems,AI시스템학과,csv_asset,학사과정 입학 안내 Undergraduate Admission,https://ai-systems.kaist.ac.kr/admission-ug,,2026-05-26T13:26:32.463430+00:00,1
+7583373878c2910b62895a0a81e42f87,ai_systems,AI시스템학과,csv_asset,대학원과정 입학 안내 Graduate Admission,https://ai-systems.kaist.ac.kr/admission-grad,,2026-05-26T13:26:36.697547+00:00,2
+50b883b5149b43aa3f3ca678415d229f,ai_systems,AI시스템학과,csv_asset,소식 및 행사 News & Events,https://ai-systems.kaist.ac.kr/news,,2026-05-26T13:27:21.084886+00:00,1
+085e474f103a786781e092aef65dd413,ax,AX학과,csv_asset,Contact,https://ax.kaist.ac.kr/,,2026-05-26T13:28:36.204891+00:00,1
+aa76789e4e9adb0be4997e88b86949f9,ax,AX학과,csv_asset,구성원 > 겸임교수,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,131
+55d9d44de862d97a03887369859554ba,ax,AX학과,csv_asset,구성원 > 중점교원,https://ax.kaist.ac.kr/#/people,,2026-05-26T13:28:52.678054+00:00,8
+3198d8cc256266e55088e552c373cd3c,ax,AX학과,csv_asset,학사과정 입학 안내,https://ax.kaist.ac.kr/#/admission-ug,,2026-05-26T13:28:56.589155+00:00,3
+89442b12d487f52799b2c4d8e07abf51,ax,AX학과,csv_asset,대학원과정 입학 안내,https://ax.kaist.ac.kr/#/admission-grad,,2026-05-26T13:29:00.877880+00:00,1
+5147090d14b55d1b8c567b1257a2b1ff,fx,AI미래학과,csv_asset,2026 AI미래학과 학과설명회,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+b046f67d9db8181f215d755f909f920c,fx,AI미래학과,csv_asset,교수님들을 소개합니다 > 한지영 > 2026학년도 가을학기 일반대학원 신입생 모집,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+a3ade6da8210bdf2260e2febf67d3f31,fx,AI미래학과,csv_asset,Contact,https://fx.kaist.ac.kr/,,2026-05-26T13:30:33.939577+00:00,1
+429c0a95e84f2945d4ee8993f5560723,aic,,csv_attachment_meta,AI_Computing_Introduction_20260526.pdf,https://aic.kaist.ac.kr/files/AI_Computing_Introduction_20260526.pdf,,2026-05-26T13:24:44.960971+00:00,1
+23216fa4be473ff186f33770a1a5c330,aic,,csv_attachment_meta,AI_Computing_Grad_Info_Session_20260320.pdf,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,,2026-05-26T13:24:49.378406+00:00,1
+ebc5d352d3c494ba24f23a9df1910ca8,ai_systems,,csv_attachment_meta,AI_Systems_Grad_Info_20260319.pdf,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,,2026-05-26T13:26:32.463430+00:00,1
+c9799df63d851b7f03e56f7d56c3a1f9,ax,,csv_attachment_meta,20260318_AX학과_2026년_가을입학_입시설명회_VER3.pdf,https://ax.kaist.ac.kr/files/20260318_AX학과_2026년_가을입학_입시설명회_VER3.pdf,,2026-05-26T13:29:54.936230+00:00,1
+59f910afb92a2c7df77d4e3cdb36713d,aic,AI컴퓨팅학과,pdf,AI_Computing_Grad_Info_Session_20260320 page 1,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,general,,1
+d9c2d092caa150d2eef59eeb59495203,aic,AI컴퓨팅학과,pdf,Computing Innovations,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,general,,1
+354cd77c117997a62f187334a4dc018e,aic,AI컴퓨팅학과,pdf,Industry Shifts: Mobile to AI,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,vision,,1
+fe5f03b97abbaec3162424271c758f0b,aic,AI컴퓨팅학과,pdf,Computing Paradigm Shift:,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,vision,,1
+a3617ebc8bfb0f00f3b074fc352e530f,aic,AI컴퓨팅학과,pdf,Co-Intelligence: Centaur vs. Cyborg,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,general,,1
+d4594571f326a57edf09d31f88e5f858,aic,AI컴퓨팅학과,pdf,AI is not ending programming,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,general,,1
+f56d99ed4fda6d73dc4bd61b03a9a25e,aic,AI컴퓨팅학과,pdf,New Education Demand,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,general,,1
+0b10ae6268b7c9c2ca20ed445cd739b1,aic,AI컴퓨팅학과,pdf,AI Computing – Full Stack AI Expert,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,vision,,1
+9c874941534528270423c89e982c08c0,aic,AI컴퓨팅학과,pdf,AI Computing – Full Stack AI Expert,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,vision,,1
+a4c64e7b1ec040c0af5699709f52ac26,aic,AI컴퓨팅학과,pdf,AI Computing – Full Stack AI Expert,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,vision,,1
+eed4025006c43d0e57d30e232f8d3f8b,aic,AI컴퓨팅학과,pdf,KAIST AI Computing Department Vision,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,vision,,1
+e750326491d3bf723ab5df7ea7c7ebda,aic,AI컴퓨팅학과,pdf,AI IN CS,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+e8468c4128806ad6fd89fd9ab2a48b99,aic,AI컴퓨팅학과,pdf,AI COMPUTING,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+1074dab9ea968582555562fb87d94eea,aic,AI컴퓨팅학과,pdf,Faculty,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,faculty,,1
+c7336ad8654e0c93e03142a2af3d0c68,aic,AI컴퓨팅학과,pdf,AI-Native Education for Future Leaders,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+6c185c05c52334dfaa2253eaa401139b,aic,AI컴퓨팅학과,pdf,KAIST AI College,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,general,,1
+2456870d88a7f6a7a43beb0cd96a99a7,aic,AI컴퓨팅학과,pdf,Undergraduate Degree,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,curriculum,,1
+4606bced08464e1f036effc5b6e69447,aic,AI컴퓨팅학과,pdf,* This course tree is tentative,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,schedule,,1
+04c3d9403895cf466f1d94d700e20448,aic,AI컴퓨팅학과,pdf,Graduate Program in AI Computing Department,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,curriculum,,1
+ba53af50c96c7bac8a0eae1ce4a0a1b3,aic,AI컴퓨팅학과,pdf,AI컴퓨팅 학과 대학원 지원 유형,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+573cf8d7dabf0925c7553ff5a966c520,aic,AI컴퓨팅학과,pdf,2026년도 입시 규모,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+40e2289ec5255999e4f462bff75b3c29,aic,AI컴퓨팅학과,pdf,서류 평가 진행 방식,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+b70ef35f1866660773063f9c2f08a8bc,aic,AI컴퓨팅학과,pdf,면접 평가 진행 방식 – 석사,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+ff8379bef16f37cb47e73a304c56ba54,aic,AI컴퓨팅학과,pdf,면접 평가 진행 방식 – 박사,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+53ecae45fa155426e01f566ab8438611,aic,AI컴퓨팅학과,pdf,면접 평가 진행 방식 – 박사 (전문연TO),https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+35cf1136accd8a7a4e8d4995ed5fdbcb,aic,AI컴퓨팅학과,pdf,석박통합과정 (재학생/학석박통합),https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+224b05aabb664aa539c89c18f12eacab,aic,AI컴퓨팅학과,pdf,연구실 TO 및 매칭 – 박사 & 석사 과정,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,faculty,,1
+04517452fd5a7e354b67a4d8cd74c1fc,aic,AI컴퓨팅학과,pdf,사전질의,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+6724bfd9480ce6212f404b2009988641,aic,AI컴퓨팅학과,pdf,사전질의,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,admission,,1
+4a0c0911a064cb2f94c626fcf6405de6,aic,AI컴퓨팅학과,pdf,AI-Native Education for Future Leaders,https://aic.kaist.ac.kr/files/AI_Computing_Grad_Info_Session_20260320.pdf,vision,,1
+0064d0e890d140c6cc59562af9e72ad3,ai_systems,AI시스템학과,pdf,Architecting a New Paradigm for Future AI Infrastructure,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,vision,,1
+3f9a687000a98795512392fce5e932b8,ai_systems,AI시스템학과,pdf,왜 “AI 시스템”인가요?,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,research,,1
+e8cf81d901e6887652c53419befc9b47,ai_systems,AI시스템학과,pdf,"Software defines the Possibility, Hardware determines the Feasibility.",https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,general,,1
+1de02b6dd960f4ccbdd2b64b275a6fa9,ai_systems,AI시스템학과,pdf,The Great Compute Crunch (컴퓨팅의 위기: 병목현상의 심화),https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,general,,1
+11c82ff814ee5d6ba9080f6fe06c9704,ai_systems,AI시스템학과,pdf,새로운 골드러시: 곡괭이와 삽,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,general,,1
+d666774e2208ea28f6414297f82c5726,ai_systems,AI시스템학과,pdf,What is an AI System? (AI 시스템의 범위),https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,research,,1
+e3a27186966dabfe44cd921e2dfcb75b,ai_systems,AI시스템학과,pdf,AI의 현재: 분절된 두 개의 세계,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,research,,1
+614111c21ce5c9a90561a8d4c4c7be56,ai_systems,AI시스템학과,pdf,미래의 리더: HW/SW 코-디자인,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,general,,1
+3ffaac72413ec65ef966aebb52fedd81,ai_systems,AI시스템학과,pdf,“AI 시스템 학과”는 어떤 곳인가요?,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,research,,1
+92d0d3da132ab3bf5bb5c0f2140cde94,ai_systems,AI시스템학과,pdf,AI 대학 구성과 설립 목표,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,vision,,1
+93a2152251cba71bb158b2c34d28537d,ai_systems,AI시스템학과,pdf,AI 시스템 학과 설립 목표,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,research,,1
+71c6a82945a263224b2f7581901c6115,ai_systems,AI시스템학과,pdf,전세계에 증명된 KAIST의 뛰어난 AI 시스템 역량,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,research,,1
+db6424e90a35c1810d232c313dfabdf2,ai_systems,AI시스템학과,pdf,권지민,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,faculty,,1
+e92298267be690d2f7776e5ecc78c0a4,ai_systems,AI시스템학과,pdf,겸임 교수진: 33 Experts Across Diverse Areas,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,faculty,,1
+53eba071dc4c166a4e880e0be4c5d38c,ai_systems,AI시스템학과,pdf,Computer,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,faculty,,1
+5f1514b955521d3e23853d80fd0bab70,ai_systems,AI시스템학과,pdf,주요 교육 및 연구 분야,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,research,,1
+25c88ded1c57174f5b38db9d323ab518,ai_systems,AI시스템학과,pdf,AI Semiconductor Integrated Circuits,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,general,,1
+f152417ba7ef0296553c99c24e0020ce,ai_systems,AI시스템학과,pdf,Architecture & Security,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,general,,1
+6b2d2e0fd6beb5f063781cb2d9335ed8,ai_systems,AI시스템학과,pdf,전략적 중요성 및 비전,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,research,,1
+da343cfd0150743b7f40f04d85ab6518,ai_systems,AI시스템학과,pdf,무엇이 우리를 특별하게 하는가: 3대 핵심 전략,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,general,,1
+fb249a00974b4d40c53f430616b2e774,ai_systems,AI시스템학과,pdf,통합 교육: 하나의 언어로 말하는,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,general,,1
+e85ea726e723fdd408f8dd6cda332197,ai_systems,AI시스템학과,pdf,"산업 연계: 이론이 가치로, 아이디어가 창업으로",https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,general,,1
+57d954c75a561f329704793ce9b42948,ai_systems,AI시스템학과,pdf,18 32,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,curriculum,,1
+4eadfb810b02b04765e9dbe3d9b5b6e5,ai_systems,AI시스템학과,pdf,18 32,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,curriculum,,1
+02867f71e37ab2a8ade62776b1086fa0,ai_systems,AI시스템학과,pdf,대학원 과정: 세상을 선도할 AI 시스템 연구의 최전선에서,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,research,,1
+abf4adcd04db4560788e084566fc50f3,ai_systems,AI시스템학과,pdf,이번 “입시”는 어떻게 진행되나요?,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,admission,,1
+0b360dc2c135b7e5b2d43be2c7dec884,ai_systems,AI시스템학과,pdf,2026년 가을학기 AI 시스템 학과 대학원 모집 분야,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,admission,,1
+fb848811c74ede5acef53c87e51152b4,ai_systems,AI시스템학과,pdf,2026년 가을학기 AI 시스템 학과 대학원 모집 주요 일정,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,admission,,1
+6035e938b5637e21d4dd2769353f2cbc,ai_systems,AI시스템학과,pdf,우리는 이런 인재를 찾습니다,https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,general,,1
+bf4aceb302a9bf14030b93c0f0d6bc65,ai_systems,AI시스템학과,pdf,"대한민국 최초, AI 시스템 교육의 시작",https://ai-systems.kaist.ac.kr/attachments/AI_Systems_Grad_Info_20260319.pdf,research,,1
+8d60c04a23b614a74ae3a80a6f517860,fx,AI미래학과,pdf,KAIST AI 대 학 · AI 미 래 학 과,https://fx.kaist.ac.kr/#about,general,,1
+240523b840ab7e99e1e1fd40b2e5c81d,fx,AI미래학과,pdf,UPCOMING EVENT,https://fx.kaist.ac.kr/#about,general,,1
+0292e1ee2cdf7b112aef9fde7b8b30f9,fx,AI미래학과,pdf,사 전 등 록 하기→,https://fx.kaist.ac.kr/#about,research,,1
+54a983ef0eaf7f76b2bd2a25d41e18f0,fx,AI미래학과,pdf,"AI 시 대의 법 · 규 제 체 계 를 설계 하고, 윤 리· 철 학 적 기 반 위에 책 임 있는 AI 원 칙 을 정 립 합니 다.",https://fx.kaist.ac.kr/#about,research,,1
+04c97fdaa8092c5e5f9a74aa00ea6666,fx,AI미래학과,pdf,강 이 연,https://fx.kaist.ac.kr/#about,general,,1
+f8fcacd71755393de0c85ad7b495c1ae,fx,AI미래학과,pdf,김창 익,https://fx.kaist.ac.kr/#about,research,,1
+416616c2caef5adb8a5e63f88ce5be59,fx,AI미래학과,pdf,양재 석,https://fx.kaist.ac.kr/#about,general,,1
+95ac779279e834da845a710e31b8e158,fx,AI미래학과,pdf,전주영,https://fx.kaist.ac.kr/#about,general,,1
+a05471578b0b4a9f7165b4aea5fb4b97,fx,AI미래학과,pdf,입 학 안내,https://fx.kaist.ac.kr/#about,general,,1
+5ed6ff7efdc75aeed97f4f4fa9397ee5,fx,AI미래학과,pdf,안내 사 항,https://fx.kaist.ac.kr/#about,curriculum,,1
+2f20fa1685b88e0557249fb7cae8b13e,fx,AI미래학과,pdf,재학 생 통 합 및 연 계 과정 : 원서 접 수 전 지 도 예 정 교 수 와 사 전 협 의 필 수 ( 원서에 1 명 입 력 ),https://fx.kaist.ac.kr/#about,general,,1
+a005ee33c00781264800ef592d1fbc2c,fx,AI미래학과,pdf,3000-LEVEL,https://fx.kaist.ac.kr/#about,general,,1
+bda117043c2180a2e3a40403b1edfa1e,fx,AI미래학과,pdf,한 국 과 학 기 술 원 (KAIST),https://fx.kaist.ac.kr/#about,research,,1
+8733cc141ab98736023ed09963d37b41,ax,AX학과,pdf,대 학 원과정 입 학 안내,https://ax.kaist.ac.kr/#/admission-grad,admission,,1
+e3109365817a5339f4d658042a94aaaf,ax,AX학과,pdf,과정 지 원 자 격,https://ax.kaist.ac.kr/#/admission-grad,admission,,1
+2716d28a41b787ae4d6eaf4a9c7b6de9,ax,AX학과,pdf,교 수의 전공에 따,https://ax.kaist.ac.kr/#/admission-grad,admission,,1
+be7aa7a820d5f8c3d5d556c63a51c6f0,ax,AX학과,pdf,구 분 지 원일정 접 수방 법,https://ax.kaist.ac.kr/#/admission-grad,admission,,1
+1319b4dbc8ef52272ae7704418ab3af0,ax,AX학과,pdf,구 분 지 원일정 접 수방 법,https://ax.kaist.ac.kr/#/admission-grad,admission,,1
+247a4cd7bf33a820bfd97081a61c4963,ax,AX학과,pdf,AX,https://ax.kaist.ac.kr/#/admission-grad,admission,,1

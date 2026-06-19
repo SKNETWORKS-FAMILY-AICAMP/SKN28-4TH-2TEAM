@@ -1,0 +1,22 @@
+{
+  "total": 15,
+  "pass": 14,
+  "fail": 1,
+  "pass_rate": 0.9333,
+  "result_csv": "E:\\workspace\\SKN28_3RD_2TEAM\\validation\\rag_quality\\results\\targeted_regression_results_20260604_141257.csv",
+  "failed_cases": [
+    {
+      "id": 7,
+      "category": "교과목 비교",
+      "question": "학과별 교과목 비교해줘",
+      "failed_checks": "route",
+      "actual_route": "sql",
+      "actual_intent": "course_info",
+      "actual_department_code": "",
+      "actual_ambiguity": "",
+      "vector_count": 0,
+      "sql_count": 100,
+      "source_count": 1
+    }
+  ]
+}

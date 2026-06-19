@@ -47,6 +47,10 @@ DROP TABLE IF EXISTS event;
 DROP TABLE IF EXISTS admission;
 DROP TABLE IF EXISTS course;
 DROP TABLE IF EXISTS person;
+DROP TABLE IF EXISTS department_office;
+DROP TABLE IF EXISTS kaist_link;
+DROP TABLE IF EXISTS kaist_statistics;
+DROP TABLE IF EXISTS kaist_profile;
 DROP TABLE IF EXISTS quality_report;
 DROP TABLE IF EXISTS department;
 
@@ -208,6 +212,50 @@ CREATE TABLE attachment (
         ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB COMMENT='첨부파일 (PDF) — 부모는 게시글(post), board로 admission/event 구분';
 
+-- 학과사무실/행정실 연락처 : KAIST 전체 모집요강에서 온 독립 연락처 표.
+-- AI대학 4개 학과 마스터와 범위가 다르므로 department FK를 걸지 않는다.
+CREATE TABLE department_office (
+    office_id         VARCHAR(255) NOT NULL         COMMENT '사무실 ID',
+    program_name      VARCHAR(255)                  COMMENT '학과/프로그램명',
+    phone             VARCHAR(100)                  COMMENT '전화번호',
+    website           VARCHAR(500)                  COMMENT '웹사이트',
+    building_location VARCHAR(500)                  COMMENT '건물 위치',
+    source            VARCHAR(500)                  COMMENT '출처',
+    source_page       VARCHAR(100)                  COMMENT '출처 페이지',
+    missing_fields    VARCHAR(255)                  COMMENT '누락 필드 목록',
+    CONSTRAINT pk_department_office PRIMARY KEY (office_id)
+) ENGINE=InnoDB COMMENT='KAIST 학과사무실/행정실 연락처';
+
+-- KAIST 기본 정보
+CREATE TABLE kaist_profile (
+    item       VARCHAR(100) NOT NULL                COMMENT '항목명',
+    content    TEXT                                COMMENT '내용',
+    note       VARCHAR(500)                        COMMENT '비고',
+    source_url VARCHAR(500)                        COMMENT '출처 URL',
+    source     VARCHAR(255)                        COMMENT '출처명',
+    CONSTRAINT pk_kaist_profile PRIMARY KEY (item)
+) ENGINE=InnoDB COMMENT='KAIST 기본 정보';
+
+-- KAIST 통계 정보
+CREATE TABLE kaist_statistics (
+    stat_group   VARCHAR(100) NOT NULL             COMMENT '통계 그룹',
+    level        VARCHAR(100) NOT NULL             COMMENT '구분',
+    value_raw    VARCHAR(100)                      COMMENT '원문 값',
+    value_number BIGINT                            COMMENT '숫자 값',
+    note         VARCHAR(500)                      COMMENT '비고',
+    source       VARCHAR(255)                      COMMENT '출처명',
+    CONSTRAINT pk_kaist_statistics PRIMARY KEY (stat_group, level)
+) ENGINE=InnoDB COMMENT='KAIST 통계 정보';
+
+-- KAIST 공식 링크
+CREATE TABLE kaist_link (
+    link_name VARCHAR(255) NOT NULL                 COMMENT '링크명',
+    url       VARCHAR(1000)                         COMMENT 'URL',
+    note      VARCHAR(500)                          COMMENT '비고',
+    source    VARCHAR(255)                          COMMENT '출처명',
+    CONSTRAINT pk_kaist_link PRIMARY KEY (link_name)
+) ENGINE=InnoDB COMMENT='KAIST 공식 링크';
+
 
 -- =====================================================================
 --  M:N 관계 해소 : course ↔ track
@@ -250,7 +298,7 @@ CREATE TABLE course_track (
 -- 문서 단위 메타데이터
 CREATE TABLE rag_document (
     doc_id       VARCHAR(255) NOT NULL              COMMENT '문서 ID',
-    dept         VARCHAR(20)  NOT NULL              COMMENT '학과 코드 (FK)',
+    dept         VARCHAR(20)                        COMMENT '학과 코드 (FK, KAIST 전역 문서는 NULL)',
     source_type  VARCHAR(50)                        COMMENT '출처 유형',
     title        VARCHAR(500)                       COMMENT '제목',
     source_url   VARCHAR(500)                       COMMENT '출처 URL',
@@ -260,7 +308,7 @@ CREATE TABLE rag_document (
     CONSTRAINT pk_rag_document PRIMARY KEY (doc_id),
     CONSTRAINT fk_ragdoc_dept FOREIGN KEY (dept)
         REFERENCES department (dept)
-        ON UPDATE CASCADE ON DELETE RESTRICT
+        ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB COMMENT='RAG 문서 메타데이터';
 
 -- 청크(임베딩 후보 텍스트 조각) : 문서 1 : 청크 N
