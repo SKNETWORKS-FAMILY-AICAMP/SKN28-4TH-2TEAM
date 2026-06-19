@@ -93,7 +93,7 @@ INTENT_EXPECTED_CONTENT_TYPES = {
     "person_info": {"person"},
     "office_contact_info": {"office_contact"},
     "event_info": {"event"},
-    "asset_or_link_info": {"link", "mixed_media", "attachment"},
+    "asset_or_link_info": {"link", "mixed_media", "attachment", "attachment_meta"},
     "kaist_profile_info": {"kaist_profile"},
     "kaist_statistics_info": {"kaist_statistics"},
     "kaist_link_info": {"link"},
@@ -101,14 +101,14 @@ INTENT_EXPECTED_CONTENT_TYPES = {
 
 INTENT_EXPECTED_SQL_TABLES = {
     "admission_info": {"admissions", "admission"},
-    "course_info": {"courses", "course"},
+    "course_info": {"courses", "course", "course_track_map"},
     "person_info": {"people", "person", "professors"},
-    "office_contact_info": {"office_contacts", "department_offices"},
+    "office_contact_info": {"office_contacts", "department_offices", "department_office"},
     "event_info": {"events", "event"},
-    "asset_or_link_info": {"assets", "asset", "kaist_links"},
+    "asset_or_link_info": {"assets", "asset", "attachment", "attachments", "kaist_links"},
     "kaist_profile_info": {"kaist_profile"},
     "kaist_statistics_info": {"kaist_statistics"},
-    "kaist_link_info": {"kaist_links"},
+    "kaist_link_info": {"kaist_links", "kaist_link"},
 }
 
 INTENT_KOREAN_LABELS = {
@@ -568,6 +568,16 @@ class AnswerGenerator:
                 "근거가 부족한 항목은 '자료 부족'이라고 표시하세요."
             )
 
+        if analysis and analysis.intent == "department_overview":
+            instructions.append(
+                "SQL 조회 결과의 raw_table이 department이면 이는 현재 수집된 KAIST 학과/프로그램 조직 목록입니다. "
+                "AI 관련 학과 목록이나 선택지를 묻는 질문에는 AI대학 4개 학과를 빠짐없이 포함하세요. "
+                "공과대학, 자연과학대학처럼 특정 단과대학을 묻는 질문에는 SQL의 college와 program_name을 우선 근거로 답하세요. "
+                "질문이 학과/프로그램 목록, 종류, 어떤 학과가 있는지에 대한 것이라면 '핵심 요약/교육·연구 방향/특징' 형식으로 확장하지 말고, "
+                "목록과 CSV에 있는 연락처/홈페이지/위치 같은 정형값만 답하세요. "
+                "조직 목록만 있는 경우 학과의 교육 방향이나 특징을 이름만 보고 추론하지 마세요."
+            )
+
         if analysis is None:
             instructions.append(
                 "사용자 질문에 직접 답하되, context에 없는 내용은 추측하지 마세요."
@@ -634,8 +644,9 @@ class AnswerGenerator:
             ),
             "department_overview": (
                 "학과 소개/개요 질문입니다. 학과의 목표, 특징, 교육/연구 방향을 "
-                "자료에 근거해 간결하게 정리하세요. 답변 형식은 '핵심 요약', "
-                "'교육/연구 방향', '특징' 순서로 작성하세요."
+                "자료에 근거해 간결하게 정리하세요. 단, 질문이 학과/프로그램 목록이나 종류를 묻는 경우에는 "
+                "목록을 우선 제시하고, 자료에 없는 목표·특징·교육/연구 방향은 추론하지 마세요. "
+                "목록 질문이 아닌 소개 질문일 때만 '핵심 요약', '교육/연구 방향', '특징' 순서로 작성하세요."
             ),
             "kaist_profile_info": (
                 "KAIST 기본 정보 질문입니다. 학교명, 영문명, 창립일, 주소, 대표 번호, "

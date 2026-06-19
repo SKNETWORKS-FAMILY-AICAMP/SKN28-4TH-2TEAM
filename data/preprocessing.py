@@ -50,7 +50,7 @@ CSV_FILES = {
 
 
 PDF_FILES = {
-    "AI_Computing_Grad_Info_Session_20260320(1).pdf": {
+    "AI_Computing_Grad_Info_Session_20260320.pdf": {
         "dept": "aic",
         "dept_name": "AI컴퓨팅학과",
         "document_type": "grad_info_session",
@@ -58,7 +58,7 @@ PDF_FILES = {
         "year": 2026,
         "semester": "fall",
     },
-    "AI_Systems_Grad_Info_20260319(1).pdf": {
+    "AI_Systems_Grad_Info_20260319.pdf": {
         "dept": "ai_systems",
         "dept_name": "AI시스템학과",
         "document_type": "grad_info_session",
@@ -66,7 +66,7 @@ PDF_FILES = {
         "year": 2026,
         "semester": "fall",
     },
-    "KAIST AI & FUTURES STUDIES(1).pdf": {
+    "KAIST AI & FUTURES STUDIES.pdf": {
         "dept": "fx",
         "dept_name": "AI미래학과",
         "document_type": "department_web_pdf",
@@ -74,7 +74,7 @@ PDF_FILES = {
         "year": 2026,
         "semester": "fall",
     },
-    "KAIST AX (AI Transformation)(1).pdf": {
+    "KAIST AX (AI Transformation).pdf": {
         "dept": "ax",
         "dept_name": "AX학과",
         "document_type": "department_web_pdf",
@@ -1075,22 +1075,40 @@ for _, row in attachments.iterrows():
 
 try:
     import fitz  # PyMuPDF
-except ImportError as e:
-    raise ImportError(
-        "PDF 텍스트 추출을 위해 PyMuPDF가 필요합니다. "
-        "아래 명령어를 먼저 실행하세요:\n\npip install pymupdf"
-    ) from e
+    PDF_EXTRACTOR = "pymupdf"
+except ImportError:
+    try:
+        from pypdf import PdfReader
+        PDF_EXTRACTOR = "pypdf"
+    except ImportError as e:
+        raise ImportError(
+            "PDF 텍스트 추출을 위해 PyMuPDF 또는 pypdf가 필요합니다. "
+            "아래 명령어 중 하나를 먼저 실행하세요:\n\npip install pymupdf\npip install pypdf"
+        ) from e
 
 
 SECTION_RULES = [
-    ("admission", ["입학", "지원 자격", "모집", "전형", "합격자", "원서접수", "Application", "Admission"]),
+    ("admission", ["입학", "입시", "지원 자격", "모집", "전형", "합격자", "원서접수", "서류", "서류 평가", "면접", "면접 평가", "지원 유형", "Application", "Admission"]),
     ("schedule", ["일정", "Schedule", "Date", "지원일정"]),
     ("faculty", ["교수", "Faculty", "전임", "겸임", "학과장"]),
     ("curriculum", ["교육과정", "교과", "Curriculum", "Course", "Degree", "credits", "학점"]),
+    ("contact", ["연락처", "전화", "이메일", "Contact", "Office", "행정실", "사무실"]),
     ("research", ["연구", "Research", "분야", "AI 반도체", "AI 시스템", "거버넌스", "지속가능"]),
     ("vision", ["비전", "Vision", "목표", "왜", "paradigm", "Full Stack", "Human-Centered"]),
     ("advisor_matching", ["지도교수", "매칭", "장학생", "KAIST 장학생", "국비"]),
 ]
+
+PDF_SECTION_CONTENT_TYPES = {
+    "admission": "admission",
+    "schedule": "admission",
+    "faculty": "person",
+    "curriculum": "course",
+    "contact": "office_contact",
+    "research": "text",
+    "vision": "text",
+    "advisor_matching": "admission",
+    "general": "text",
+}
 
 
 def detect_section(text):
@@ -1121,6 +1139,31 @@ def extract_page_title(text):
     return None
 
 
+def resolve_pdf_path(pdf_filename: str) -> Path:
+    pdf_path = RAW_DATA_DIR / pdf_filename
+
+    if pdf_path.exists():
+        return pdf_path
+
+    stem = re.sub(r"\s*\(\d+\)$", "", Path(pdf_filename).stem)
+    suffix = Path(pdf_filename).suffix
+
+    for candidate_name in [
+        f"{stem}{suffix}",
+        f"{stem}(1){suffix}",
+        f"{stem} (1){suffix}",
+    ]:
+        candidate_path = RAW_DATA_DIR / candidate_name
+        if candidate_path.exists():
+            return candidate_path
+
+    matches = sorted(RAW_DATA_DIR.glob(f"{stem}*.pdf"))
+    if matches:
+        return matches[0]
+
+    return pdf_path
+
+
 def extract_pdf_docs(pdf_path: Path, base_meta: dict):
     pdf_docs = []
     page_reports = []
@@ -1135,13 +1178,23 @@ def extract_pdf_docs(pdf_path: Path, base_meta: dict):
         })
         return pdf_docs, page_reports
 
-    doc = fitz.open(pdf_path)
+    if PDF_EXTRACTOR == "pymupdf":
+        pdf_doc = fitz.open(pdf_path)
+        page_count = len(pdf_doc)
+    else:
+        pdf_doc = PdfReader(str(pdf_path))
+        page_count = len(pdf_doc.pages)
 
-    for page_index in range(len(doc)):
+    for page_index in range(page_count):
         page_no = page_index + 1
-        page = doc[page_index]
 
-        raw_text = page.get_text("text")
+        if PDF_EXTRACTOR == "pymupdf":
+            page = pdf_doc[page_index]
+            raw_text = page.get_text("text")
+        else:
+            page = pdf_doc.pages[page_index]
+            raw_text = page.extract_text() or ""
+
         text = clean_scalar(raw_text)
 
         if not text or len(text) < 10:
@@ -1172,7 +1225,7 @@ def extract_pdf_docs(pdf_path: Path, base_meta: dict):
 
             metadata = {
                 "source_type": "pdf",
-                "content_type": f"pdf_{section}",
+                "content_type": PDF_SECTION_CONTENT_TYPES.get(section, "text"),
                 "document_type": base_meta.get("document_type"),
                 "dept": base_meta.get("dept"),
                 "dept_name": base_meta.get("dept_name"),
@@ -1203,14 +1256,16 @@ def extract_pdf_docs(pdf_path: Path, base_meta: dict):
             "chunk_count": len(chunks),
         })
 
-    doc.close()
+    if PDF_EXTRACTOR == "pymupdf":
+        pdf_doc.close()
+
     return pdf_docs, page_reports
 
 
 pdf_page_reports = []
 
 for pdf_filename, meta in PDF_FILES.items():
-    pdf_path = RAW_DATA_DIR / pdf_filename
+    pdf_path = resolve_pdf_path(pdf_filename)
     docs_from_pdf, reports = extract_pdf_docs(pdf_path, meta)
     vector_docs.extend(docs_from_pdf)
     pdf_page_reports.extend(reports)
@@ -1246,6 +1301,108 @@ for doc in vector_docs:
     deduped_docs.append(doc)
 
 vector_docs = deduped_docs
+
+
+def first_metadata_value(metadata: dict, *keys):
+    for key in keys:
+        value = metadata.get(key)
+        if not is_empty(value):
+            return str(value)
+    return None
+
+
+def build_rag_sql_exports(docs: list[dict]) -> tuple[pd.DataFrame, pd.DataFrame]:
+    document_rows = {}
+    chunk_rows = []
+
+    for doc in docs:
+        text = doc.get("text") or ""
+        metadata = doc.get("metadata") or {}
+
+        source_type = first_metadata_value(metadata, "source_type") or "unknown"
+        dept = first_metadata_value(metadata, "dept")
+        dept_name = first_metadata_value(metadata, "dept_name", "department")
+        title = (
+            first_metadata_value(metadata, "title", "file_name", "name", "course_code")
+            or "RAG 문서"
+        )
+        source_url = first_metadata_value(metadata, "source_url", "source", "url")
+        source_board = first_metadata_value(metadata, "source_board", "board", "section")
+        crawled_at = first_metadata_value(metadata, "crawled_at")
+
+        if source_type == "pdf":
+            doc_id = make_hash(
+                source_type,
+                dept,
+                metadata.get("file_name"),
+                metadata.get("page"),
+                source_url,
+                length=32,
+            )
+        else:
+            doc_id = make_hash(
+                source_type,
+                dept,
+                title,
+                source_url,
+                metadata.get("section"),
+                length=32,
+            )
+
+        if doc_id not in document_rows:
+            document_rows[doc_id] = {
+                "doc_id": doc_id,
+                "dept": dept,
+                "dept_name": dept_name,
+                "source_type": source_type,
+                "title": title,
+                "source_url": source_url,
+                "source_board": source_board,
+                "crawled_at": crawled_at,
+                "chunk_count": 0,
+            }
+
+        document_rows[doc_id]["chunk_count"] += 1
+
+        section_parts = [
+            first_metadata_value(metadata, "content_type"),
+            first_metadata_value(metadata, "section"),
+            first_metadata_value(metadata, "page"),
+            first_metadata_value(metadata, "chunk_index"),
+        ]
+        section_path = " > ".join(part for part in section_parts if part)
+        source_record_id = first_metadata_value(
+            metadata,
+            "record_id",
+            "original_id",
+            "course_code",
+            "name",
+            "file_name",
+        )
+
+        chunk_rows.append({
+            "chunk_id": doc.get("id") or make_hash(doc_id, text[:300], length=32),
+            "doc_id": doc_id,
+            "dept": dept,
+            "dept_name": dept_name,
+            "source_type": source_type,
+            "title": title,
+            "section_path": section_path,
+            "chunk_text": text,
+            "source_url": source_url,
+            "source_board": source_board,
+            "source_record_id": source_record_id,
+            "crawled_at": crawled_at,
+            "missing_fields": "",
+            "metadata_json": json.dumps(metadata, ensure_ascii=False),
+        })
+
+    return pd.DataFrame(document_rows.values()), pd.DataFrame(chunk_rows)
+
+
+rag_documents_df, rag_chunks_df = build_rag_sql_exports(vector_docs)
+save_csv(rag_documents_df, SQL_DIR / "rag_documents.csv")
+save_csv(rag_chunks_df, SQL_DIR / "rag_chunks.csv")
 
 
 vector_json_path = VECTOR_DIR / "vector_documents.json"

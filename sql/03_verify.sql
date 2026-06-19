@@ -6,10 +6,7 @@
 USE kaist_ai;
 
 -- ---------------------------------------------------------------------
--- [A] 행 수 검증 : 각 테이블이 README 의 기대치와 맞는지
---   기대값  department 4 / person 246 / course 109 / admission 74 /
---           event 4 / asset 270 / attachment 4 / rag_document 482 /
---           rag_chunk 523 / quality_report 14
+-- [A] 행 수 검증 : 각 테이블에 데이터가 적재되었는지 확인
 -- ---------------------------------------------------------------------
 SELECT 'department'   AS table_name, COUNT(*) AS row_count FROM department
 UNION ALL SELECT 'person',       COUNT(*) FROM person
@@ -20,6 +17,10 @@ UNION ALL SELECT 'admission',    COUNT(*) FROM admission
 UNION ALL SELECT 'event',        COUNT(*) FROM event
 UNION ALL SELECT 'asset',        COUNT(*) FROM asset
 UNION ALL SELECT 'attachment',   COUNT(*) FROM attachment
+UNION ALL SELECT 'department_office', COUNT(*) FROM department_office
+UNION ALL SELECT 'kaist_profile', COUNT(*) FROM kaist_profile
+UNION ALL SELECT 'kaist_statistics', COUNT(*) FROM kaist_statistics
+UNION ALL SELECT 'kaist_link', COUNT(*) FROM kaist_link
 UNION ALL SELECT 'rag_document', COUNT(*) FROM rag_document
 UNION ALL SELECT 'rag_chunk',    COUNT(*) FROM rag_chunk
 UNION ALL SELECT 'quality_report', COUNT(*) FROM quality_report;

@@ -106,6 +106,8 @@ clarify   질문 정보가 부족해 추가 확인이 필요한 질문
 │  │  │  ├─ kaist_profile.csv
 │  │  │  ├─ kaist_statistics.csv
 │  │  │  ├─ people.csv
+│  │  │  ├─ rag_documents.csv
+│  │  │  ├─ rag_chunks.csv
 │  │  │  └─ quality_report.csv
 │  │  ├─ json/                          # VectorStore 적재용 문서
 │  │  │  ├─ vector_documents.json
@@ -224,6 +226,8 @@ data/processed/csv/admissions.csv
 data/processed/csv/courses.csv
 data/processed/csv/people.csv
 data/processed/csv/department_offices.csv
+data/processed/csv/rag_documents.csv
+data/processed/csv/rag_chunks.csv
 data/processed/json/vector_documents.jsonl
 data/processed/reports/preprocess_summary.csv
 ```
@@ -234,6 +238,14 @@ data/processed/reports/preprocess_summary.csv
 
 ```powershell
 mysql -u your_user -pyour_password --local-infile=1 -e "source sql/01_schema.sql; source sql/02_load.sql; source sql/03_verify.sql"
+```
+
+MySQL 서버에서 `local_infile` 권한을 켤 수 없는 환경에서는 스키마만 만든 뒤 PyMySQL 로더를 사용합니다.
+
+```powershell
+mysql -u your_user -pyour_password -e "source sql/01_schema.sql"
+python sql\load_with_pymysql.py
+mysql -u your_user -pyour_password -e "source sql/03_verify.sql"
 ```
 
 또는 MySQL에 접속한 뒤 순서대로 실행합니다.
@@ -249,7 +261,8 @@ source sql/03_verify.sql;
 ```sql
 SELECT COUNT(*) FROM admission;
 SELECT COUNT(*) FROM course;
-SELECT COUNT(*) FROM people;
+SELECT COUNT(*) FROM person;
+SELECT COUNT(*) FROM rag_chunk;
 ```
 
 SQL 연결이 실패하거나 SQL 결과가 부족한 경우, 파이프라인은 설정에 따라 vector 검색으로 fallback할 수 있습니다.

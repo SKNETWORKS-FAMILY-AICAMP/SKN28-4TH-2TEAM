@@ -180,6 +180,10 @@ AI_COLLEGE_SCOPE_KEYWORDS = [
     "KAIST AI대학",
     "카이스트 AI대학",
     "AI 관련 학과",
+    "AI 학과",
+    "AI학과",
+    "인공지능 학과",
+    "인공지능학과",
     "수집된 AI 관련 학과",
     "전체 학과",
     "모든 학과",
@@ -187,6 +191,23 @@ AI_COLLEGE_SCOPE_KEYWORDS = [
     "학과별",
     "학과들",
     "학과들을",
+]
+
+KAIST_ACADEMIC_ORG_KEYWORDS = [
+    "공과대학",
+    "자연과학대학",
+    "생명과학기술대학",
+    "생명과학 기술대학",
+    "인문사회융합과학대학",
+    "인문사회 융합과학대학",
+    "경영대학",
+    "단과대학",
+    "학과/프로그램",
+    "학과 프로그램",
+    "학과 목록",
+    "학과 종류",
+    "카이스트 학과",
+    "KAIST 학과",
 ]
 
 UNSUPPORTED_FACT_KEYWORDS = [
@@ -203,6 +224,31 @@ UNSUPPORTED_FACT_KEYWORDS = [
     "가장 합격하기 쉬운",
     "장학금 지급 금액",
     "대기업 취업 가능성",
+    "외부 대학 비교",
+    "타 대학 비교",
+]
+
+EXTERNAL_INSTITUTION_KEYWORDS = [
+    "서울대",
+    "서울대학교",
+    "연세대",
+    "연세대학교",
+    "고려대",
+    "고려대학교",
+    "포스텍",
+    "POSTECH",
+    "postech",
+    "성균관대",
+    "한양대",
+    "UNIST",
+    "unist",
+    "DGIST",
+    "dgist",
+    "GIST",
+    "gist",
+    "외부 대학",
+    "타 대학",
+    "다른 대학",
 ]
 
 KAIST_OFFICIAL_URL = "https://www.kaist.ac.kr/kr/"
@@ -272,9 +318,16 @@ INTENT_EXAMPLES = [
     IntentExample("AI컴퓨팅학과 소개해줘", "department_overview"),
     IntentExample("AI시스템학과 특징 알려줘", "department_overview"),
     IntentExample("AX학과는 어떤 학과야", "department_overview"),
+    IntentExample("KAIST에 AI 학과는 어떤 게 있어", "department_overview"),
+    IntentExample("카이스트 AI학과 뭐 있어", "department_overview"),
+    IntentExample("AI컴퓨팅학과는 어떤 분야를 다뤄", "department_overview"),
+    IntentExample("AI시스템학과는 어떤 인재를 양성해", "department_overview"),
+    IntentExample("AX학과 교육 목표 알려줘", "department_overview"),
     IntentExample("카이스트 학과 뭐 있어", "department_overview", "department_scope"),
     IntentExample("KAIST 전체 학과 소개해줘", "department_overview", "department_scope"),
     IntentExample("카이스트 AI 관련 학과 알려줘", "department_overview", "department_scope"),
+    IntentExample("공과대학에는 어떤 학과가 있어", "department_overview"),
+    IntentExample("KAIST 학과 목록 알려줘", "department_overview"),
     IntentExample("학과들 비교해줘", "general_info", "comparison_criterion"),
     IntentExample("학과 차이 알려줘", "general_info", "comparison_criterion"),
     IntentExample("다 알려줘", "general_info", "too_broad"),
@@ -308,6 +361,8 @@ INTENT_EXAMPLES = [
     IntentExample("맛집 추천해줘", "general_info", "off_topic"),
     IntentExample("주식 가격 알려줘", "general_info", "off_topic"),
     IntentExample("영어 번역해줘", "general_info", "off_topic"),
+    IntentExample("서울대 AI학과랑 비교해줘", "general_info", "unsupported_fact"),
+    IntentExample("타 대학 AI학과와 비교해줘", "general_info", "unsupported_fact"),
 ]
 
 
@@ -413,6 +468,10 @@ INTENT_RULES = [
             "행정실",
             "전화번호",
             "전화",
+            "연락처",
+            "문의",
+            "문의처",
+            "행정",
             "위치",
             "건물",
             "office",
@@ -461,6 +520,14 @@ INTENT_RULES = [
             "석박사",
             "통합과정",
             "졸업예정자",
+            "제출서류",
+            "제출 서류",
+            "서류",
+            "접수방법",
+            "접수 방법",
+            "원서접수",
+            "면접",
+            "합격자 발표",
             "admission",
             "apply",
             "eligibility",
@@ -527,11 +594,29 @@ INTENT_RULES = [
             "KAIST AI대학",
             "카이스트 AI대학",
             "AI 관련 학과",
+            "AI 학과",
+            "AI학과",
+            "인공지능 학과",
+            "인공지능학과",
+            "어떤 게 있어",
+            "뭐 있어",
+            "무엇이 있어",
             "학과별",
             "학과들",
             "학과들을",
             "전체 학과",
             "각 학과",
+            "분야",
+            "다뤄",
+            "다루",
+            "인재",
+            "양성",
+            "교육 목표",
+            "교육목표",
+            "인재상",
+            "진출 분야",
+            "무엇을 배우",
+            "뭘 배우",
             "졸업",
             "이수",
             "수료",
@@ -552,8 +637,10 @@ SQL_STRONG_KEYWORDS = [
     "목록",
     "전체",
     "전부",
-    "표",
     "표로",
+    "표 형식",
+    "표 형태",
+    "테이블",
     "리스트",
     "몇 개",
     "개수",
@@ -599,6 +686,30 @@ HYBRID_STRONG_PATTERNS = [
     ["이메일", "연구"],
     ["입학", "표"],
     ["지원 자격", "근거"],
+]
+
+CSV_FIRST_INTENTS = {
+    "admission_info",
+    "course_info",
+    "person_info",
+    "office_contact_info",
+    "event_info",
+    "asset_or_link_info",
+    "kaist_profile_info",
+    "kaist_statistics_info",
+    "kaist_link_info",
+}
+
+CSV_FIRST_VECTOR_ASSIST_KEYWORDS = [
+    "설명",
+    "요약",
+    "근거",
+    "자세히",
+    "차이",
+    "비교",
+    "정리",
+    "같이",
+    "함께",
 ]
 
 
@@ -1149,17 +1260,51 @@ class QuestionAnalyzer:
         if intent_rule is None:
             return "clarify", "질문 의도를 분류하지 못했습니다."
 
-        if intent_rule.intent in {
-            "kaist_profile_info",
-            "kaist_statistics_info",
-            "kaist_link_info",
-        }:
-            return "sql", "KAIST 기본/통계/링크 정보는 정형 데이터 조회가 적합한 질문입니다."
-
         lowered_question = normalized_question.lower()
+
+        if self._is_compare_question(lowered_question):
+            if intent_rule.intent in {
+                "course_info",
+                "person_info",
+                "office_contact_info",
+                "admission_info",
+                "event_info",
+                "asset_or_link_info",
+                "kaist_profile_info",
+                "kaist_statistics_info",
+                "kaist_link_info",
+            }:
+                return "hybrid", "비교 질문이므로 정형 데이터와 문서 근거를 함께 확인합니다."
+
+            if intent_rule.intent == "department_overview":
+                return "vector", "학과 소개/특징 비교는 문서 기반 설명이 적합합니다."
+
+        if (
+            intent_rule.intent == "department_overview"
+            and self._is_all_ai_department_scope_question(lowered_question)
+        ):
+            return (
+                "hybrid",
+                "AI 관련 학과 목록은 정형 학과 마스터를 우선 확인하고 문서 근거를 함께 사용합니다.",
+            )
+
+        if (
+            intent_rule.intent == "department_overview"
+            and self._is_kaist_academic_org_question(lowered_question)
+        ):
+            return "sql", "KAIST 학과/프로그램 조직 목록은 정형 데이터 조회가 적합합니다."
 
         if self._has_hybrid_pattern(lowered_question):
             return "hybrid", "정형 데이터와 문서 설명이 함께 필요한 질문입니다."
+
+        if intent_rule.intent in CSV_FIRST_INTENTS:
+            if self._needs_vector_assist_for_csv_first(lowered_question):
+                return (
+                    "hybrid",
+                    "CSV/MySQL 정형 데이터를 먼저 확인하고 문서 근거를 보조로 사용합니다.",
+                )
+
+            return "sql", "CSV/MySQL 정형 데이터에서 먼저 확인할 수 있는 질문입니다."
 
         has_sql_signal = self._contains_any(lowered_question, SQL_STRONG_KEYWORDS)
         has_vector_signal = self._contains_any(lowered_question, VECTOR_STRONG_KEYWORDS)
@@ -1173,19 +1318,10 @@ class QuestionAnalyzer:
         if has_vector_signal:
             return "vector", "문서 기반 설명이나 근거가 필요한 질문입니다."
 
-        if intent_rule.intent in {
-            "kaist_profile_info",
-            "kaist_statistics_info",
-            "kaist_link_info",
-            "course_info",
-            "person_info",
-            "office_contact_info",
-            "asset_or_link_info",
-        }:
+        if intent_rule.intent in CSV_FIRST_INTENTS:
             return "sql", "정확한 정형 데이터 조회가 적합한 질문입니다."
 
         if intent_rule.intent in {
-            "admission_info",
             "event_info",
             "department_overview",
         }:
@@ -1197,6 +1333,12 @@ class QuestionAnalyzer:
         return any(
             all(keyword.lower() in lowered_question for keyword in pattern)
             for pattern in HYBRID_STRONG_PATTERNS
+        )
+
+    def _needs_vector_assist_for_csv_first(self, lowered_question: str) -> bool:
+        return any(
+            keyword.lower() in lowered_question
+            for keyword in CSV_FIRST_VECTOR_ASSIST_KEYWORDS
         )
 
     def _contains_any(self, text: str, keywords: list[str]) -> bool:
@@ -1288,6 +1430,7 @@ class QuestionAnalyzer:
 
         scope_resolved = (
             self._is_all_ai_department_scope_question(lowered_question)
+            or self._is_kaist_academic_org_question(lowered_question)
             or self._is_multi_department_question(normalized_question)
         )
 
@@ -1319,6 +1462,7 @@ class QuestionAnalyzer:
 
         scope_resolved = (
             self._is_all_ai_department_scope_question(lowered_question)
+            or self._is_kaist_academic_org_question(lowered_question)
             or self._is_multi_department_question(normalized_question)
         )
 
@@ -1410,6 +1554,19 @@ class QuestionAnalyzer:
         lowered_question: str,
     ) -> bool:
         return any(keyword.lower() in lowered_question for keyword in AI_COLLEGE_SCOPE_KEYWORDS)
+
+    def _is_kaist_academic_org_question(
+        self,
+        lowered_question: str,
+    ) -> bool:
+        if any(keyword.lower() in lowered_question for keyword in KAIST_ACADEMIC_ORG_KEYWORDS):
+            return True
+
+        has_kaist = any(keyword in lowered_question for keyword in ["kaist", "카이스트", "한국과학기술원"])
+        has_department_word = any(keyword in lowered_question for keyword in ["학과", "학부", "대학원", "프로그램"])
+        has_list_word = any(keyword in lowered_question for keyword in ["뭐 있어", "어떤", "목록", "종류", "정리", "알려줘"])
+
+        return has_kaist and has_department_word and has_list_word
     
     
     def _is_multi_department_question(
@@ -1423,7 +1580,15 @@ class QuestionAnalyzer:
         self,
         lowered_question: str,
     ) -> bool:
-        return any(keyword in lowered_question for keyword in UNSUPPORTED_FACT_KEYWORDS)
+        if any(keyword in lowered_question for keyword in UNSUPPORTED_FACT_KEYWORDS):
+            return True
+
+        has_external_institution = any(
+            keyword.lower() in lowered_question
+            for keyword in EXTERNAL_INSTITUTION_KEYWORDS
+        )
+
+        return has_external_institution and self._is_compare_question(lowered_question)
     
     
     def _is_interest_based_recommendation_question(
@@ -1491,6 +1656,10 @@ class QuestionAnalyzer:
             "학과 목록",
             "어떤 학과",
             "무슨 학과",
+            "ai 학과",
+            "ai학과",
+            "인공지능 학과",
+            "인공지능학과",
             "카이스트 학과",
             "kaist 학과",
         ]
@@ -1689,7 +1858,8 @@ class QuestionAnalyzer:
             return (
                 "제공된 문서에서 해당 정보는 확인되지 않습니다.\n\n"
                 "이 챗봇은 수집된 KAIST AI 관련 학과 자료를 바탕으로 답변합니다. "
-                "경쟁률, 등록금, 취업률, 평균 연봉, 합격 가능성처럼 문서에 근거가 없는 정보는 추측해서 답변하지 않습니다."
+                "경쟁률, 등록금, 취업률, 평균 연봉, 합격 가능성, 외부 대학 비교처럼 "
+                "문서에 근거가 없는 정보는 추측해서 답변하지 않습니다."
             )
 
         if "department" in missing_fields:

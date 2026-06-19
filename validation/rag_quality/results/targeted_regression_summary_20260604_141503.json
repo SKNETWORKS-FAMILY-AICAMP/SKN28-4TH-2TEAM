@@ -1,0 +1,8 @@
+{
+  "total": 17,
+  "pass": 17,
+  "fail": 0,
+  "pass_rate": 1.0,
+  "result_csv": "E:\\workspace\\SKN28_3RD_2TEAM\\validation\\rag_quality\\results\\targeted_regression_results_20260604_141503.csv",
+  "failed_cases": []
+}
