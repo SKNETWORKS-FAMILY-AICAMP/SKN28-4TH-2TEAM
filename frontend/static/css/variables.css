@@ -1,0 +1,89 @@
+/* ============================================================
+   Nubzuki · Design tokens
+   Friendly & playful · KAIST blue · rounded, mascot-forward
+   ============================================================ */
+:root {
+  /* — Surfaces — */
+  --bg:           #eef3fa;
+  --bg-tint:      #e4edf8;
+  --surface:      #ffffff;
+  --surface-2:    #f3f7fc;
+  --surface-3:    #e9f0f9;
+
+  /* — Ink — */
+  --ink:          #16263f;
+  --ink-soft:     #54657f;
+  --ink-faint:    #93a3ba;
+  --on-blue:      #ffffff;
+
+  /* — Brand — */
+  --nub:          #29a8e2;   /* Nubzuki cyan — primary */
+  --nub-deep:     #0f86c6;
+  --nub-soft:     #dcf0fb;
+  --nub-tint:     #eef8fe;
+  --kaist:        #0b3f8c;   /* KAIST navy */
+  --kaist-deep:   #082e66;
+
+  /* — Accents (shared chroma, varied hue) — */
+  --coral:        #ff5b9e;   /* heart pink */
+  --coral-soft:   #ffe3ef;
+  --mint:         #1fb894;   /* success */
+  --mint-soft:    #d9f5ee;
+  --amber:        #f0a23a;   /* warning */
+  --amber-soft:   #fdeed4;
+  --danger:       #ef5b5b;
+  --danger-soft:  #fde0e0;
+
+  /* — Borders / lines — */
+  --line:         rgba(16, 47, 99, 0.10);
+  --line-strong:  rgba(16, 47, 99, 0.18);
+
+  /* — Radii (rounded / playful) — */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r:    18px;
+  --r-lg: 26px;
+  --r-xl: 34px;
+  --r-pill: 999px;
+
+  /* — Shadows (soft, blue-tinted) — */
+  --sh-sm:  0 1px 2px rgba(16,47,99,.06), 0 2px 6px rgba(16,47,99,.05);
+  --sh:     0 4px 14px rgba(16,47,99,.08), 0 1px 3px rgba(16,47,99,.05);
+  --sh-md:  0 12px 30px rgba(16,47,99,.10), 0 3px 8px rgba(16,47,99,.06);
+  --sh-lg:  0 24px 60px rgba(16,47,99,.16), 0 6px 16px rgba(16,47,99,.08);
+  --sh-nub: 0 18px 40px rgba(41,168,226,.28);
+
+  /* — Type — */
+  --font-ui: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+             "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-brand: "Jua", var(--font-ui);
+
+  /* — Motion — */
+  --ease: cubic-bezier(.22,.68,.32,1);
+  --ease-bounce: cubic-bezier(.34,1.56,.64,1);
+
+  /* — Layout — */
+  --rail-w: 280px;
+  --mascot-w: 340px;
+  --maxchat: 760px;
+}
+
+/* Dark mode (toggled via [data-theme="dark"] on <html>) */
+[data-theme="dark"] {
+  --bg:        #0e1626;
+  --bg-tint:   #0a1120;
+  --surface:   #16223a;
+  --surface-2: #1c2b46;
+  --surface-3: #243450;
+  --ink:       #eaf1fb;
+  --ink-soft:  #a7b6cd;
+  --ink-faint: #6a7b96;
+  --nub-tint:  #14304a;
+  --nub-soft:  #15466b;
+  --line:        rgba(180,205,240,0.12);
+  --line-strong: rgba(180,205,240,0.22);
+  --sh-sm:  0 1px 2px rgba(0,0,0,.4);
+  --sh:     0 4px 14px rgba(0,0,0,.45);
+  --sh-md:  0 12px 30px rgba(0,0,0,.5);
+  --sh-lg:  0 24px 60px rgba(0,0,0,.6);
+}

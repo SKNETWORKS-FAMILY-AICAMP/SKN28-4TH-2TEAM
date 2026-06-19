@@ -1,0 +1,84 @@
+/* ============================================================
+   Auth (login / signup) + error pages
+   ============================================================ */
+.auth {
+  height: 100%; display: grid; grid-template-columns: 1.05fr 1fr;
+  background: var(--bg);
+}
+/* left hero */
+.auth-hero {
+  position: relative; overflow: hidden; display: flex; flex-direction: column;
+  justify-content: space-between; padding: 46px 52px;
+  background:
+    radial-gradient(120% 90% at 20% 10%, #3fb6ec, transparent 55%),
+    linear-gradient(155deg, var(--nub) 0%, var(--nub-deep) 55%, var(--kaist) 130%);
+  color: #fff;
+}
+.auth-hero .brand { color: #fff; }
+.auth-hero .brand b, .auth-hero .brand .mark { color: #fff; }
+.auth-hero .brand .mark { background: rgba(255,255,255,.18); }
+.auth-hero .brand small { color: rgba(255,255,255,.7); }
+.auth-hero-mid { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
+.auth-hero h2 { font-family: var(--font-brand); font-size: 40px; line-height: 1.2; font-weight: 400; }
+.auth-hero p { font-size: 16px; max-width: 380px; color: rgba(255,255,255,.86); line-height: 1.6; }
+.auth-mascot { position: relative; align-self: center; margin: 6px 0; }
+.auth-mascot img { width: 200px; filter: drop-shadow(0 18px 26px rgba(0,40,90,.4)); animation: bob 3.4s var(--ease) infinite; }
+.auth-mascot .ring { position: absolute; inset: -18px; border-radius: 50%; background: radial-gradient(closest-side, transparent 60%, rgba(255,255,255,.14) 72%, transparent 82%); }
+.auth-stats { display: flex; gap: 30px; }
+.auth-stats .st b { font-family: var(--font-brand); font-size: 26px; display: block; }
+.auth-stats .st span { font-size: 12.5px; color: rgba(255,255,255,.74); font-weight: 600; }
+.auth-blob { position: absolute; border-radius: 50%; background: rgba(255,255,255,.08); }
+.auth-blob.a { width: 220px; height: 220px; right: -60px; top: -50px; }
+.auth-blob.b { width: 130px; height: 130px; left: -40px; bottom: 80px; }
+
+/* right form */
+.auth-form-wrap { display: grid; place-items: center; padding: 40px; overflow-y: auto; }
+.auth-card { width: 100%; max-width: 380px; }
+.auth-card h3 { font-size: 26px; font-weight: 800; letter-spacing: -.02em; }
+.auth-card .sub { color: var(--ink-soft); font-size: 14.5px; margin-top: 6px; margin-bottom: 26px; }
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 13px; font-weight: 700; color: var(--ink-soft); margin-bottom: 7px; }
+.field .inp {
+  display: flex; align-items: center; gap: 10px; height: 50px; padding: 0 15px; border-radius: var(--r-sm);
+  background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--line); transition: box-shadow .15s;
+}
+.field .inp:focus-within { box-shadow: inset 0 0 0 2px var(--nub); }
+.field .inp svg { width: 18px; height: 18px; color: var(--ink-faint); flex: none; }
+.field .inp input { border: none; outline: none; background: none; width: 100%; font-size: 15px; }
+.field .inp .eye { color: var(--ink-faint); cursor: pointer; }
+.field.invalid .inp { box-shadow: inset 0 0 0 2px var(--danger); }
+.field .err { font-size: 12px; color: var(--danger); margin-top: 6px; font-weight: 600; display: none; }
+.field.invalid .err { display: block; }
+.auth-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; font-size: 13px; }
+.check { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--ink-soft); font-weight: 600; }
+.check input { width: 18px; height: 18px; accent-color: var(--nub); }
+.link { color: var(--nub-deep); font-weight: 700; cursor: pointer; }
+.link:hover { text-decoration: underline; }
+.auth-or { display: flex; align-items: center; gap: 12px; margin: 22px 0; color: var(--ink-faint); font-size: 12.5px; font-weight: 600; }
+.auth-or::before, .auth-or::after { content:""; flex: 1; height: 1px; background: var(--line); }
+.auth-alt { text-align: center; font-size: 14px; color: var(--ink-soft); margin-top: 22px; }
+.auth-mobile-brand { display: none; }
+
+/* Google sign-in button */
+.btn-google { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line-strong); font-weight: 700; }
+.btn-google:hover { background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--ink-faint); }
+.btn-google .gG { width: 18px; height: 18px; }
+.gspin { width: 16px; height: 16px; border-radius: 50%; border: 2.5px solid var(--line-strong); border-top-color: var(--nub-deep); display: inline-block; animation: gspin .7s linear infinite; }
+@keyframes gspin { to { transform: rotate(360deg); } }
+
+@media (max-width: 900px) {
+  .auth { grid-template-columns: 1fr; }
+  .auth-hero { display: none; }
+  .auth-mobile-brand { display: flex; justify-content: center; margin-bottom: 24px; }
+}
+
+/* ——— Error pages ——— */
+.errpage { height: 100%; display: grid; place-items: center; background: var(--bg); padding: 24px; }
+.errcard { text-align: center; max-width: 460px; }
+.err-mascot { width: 220px; margin: 0 auto 6px; }
+.err-mascot img { width: 100%; animation: shake 2.6s var(--ease) infinite; }
+.errcode { font-family: var(--font-brand); font-size: 84px; line-height: 1; color: var(--nub); letter-spacing: -.02em; }
+.errcard h2 { font-size: 24px; font-weight: 800; margin-top: 10px; }
+.errcard p { color: var(--ink-soft); font-size: 15px; margin-top: 10px; line-height: 1.6; }
+.err-actions { display: flex; gap: 10px; justify-content: center; margin-top: 26px; }
+.err-detail { margin-top: 22px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; color: var(--ink-faint); background: var(--surface-2); border-radius: 10px; padding: 10px 14px; box-shadow: inset 0 0 0 1px var(--line); }

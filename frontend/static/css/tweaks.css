@@ -1,0 +1,35 @@
+/* ============================================================
+   Tweaks panel + density variants
+   ============================================================ */
+#tweaks-panel {
+  position: fixed; right: 18px; top: 18px; z-index: 300; width: 268px;
+  background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--sh-lg);
+  border: 1px solid var(--line); overflow: hidden; animation: pop-in .26s var(--ease-bounce) both;
+}
+.tw-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.tw-head b { font-family: var(--font-brand); font-size: 17px; color: var(--kaist); }
+.tw-head button { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; color: var(--ink-faint); }
+.tw-head button:hover { background: var(--surface-2); color: var(--ink); }
+.tw-head button svg { width: 17px; height: 17px; }
+.tw-body { padding: 16px; display: flex; flex-direction: column; gap: 18px; max-height: 70vh; }
+.tw-sec label { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 800; color: var(--ink-soft); margin-bottom: 9px; }
+.tw-sec label span { color: var(--nub-deep); font-variant-numeric: tabular-nums; }
+.tw-seg { display: flex; gap: 6px; background: var(--surface-2); padding: 4px; border-radius: var(--r-pill); }
+.tw-seg button { flex: 1; height: 34px; border-radius: var(--r-pill); font-size: 13px; font-weight: 700; color: var(--ink-soft); display: inline-flex; align-items: center; justify-content: center; gap: 5px; transition: all .14s; }
+.tw-seg button svg { width: 14px; height: 14px; }
+.tw-seg button.on { background: var(--surface); color: var(--nub-deep); box-shadow: var(--sh-sm); }
+.tw-swatches { display: flex; gap: 9px; }
+.tw-swatches button { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; box-shadow: inset 0 0 0 1px var(--line); transition: transform .12s; }
+.tw-swatches button:hover { transform: translateY(-2px); }
+.tw-swatches button i { width: 24px; height: 24px; border-radius: 8px; display: block; }
+.tw-swatches button.on { box-shadow: 0 0 0 2.5px var(--surface), 0 0 0 4.5px currentColor; }
+.tw-swatches button.on i { transform: scale(1.05); }
+#tweaks-panel input[type=range] { width: 100%; accent-color: var(--nub); height: 6px; }
+
+/* ——— Density: compact ——— */
+body[data-density="compact"] { --maxchat: 720px; }
+body[data-density="compact"] .thread-inner { gap: 14px; }
+body[data-density="compact"] .bubble { padding: 10px 14px; font-size: 14px; }
+body[data-density="compact"] .thread { padding-top: 18px; }
+body[data-density="compact"] .src { padding: 9px 12px; }
+body[data-density="compact"] .src-snip { display: none; }

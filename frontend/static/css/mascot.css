@@ -1,0 +1,135 @@
+/* ============================================================
+   Nubzuki mascot — hero reactive companion
+   ============================================================ */
+.mascot-panel {
+  width: var(--mascot-w); flex: none; height: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 26px 22px 24px;
+  background:
+    radial-gradient(120% 80% at 50% -10%, var(--nub-tint), transparent 60%),
+    var(--surface);
+  border-left: 1px solid var(--line);
+  position: relative; overflow: hidden;
+}
+
+/* floating ambient dots */
+.mascot-sky { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.mascot-sky i {
+  position: absolute; border-radius: 50%; background: var(--nub); opacity: .12;
+  animation: floaty 7s var(--ease) infinite alternate;
+}
+.mascot-sky i:nth-child(1){ width: 14px; height:14px; left: 14%; top: 18%; animation-delay: 0s; }
+.mascot-sky i:nth-child(2){ width: 9px; height:9px; left: 80%; top: 26%; background: var(--coral); animation-delay: .8s; }
+.mascot-sky i:nth-child(3){ width: 18px; height:18px; left: 70%; top: 64%; animation-delay: 1.6s; }
+.mascot-sky i:nth-child(4){ width: 7px; height:7px; left: 22%; top: 72%; background: var(--mint); animation-delay: 2.4s; }
+@keyframes floaty { to { transform: translateY(-16px); } }
+
+/* the stage */
+.mascot-stage {
+  position: relative; width: 230px; height: 240px; margin-top: 8px;
+  display: grid; place-items: end center;
+}
+.mascot-disc {
+  position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+  width: 150px; height: 30px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(16,47,99,.18), transparent);
+  filter: blur(2px); transition: width .4s var(--ease), opacity .4s;
+}
+.mascot-img {
+  position: relative; z-index: 2; width: 190px; height: auto;
+  filter: drop-shadow(0 12px 18px rgba(16,47,99,.16));
+  transform-origin: 50% 90%;
+  transition: opacity .25s var(--ease);
+}
+
+/* aura ring (for source / done) */
+.mascot-aura {
+  position: absolute; z-index: 1; left: 50%; top: 46%; transform: translate(-50%,-50%);
+  width: 215px; height: 215px; border-radius: 50%; opacity: 0;
+  background: radial-gradient(closest-side, transparent 58%, var(--nub-soft) 72%, transparent 80%);
+  transition: opacity .4s var(--ease);
+}
+
+/* sparkles + thought dots layer */
+.mascot-fx { position: absolute; z-index: 3; inset: 0; pointer-events: none; }
+.mascot-fx .spark {
+  position: absolute; width: 12px; height: 12px; opacity: 0;
+  background: var(--amber);
+  clip-path: polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);
+}
+.mascot-fx .spark.s1 { left: 26%; top: 16%; }
+.mascot-fx .spark.s2 { left: 70%; top: 24%; background: var(--coral); width: 9px; height: 9px; }
+.mascot-fx .spark.s3 { left: 60%; top: 8%; background: var(--nub); width: 8px; height: 8px; }
+.mascot-fx .think {
+  position: absolute; left: 60%; top: 18%; display: flex; gap: 6px;
+  background: #fff; padding: 11px 13px; border-radius: 16px 16px 16px 4px;
+  box-shadow: var(--sh); opacity: 0; transform: scale(.6) translateY(6px); transform-origin: bottom left;
+}
+.mascot-fx .think b { width: 8px; height: 8px; border-radius: 50%; background: var(--nub); animation: tdot 1.2s infinite; }
+.mascot-fx .think b:nth-child(2){ animation-delay: .18s; }
+.mascot-fx .think b:nth-child(3){ animation-delay: .36s; }
+@keyframes tdot { 0%,60%,100%{ transform: translateY(0); opacity:.4 } 30%{ transform: translateY(-6px); opacity:1 } }
+
+/* speech / status */
+.mascot-speech {
+  margin-top: 18px; text-align: center; min-height: 64px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.mascot-name { font-family: var(--font-brand); font-size: 20px; color: var(--kaist); }
+.mascot-line {
+  font-size: 14.5px; color: var(--ink-soft); font-weight: 600; line-height: 1.45;
+  max-width: 250px; text-wrap: balance;
+}
+.mascot-statuschip {
+  display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 14px;
+  border-radius: var(--r-pill); font-size: 12.5px; font-weight: 800; letter-spacing: -.01em;
+  transition: background .25s, color .25s; white-space: nowrap;
+}
+.mascot-statuschip .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.mascot-statuschip .dot::after{ content:""; }
+
+/* tip footer */
+.mascot-foot {
+  margin-top: auto; width: 100%; background: var(--surface-2);
+  border-radius: var(--r); padding: 14px 16px; box-shadow: inset 0 0 0 1px var(--line);
+}
+.mascot-foot .tit { font-size: 12px; font-weight: 800; color: var(--nub-deep); letter-spacing: .02em; display: flex; align-items: center; gap: 6px; }
+.mascot-foot .tit svg { width: 14px; height: 14px; }
+.mascot-foot p { font-size: 13px; color: var(--ink-soft); margin-top: 5px; }
+
+/* ——— STATES ——— */
+/* idle: gentle breathing bob */
+.mascot[data-state="idle"] .mascot-img { animation: bob 3.4s var(--ease) infinite; }
+@keyframes bob { 0%,100%{ transform: translateY(0) rotate(0); } 50%{ transform: translateY(-9px) rotate(-1deg); } }
+
+/* thinking: wobble + thought bubble */
+.mascot[data-state="thinking"] .mascot-img { animation: wobble 1.1s var(--ease) infinite; }
+@keyframes wobble { 0%,100%{ transform: rotate(-3deg); } 50%{ transform: rotate(3deg); } }
+.mascot[data-state="thinking"] .mascot-fx .think { animation: thinkpop .3s var(--ease-bounce) forwards; }
+@keyframes thinkpop { to { opacity: 1; transform: scale(1) translateY(0); } }
+.mascot[data-state="thinking"] .mascot-disc { width: 110px; opacity: .8; }
+
+/* done: happy jump + sparkles + aura */
+.mascot[data-state="done"] .mascot-img { animation: jump .7s var(--ease-bounce); }
+@keyframes jump { 0%{ transform: translateY(0) scale(1);} 30%{ transform: translateY(-26px) scale(1.05,.95);} 55%{ transform: translateY(0) scale(.97,1.03);} 100%{ transform: translateY(0) scale(1);} }
+.mascot[data-state="done"] .mascot-fx .spark { animation: sparkle 1s var(--ease) both; }
+.mascot[data-state="done"] .mascot-fx .spark.s2 { animation-delay: .12s; }
+.mascot[data-state="done"] .mascot-fx .spark.s3 { animation-delay: .22s; }
+@keyframes sparkle { 0%{ opacity:0; transform: scale(.2) rotate(0);} 40%{ opacity:1; transform: scale(1.2) rotate(40deg);} 100%{ opacity:0; transform: scale(.6) rotate(90deg) translateY(-10px);} }
+.mascot[data-state="done"] .mascot-aura { opacity: 1; animation: pulsering 1s var(--ease); }
+@keyframes pulsering { 0%{ transform: translate(-50%,-50%) scale(.7); opacity:.9;} 100%{ transform: translate(-50%,-50%) scale(1.05); opacity:.0;} }
+
+/* source: lean + glowing aura */
+.mascot[data-state="source"] .mascot-img { animation: leanlook 3s var(--ease) infinite; }
+@keyframes leanlook { 0%,100%{ transform: rotate(-4deg) translateY(0);} 50%{ transform: rotate(2deg) translateY(-4px);} }
+.mascot[data-state="source"] .mascot-aura { opacity: .85; background: radial-gradient(closest-side, transparent 56%, rgba(31,184,148,.28) 72%, transparent 82%); }
+
+/* warning: shake + red ground */
+.mascot[data-state="warning"] .mascot-img { animation: shake .5s var(--ease) 2; }
+@keyframes shake { 0%,100%{ transform: translateX(0);} 20%{ transform: translateX(-6px) rotate(-3deg);} 40%{ transform: translateX(6px) rotate(3deg);} 60%{ transform: translateX(-4px);} 80%{ transform: translateX(4px);} }
+.mascot[data-state="warning"] .mascot-aura { opacity: .9; background: radial-gradient(closest-side, transparent 50%, rgba(240,162,58,.32) 68%, transparent 80%); }
+.mascot[data-state="warning"] .mascot-disc { background: radial-gradient(closest-side, rgba(239,91,91,.3), transparent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot-img, .mascot-sky i, .mascot-fx .think b { animation: none !important; }
+}
