@@ -31,6 +31,7 @@ class ValidationCase:
     expected_intent: str
     expected_department_code: str
     expected_content_type: str
+    expected_intents: str
     expected_missing_contains: str
     expected_ambiguity: str
     required_phrases: str
@@ -56,6 +57,9 @@ class ValidationResult:
     expected_content_type: str
     actual_content_type: str
     content_type_ok: bool | None
+    expected_intents: str
+    actual_intents: str
+    intents_ok: bool | None
     expected_missing_contains: str
     actual_missing_fields: str
     missing_ok: bool | None
@@ -103,6 +107,7 @@ def load_cases(path: Path) -> list[ValidationCase]:
                 expected_intent=row.get("expected_intent", "").strip(),
                 expected_department_code=row.get("expected_department_code", "").strip(),
                 expected_content_type=row.get("expected_content_type", "").strip(),
+                expected_intents=row.get("expected_intents", "").strip(),
                 expected_missing_contains=row.get("expected_missing_contains", "").strip(),
                 expected_ambiguity=row.get("expected_ambiguity", "").strip(),
                 required_phrases=row.get("required_phrases", "").strip(),
@@ -133,6 +138,14 @@ def check_missing_fields(expected: str, actual_missing_fields: list[str]) -> boo
         return None
     actual_set = set(actual_missing_fields)
     return all(field in actual_set for field in expected_fields)
+
+
+def check_intents(expected: str, actual_intents: list[str]) -> bool | None:
+    # 다중 정보유형(intents) 집합을 순서 무관하게 정확히 일치 검사한다.
+    expected_set = set(split_expected(expected))
+    if not expected_set:
+        return None
+    return expected_set == set(actual_intents)
 
 
 def collect_failure_reasons(
@@ -166,6 +179,10 @@ def validate_cases(cases: list[ValidationCase]) -> list[ValidationResult]:
             case.expected_content_type,
             analysis.content_type,
         )
+        intents_ok = check_intents(
+            case.expected_intents,
+            analysis.intents,
+        )
         missing_ok = check_missing_fields(
             case.expected_missing_contains,
             analysis.missing_fields,
@@ -180,6 +197,7 @@ def validate_cases(cases: list[ValidationCase]) -> list[ValidationResult]:
             ("intent", intent_ok),
             ("department_code", department_ok),
             ("content_type", content_type_ok),
+            ("intents", intents_ok),
             ("missing_fields", missing_ok),
             ("ambiguity_type", ambiguity_ok),
         ]
@@ -204,6 +222,9 @@ def validate_cases(cases: list[ValidationCase]) -> list[ValidationResult]:
                 expected_content_type=case.expected_content_type,
                 actual_content_type=analysis.content_type or "",
                 content_type_ok=content_type_ok,
+                expected_intents=case.expected_intents,
+                actual_intents=";".join(analysis.intents),
+                intents_ok=intents_ok,
                 expected_missing_contains=case.expected_missing_contains,
                 actual_missing_fields=";".join(analysis.missing_fields),
                 missing_ok=missing_ok,

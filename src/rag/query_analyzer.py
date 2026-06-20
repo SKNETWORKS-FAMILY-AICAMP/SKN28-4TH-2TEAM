@@ -741,6 +741,40 @@ MULTI_INTENT_CANDIDATES = {
 # '와/과'는 "학과/교과목" 등의 부분문자열이라 오탐 위험이 커서 제외(보수적).
 CONJUNCTION_MARKERS = ["이랑", "랑", "및", "하고", "그리고", ","]
 
+# 공유/모호 키워드 가드(S5): 접속어가 있어도, 공유 키워드 하나만으로 보조 intent를
+# 붙이면 오귀속이 생긴다(예: '홈페이지'→person, '입학 일정'의 '일정'→event).
+# 아래 (intent, keyword)는 해당 문맥이 맞을 때만 그 intent로 집계한다.
+PERSON_SPECIFIC_KEYWORDS = [
+    "교수",
+    "교수진",
+    "구성원",
+    "연구실",
+    "지도교수",
+    "faculty",
+    "professor",
+]
+EVENT_SPECIFIC_KEYWORDS = [
+    "설명회",
+    "학과설명회",
+    "행사",
+    "공지",
+    "세미나",
+    "안내",
+]
+# '입학/면접 일정' 등 입학 맥락의 '일정'은 행사(event)가 아니라 admission이다.
+ADMISSION_SCHEDULE_CONTEXT_KEYWORDS = [
+    "입학",
+    "지원",
+    "모집",
+    "면접",
+    "원서",
+    "제출",
+    "합격자",
+    "전형",
+    "석사",
+    "박사",
+]
+
 CSV_FIRST_VECTOR_ASSIST_KEYWORDS = [
     "설명",
     "요약",
@@ -1160,7 +1194,8 @@ class QuestionAnalyzer:
         주 intent 외에 같은 질문에서 명확히 함께 요청된 보조 intent를 보수적으로 찾는다.
         - 주 intent가 학과-범위 구조화 intent일 때만 동작(overview/general/kaist_* 제외)
         - 보조 후보도 같은 후보군으로 제한
-        - 해당 intent의 키워드가 실제 질문에 등장할 때만 채택
+        - 해당 intent의 '판별 가능한' 키워드가 실제 질문에 등장할 때만 채택
+          (공유/모호 키워드 가드로 오귀속 차단 — '홈페이지'→person, '입학 일정'→event)
         예: "교수 이메일이랑 담당 과목" → 주=course, 보조=person
         """
         if primary_rule is None or primary_rule.intent not in MULTI_INTENT_CANDIDATES:
@@ -1180,10 +1215,50 @@ class QuestionAnalyzer:
             if rule.intent not in MULTI_INTENT_CANDIDATES:
                 continue
 
-            if any(keyword.lower() in lowered_question for keyword in rule.keywords):
+            distinctive_keywords = [
+                keyword
+                for keyword in rule.keywords
+                if keyword.lower() in lowered_question
+                and self._is_keyword_valid_for_intent(
+                    intent=rule.intent,
+                    keyword=keyword,
+                    lowered_question=lowered_question,
+                )
+            ]
+
+            if distinctive_keywords:
                 additional_rules.append(rule)
 
         return additional_rules
+
+    def _is_keyword_valid_for_intent(
+        self,
+        intent: IntentType,
+        keyword: str,
+        lowered_question: str,
+    ) -> bool:
+        """공유/모호 키워드가 해당 intent로 집계될 문맥인지 판정(S5 가드).
+
+        - person_info의 '홈페이지'는 교수/연구실 등 사람 단서가 있을 때만 person.
+          (없으면 자료/링크 질문이므로 person 보조 intent로 잘못 붙지 않게 한다)
+        - event_info의 '일정'은 행사 단서(설명회/세미나 등)가 있거나, 입학 맥락이
+          전혀 없을 때만 event. ('입학 일정'·'면접 일정'은 admission이다)
+        """
+        if intent == "person_info" and keyword == "홈페이지":
+            return any(
+                word in lowered_question for word in PERSON_SPECIFIC_KEYWORDS
+            )
+
+        if intent == "event_info" and keyword == "일정":
+            if any(word in lowered_question for word in EVENT_SPECIFIC_KEYWORDS):
+                return True
+
+            return not any(
+                word in lowered_question
+                for word in ADMISSION_SCHEDULE_CONTEXT_KEYWORDS
+            )
+
+        return True
 
     def _dedup_preserve(self, values: list[Any]) -> list[Any]:
         seen = set()
