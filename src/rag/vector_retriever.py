@@ -55,6 +55,9 @@ AI_COLLEGE_DEPT_CODES = {
     "fx",
 }
 
+# scope(전체 AI학과) 질문에서 학과별 커버리지를 보장하기 위한 고정 순서
+AI_COLLEGE_DEPT_CODES_ORDERED = ("aic", "ai_systems", "ax", "fx")
+
 AI_COLLEGE_DEPT_NAMES = {
     "AI컴퓨팅학과",
     "AI시스템학과",
@@ -378,12 +381,21 @@ class VectorRetriever:
         search_query = self._select_search_query(analysis)
         search_plan = self._build_search_plan(analysis)
 
-        items, attempts, used_fallback, warnings = self._search_with_fallback(
-            search_query=search_query,
-            search_plan=search_plan,
-            analysis=analysis,
-            question=analysis.normalized_question,
-        )
+        # 전체 AI학과(scope) 질문은 전역 유사도 검색이 일부 학과(예: AX)를 놓쳐
+        # "4개 중 2개만" 같은 불완전/사실오류 답을 낸다. 학과별로 따로 검색해
+        # 4개 학과 커버리지를 보장한다.
+        if self._is_all_department_scope(analysis):
+            items, attempts, used_fallback, warnings = self._search_per_department(
+                search_query=search_query,
+                analysis=analysis,
+            )
+        else:
+            items, attempts, used_fallback, warnings = self._search_with_fallback(
+                search_query=search_query,
+                search_plan=search_plan,
+                analysis=analysis,
+                question=analysis.normalized_question,
+            )
 
         if not items:
             return VectorRetrievalResult(
@@ -535,6 +547,27 @@ class VectorRetriever:
             keyword in question
             for keyword in AI_COLLEGE_SCOPE_KEYWORDS
         )
+
+    def _is_all_department_scope(self, analysis: QueryAnalysis) -> bool:
+        """
+        '전체 AI학과' 류 질문인지 판정한다. 특정 키워드 목록에 의존하지 않고,
+        - 학과 소개(department_overview) 의도이고
+        - 특정 학과가 지정되지 않았으며
+        - 질문 안에 특정 학과명이 하나도 없는
+        경우를 전체 학과 scope로 본다. (2개 학과 비교 등 특정 학과가 명시된
+        질문은 제외해 4개 학과로 희석되지 않도록 한다.)
+        """
+        if analysis.department_code:
+            return False
+
+        if analysis.intent != "department_overview":
+            return False
+
+        named_departments = self.question_analyzer._find_all_departments(
+            analysis.normalized_question
+        )
+
+        return len(named_departments) == 0
 
     def _is_kaist_global_question(self, question: str) -> bool:
         question = str(question)
@@ -795,6 +828,9 @@ class VectorRetriever:
         question: str,
         items: list[RetrievedVectorDocument],
     ) -> list[RetrievedVectorDocument]:
+        if self._is_all_department_scope(analysis):
+            return self._diversify_department_results(items=items)
+
         if analysis.intent != "admission_info":
             return items[: self.config.search_k]
 
@@ -802,6 +838,96 @@ class VectorRetriever:
             question=question,
             items=items,
         )
+
+    def _search_per_department(
+        self,
+        search_query: str,
+        analysis: QueryAnalysis,
+    ) -> tuple[
+        list[RetrievedVectorDocument],
+        list[SearchAttempt],
+        bool,
+        list[str],
+    ]:
+        """
+        전체 AI학과 scope 질문 전용 검색.
+        4개 학과 각각을 dept 필터로 따로 검색해 병합하여 학과 커버리지를 보장한다.
+        """
+        results: list[RetrievedVectorDocument] = []
+        attempts: list[SearchAttempt] = []
+        seen_keys: set[str] = set()
+        per_dept_limit = max(2, self.config.search_k // 2)
+
+        for dept_code in AI_COLLEGE_DEPT_CODES_ORDERED:
+            dept_filter = {"dept": {"$eq": dept_code}}
+            stage_results = self._search_chroma_once(
+                search_query=search_query,
+                metadata_filter=dept_filter,
+                search_stage="department_only",
+            )
+            stage_results = self._filter_items_for_question(
+                items=stage_results,
+                analysis=analysis,
+                question=analysis.normalized_question,
+            )
+
+            attempts.append(
+                SearchAttempt(
+                    search_stage="department_only",
+                    metadata_filter=dept_filter,
+                    result_count=len(stage_results),
+                )
+            )
+
+            added = 0
+            for item in stage_results:
+                key = self._make_document_key(item.document)
+
+                if key in seen_keys:
+                    continue
+
+                seen_keys.add(key)
+                results.append(item)
+                added += 1
+
+                if added >= per_dept_limit:
+                    break
+
+        return results, attempts, False, []
+
+    def _diversify_department_results(
+        self,
+        items: list[RetrievedVectorDocument],
+    ) -> list[RetrievedVectorDocument]:
+        """
+        scope 질문 결과를 학과별로 1개씩 우선 채워 4개 학과가 모두 답변에
+        포함되도록 보장한 뒤, 남은 자리를 점수 순으로 채운다.
+        """
+        by_dept: dict[str, list[RetrievedVectorDocument]] = {}
+        for item in items:
+            dept = str((item.document.metadata or {}).get("dept") or "")
+            by_dept.setdefault(dept, []).append(item)
+
+        selected: list[RetrievedVectorDocument] = []
+        selected_ids: set[int] = set()
+
+        # 1단계: 학과별 1개씩 (고정 순서)
+        for dept_code in AI_COLLEGE_DEPT_CODES_ORDERED:
+            for item in by_dept.get(dept_code, []):
+                if id(item) not in selected_ids:
+                    selected.append(item)
+                    selected_ids.add(id(item))
+                    break
+
+        # 2단계: 남은 자리를 기존 순위(점수) 순으로 채움
+        for item in items:
+            if len(selected) >= self.config.search_k:
+                break
+            if id(item) not in selected_ids:
+                selected.append(item)
+                selected_ids.add(id(item))
+
+        return selected
 
     def _diversify_admission_results(
         self,
