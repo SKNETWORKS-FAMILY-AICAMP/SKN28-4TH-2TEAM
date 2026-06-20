@@ -736,6 +736,11 @@ MULTI_INTENT_CANDIDATES = {
     "asset_or_link_info",
 }
 
+# 보조 intent는 사용자가 두 가지를 '명시적으로 접속'했을 때만 채택한다.
+# ('일정' 같은 공유 키워드가 단일 질문에 보조 intent를 잘못 다는 것을 방지)
+# '와/과'는 "학과/교과목" 등의 부분문자열이라 오탐 위험이 커서 제외(보수적).
+CONJUNCTION_MARKERS = ["이랑", "랑", "및", "하고", "그리고", ","]
+
 CSV_FIRST_VECTOR_ASSIST_KEYWORDS = [
     "설명",
     "요약",
@@ -1159,6 +1164,10 @@ class QuestionAnalyzer:
         예: "교수 이메일이랑 담당 과목" → 주=course, 보조=person
         """
         if primary_rule is None or primary_rule.intent not in MULTI_INTENT_CANDIDATES:
+            return []
+
+        # 명시적 접속어가 없으면 다중 의도로 보지 않는다(보수적).
+        if not any(marker in normalized_question for marker in CONJUNCTION_MARKERS):
             return []
 
         lowered_question = normalized_question.lower()
