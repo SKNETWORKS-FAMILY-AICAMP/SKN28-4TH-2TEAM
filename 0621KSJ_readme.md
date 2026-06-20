@@ -20,7 +20,7 @@
 
 ## 2. 답변레벨에서 확정된 진짜 버그
 - **버그 A (다중 intent 충돌)** — "AI시스템학과 교수 이메일이랑 담당 과목 알려줘"
-  → intent가 course로 붕괴, person 미조회 → **둘 다 "확인 불가"** 포기. (← S4/S5에서 수정 예정)
+  → intent가 course로 붕괴, person 미조회 → **둘 다 "확인 불가"** 포기. (← 이번 PR에서 수정)
 - **버그 B (전체 학과 목록 불완전)** — "AI 관련 학과 종류 알려줘"
   → 4개 중 2개만 + "두 학과만 있다" **사실오류**. (← 이번 PR에서 수정)
 
@@ -38,7 +38,19 @@
   | AI 관련 학과 종류 | 2개("두 학과만") | **4개** |
   | aic·ax 차이(비교) | — | **2개 유지**(희석 안 됨) |
 
-### (b) 검증 골든셋 큐레이션 — `validation/rag_quality/questions.csv`
+### (b) 버그 A 수정 — 다중 정보유형 지원(`query_analyzer/rag_pipeline/context_builder/sql_tool/answer_generator`)
+- **원인**: 질문이 단일 intent(course)로 붕괴 → person 테이블(46행)을 아예 미조회.
+- **수정**: 정보유형을 스칼라→집합으로(N-일반). 분석기는 학과-범위 구조화 intent끼리만
+  보조 intent를 보수적으로 채우고, 파이프라인이 task별 SQL을 조회·병합. 다중intent 질문은
+  키워드 LIKE 필터를 꺼 교차 오염(타 의도 단어가 name/email을 0행으로 만드는 문제)을 차단.
+  근거검사는 intent 집합의 합집합으로(하나라도 근거 있으면 부분 답변 허용).
+- **Before/After**:
+  | 질문 | Before | After |
+  |---|---|---|
+  | 교수 이메일+과목 | 둘 다 "확인 불가" | **교수 이메일 46명 표** + 과목은 정직하게 "자료 없음" |
+- 단일 intent 질문은 길이 1 리스트 → **동작 보존**(골든 1.0 유지).
+
+### (c) 검증 골든셋 큐레이션 — `validation/rag_quality/questions.csv`
 - 낡은 route 기대(목록=vector→hybrid) 정정, clarify/정책 케이스의 cosmetic 라벨 제거,
   입학 라우팅은 측정 전까지 OPEN 처리.
 - 효과: 행동-의미 있는 기대만 남겨 baseline이 신뢰 가능해짐(노이즈 제거).
@@ -53,8 +65,9 @@ python -c "from src.rag.rag_pipeline import create_default_pipeline as c; p=c();
 ```
 
 ## 5. 남은 작업 / 열린 결정
-- **버그 A**: 단일 intent로는 "교수+과목"을 못 담음 → **S4 다중속성 모델 + S5 결정적
-  점수제 분류**로 해결 예정.
+- **다중intent 채우기 정교화(S5)**: 현재는 키워드 매칭으로 보조 intent를 보수적으로
+  채움. "일정"이 event 키워드라 입학 질문에 event가 딸려오는 경미한 과잉트리거 1건 존재
+  (답변은 무해). 골든이 요구할 때 점수제로 정교화.
 - **#5 route 일관성**(scope가 sql/hybrid로 갈림): 답변은 정확하므로 cosmetic, S5 후보.
 - **입학 라우팅(sql-first vs vector)**: 답변 품질 측정으로 결정(현행 유지).
 - **P4(청킹/타이핑)**: AX 소개 내용 빈약의 근본 원인, 후순위.
