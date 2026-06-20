@@ -594,14 +594,15 @@ class SQLTool:
         if logical_table in {"admission", "asset", "event", "person"}:
             where, params = self._mysql_department_where(department_alias, analysis)
 
-        keyword_columns = self._keyword_columns_for_mysql_table(logical_table)
-        generic_words = self._generic_words_for_table(logical_table)
-        keywords = self._specific_keywords(analysis, generic_words=generic_words)
-        keyword_clause, keyword_params = self._mysql_keyword_clause(keyword_columns, keywords)
+        if not getattr(analysis, "suppress_sql_keyword_filter", False):
+            keyword_columns = self._keyword_columns_for_mysql_table(logical_table)
+            generic_words = self._generic_words_for_table(logical_table)
+            keywords = self._specific_keywords(analysis, generic_words=generic_words)
+            keyword_clause, keyword_params = self._mysql_keyword_clause(keyword_columns, keywords)
 
-        if keyword_clause:
-            where.append(keyword_clause)
-            params.extend(keyword_params)
+            if keyword_clause:
+                where.append(keyword_clause)
+                params.extend(keyword_params)
 
         select_sql = self._select_sql_for_table(mysql_table, logical_table)
 

@@ -459,14 +459,15 @@ class AnswerGenerator:
         if analysis.intent in {"general_info", "department_overview"}:
             return True
 
-        expected_content_types = INTENT_EXPECTED_CONTENT_TYPES.get(
-            analysis.intent,
-            set(),
-        )
-        expected_sql_tables = INTENT_EXPECTED_SQL_TABLES.get(
-            analysis.intent,
-            set(),
-        )
+        # 다중 정보유형 질문은 요청된 intent 중 '하나라도' 직접 근거가 있으면 통과시킨다.
+        # (예: "교수 이메일 + 과목"에서 person 근거만 있어도 부분 답변 허용)
+        intents = getattr(analysis, "intents", None) or [analysis.intent]
+
+        expected_content_types: set[str] = set()
+        expected_sql_tables: set[str] = set()
+        for intent in intents:
+            expected_content_types |= INTENT_EXPECTED_CONTENT_TYPES.get(intent, set())
+            expected_sql_tables |= INTENT_EXPECTED_SQL_TABLES.get(intent, set())
 
         if not expected_content_types and not expected_sql_tables:
             return True

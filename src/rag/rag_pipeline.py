@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import sys
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from pathlib import Path
 from time import perf_counter
 from typing import TYPE_CHECKING, Any, Callable, Protocol
@@ -12,7 +12,12 @@ PROJECT_ROOT_FROM_FILE = CURRENT_FILE.parents[2]
 if str(PROJECT_ROOT_FROM_FILE) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT_FROM_FILE))
 
-from src.rag.query_analyzer import QueryAnalysis, QuestionAnalyzer
+from src.rag.query_analyzer import (
+    QueryAnalysis,
+    QuestionAnalyzer,
+    TASK_HINT_TO_CONTENT_TYPE,
+    TASK_HINT_TO_TABLE_HINT,
+)
 
 if TYPE_CHECKING:
     from src.rag.answer_generator import (
@@ -65,8 +70,16 @@ class RagPipelineConfig:
 class RagSearchResult:
     analysis: QueryAnalysis
     vector_result: VectorRetrievalResult | None = None
-    sql_result: SqlQueryResult | None = None
+    sql_results: list[SqlQueryResult] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+
+    @property
+    def sql_result(self) -> SqlQueryResult | None:
+        # 하위호환: 다중 SQL 결과 중 첫 비어있지 않은 결과(없으면 첫 결과/None)
+        for result in self.sql_results:
+            if not result.is_empty():
+                return result
+        return self.sql_results[0] if self.sql_results else None
 
     @property
     def has_vector_results(self) -> bool:
@@ -74,7 +87,7 @@ class RagSearchResult:
 
     @property
     def has_sql_results(self) -> bool:
-        return bool(self.sql_result and not self.sql_result.is_empty())
+        return any(not result.is_empty() for result in self.sql_results)
 
     @property
     def has_results(self) -> bool:
@@ -88,7 +101,7 @@ class RagSearchResult:
                 if self.vector_result
                 else None
             ),
-            "sql_result": asdict(self.sql_result) if self.sql_result else None,
+            "sql_results": [asdict(result) for result in self.sql_results],
             "warnings": self.warnings,
         }
 
@@ -100,8 +113,15 @@ class RagPipelineResult:
     built_context: BuiltContext
     generated_answer: GeneratedAnswer
     vector_result: VectorRetrievalResult | None = None
-    sql_result: SqlQueryResult | None = None
+    sql_results: list[SqlQueryResult] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+
+    @property
+    def sql_result(self) -> SqlQueryResult | None:
+        for result in self.sql_results:
+            if not result.is_empty():
+                return result
+        return self.sql_results[0] if self.sql_results else None
 
     @property
     def answer(self) -> str:
@@ -150,11 +170,10 @@ class RagPipelineResult:
                 if self.vector_result
                 else None
             )
-            result["sql_result"] = (
-                asdict(self.sql_result)
-                if self.sql_result
-                else None
-            )
+            result["sql_results"] = [
+                asdict(result_item)
+                for result_item in self.sql_results
+            ]
 
         return result
 
@@ -315,7 +334,7 @@ class RagPipeline:
         )
 
         warnings: list[str] = []
-        sql_result: SqlQueryResult | None = None
+        sql_results: list[SqlQueryResult] = []
         vector_result: VectorRetrievalResult | None = None
 
         if analysis.route == "clarify":
@@ -325,14 +344,14 @@ class RagPipeline:
             )
 
         if analysis.needs_sql:
-            sql_result = self._search_sql(analysis)
+            sql_results = self._search_sql_all(analysis)
 
-            if sql_result is None:
+            if self.sql_retriever is None:
                 warnings.append(
                     "SQL 검색기가 연결되지 않아 SQL 조회를 건너뛰고 벡터 검색으로 답변했습니다. "
                     "(개발 확인용 안내이며, 답변 자체에는 문제가 없습니다.)"
                 )
-            elif sql_result.is_empty():
+            elif not any(not result.is_empty() for result in sql_results):
                 warnings.append(
                     "SQL 조회 결과가 비어 있어 벡터 검색 결과로 답변했습니다. "
                     "(개발 확인용 안내이며, 답변 자체에는 문제가 없습니다.)"
@@ -341,11 +360,11 @@ class RagPipeline:
         should_search_vector = analysis.needs_vector
         force_vector_search = False
 
-        sql_unavailable = analysis.needs_sql and sql_result is None
+        sql_unavailable = analysis.needs_sql and self.sql_retriever is None
         sql_empty = (
             analysis.needs_sql
-            and sql_result is not None
-            and sql_result.is_empty()
+            and self.sql_retriever is not None
+            and not any(not result.is_empty() for result in sql_results)
         )
 
         if sql_unavailable and self.config.use_vector_when_sql_unavailable:
@@ -374,7 +393,7 @@ class RagPipeline:
         return RagSearchResult(
             analysis=analysis,
             vector_result=vector_result,
-            sql_result=sql_result,
+            sql_results=sql_results,
             warnings=warnings,
         )
 
@@ -382,7 +401,7 @@ class RagPipeline:
         self,
         analysis: QueryAnalysis,
         vector_result: VectorRetrievalResult | None = None,
-        sql_result: SqlQueryResult | None = None,
+        sql_result: SqlQueryResult | list[SqlQueryResult] | None = None,
         warnings: list[str] | None = None,
     ) -> BuiltContext:
         built_context = self._get_context_builder().build(
@@ -620,7 +639,7 @@ class RagPipeline:
         built_context = self.build_context(
             analysis=analysis,
             vector_result=search_result.vector_result,
-            sql_result=search_result.sql_result,
+            sql_result=search_result.sql_results,
             warnings=search_result.warnings,
         )
 
@@ -636,7 +655,7 @@ class RagPipeline:
             built_context=built_context,
             generated_answer=generated_answer,
             vector_result=search_result.vector_result,
-            sql_result=search_result.sql_result,
+            sql_results=search_result.sql_results,
             warnings=built_context.warnings,
         )
 
@@ -694,7 +713,7 @@ class RagPipeline:
         built_context = self.build_context(
             analysis=analysis,
             vector_result=search_result.vector_result,
-            sql_result=search_result.sql_result,
+            sql_result=search_result.sql_results,
             warnings=search_result.warnings,
         )
 
@@ -714,7 +733,7 @@ class RagPipeline:
             built_context=built_context,
             generated_answer=generated_answer,
             vector_result=search_result.vector_result,
-            sql_result=search_result.sql_result,
+            sql_results=search_result.sql_results,
             warnings=built_context.warnings,
         )
 
@@ -736,6 +755,55 @@ class RagPipeline:
                 else include_debug_context
             )
         )
+
+    def _search_sql_all(self, analysis: QueryAnalysis) -> list[SqlQueryResult]:
+        """
+        다중 정보유형 질문을 위해 sql_task_hints의 각 task를 개별 조회한다.
+        단일 intent 질문은 task가 1개라 기존과 동일하게 동작한다.
+        """
+        if self.sql_retriever is None:
+            return []
+
+        task_hints = list(analysis.sql_task_hints) or (
+            [analysis.sql_task_hint] if analysis.sql_task_hint else []
+        )
+
+        results: list[SqlQueryResult] = []
+        seen_tasks: set[str] = set()
+
+        for task_hint in task_hints:
+            if not task_hint or task_hint in seen_tasks:
+                continue
+
+            seen_tasks.add(task_hint)
+
+            if task_hint == analysis.sql_task_hint:
+                per_task_analysis = analysis
+            else:
+                # 보조 task는 content_type/table을 해당 task에 맞게 교체해야
+                # (예: person 조회에 course content_type 조건이 새지 않도록) 한다.
+                task_content_type = TASK_HINT_TO_CONTENT_TYPE.get(task_hint)
+                task_conditions = dict(analysis.sql_conditions)
+
+                if task_content_type:
+                    task_conditions["content_type"] = task_content_type
+
+                per_task_analysis = replace(
+                    analysis,
+                    sql_task_hint=task_hint,
+                    sql_table_hint=TASK_HINT_TO_TABLE_HINT.get(
+                        task_hint, analysis.sql_table_hint
+                    ),
+                    content_type=task_content_type,
+                    sql_conditions=task_conditions,
+                )
+
+            result = self._search_sql(per_task_analysis)
+
+            if result is not None:
+                results.append(result)
+
+        return results
 
     def _search_sql(self, analysis: QueryAnalysis) -> SqlQueryResult | None:
         if self.sql_retriever is None:

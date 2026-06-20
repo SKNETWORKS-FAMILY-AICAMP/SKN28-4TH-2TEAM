@@ -98,12 +98,23 @@ class QueryAnalysis:
     intent: IntentType = "general_info"
     intent_description: str = "일반 정보 질문"
     content_type: ContentType | None = None
+    # 다중 정보유형: 주 intent 포함 전체 intent 목록(근거검사 등에서 사용). 길이 1이면 단일.
+    intents: list[IntentType] = field(default_factory=list)
 
     metadata_filter: dict[str, Any] | None = None
 
     sql_table_hint: str | None = None
     sql_task_hint: str | None = None
     sql_conditions: dict[str, Any] = field(default_factory=dict)
+
+    # 다중 정보유형 지원: 스칼라 content_type / sql_table_hint의 집합 버전.
+    # 단일 intent 질문은 길이 1로 채워져 기존 동작과 동일하다(동작 보존).
+    content_types: list[ContentType] = field(default_factory=list)
+    sql_table_hints: list[str] = field(default_factory=list)
+    sql_task_hints: list[str] = field(default_factory=list)
+    # 다중 intent 질문에서는 다른 의도의 단어가 키워드 LIKE 필터를 오염시키므로
+    # (예: person 조회에 '과목'이 name LIKE로 걸림) 키워드 필터를 끄고 dept만 사용한다.
+    suppress_sql_keyword_filter: bool = False
 
     needs_sql: bool = False
     needs_vector: bool = False
@@ -633,6 +644,20 @@ INTENT_RULES = [
 ]
 
 
+# task_hint별 정보유형/테이블 매핑 — 다중 intent 질문에서 보조 task를 조회할 때
+# 각 task에 맞는 content_type/table로 분석을 재구성하기 위해 사용한다.
+TASK_HINT_TO_CONTENT_TYPE = {
+    rule.sql_task_hint: rule.content_type
+    for rule in INTENT_RULES
+    if rule.sql_task_hint
+}
+TASK_HINT_TO_TABLE_HINT = {
+    rule.sql_task_hint: rule.sql_table_hint
+    for rule in INTENT_RULES
+    if rule.sql_task_hint
+}
+
+
 SQL_STRONG_KEYWORDS = [
     "목록",
     "전체",
@@ -698,6 +723,17 @@ CSV_FIRST_INTENTS = {
     "kaist_profile_info",
     "kaist_statistics_info",
     "kaist_link_info",
+}
+
+# 한 질문에 함께 요청될 수 있는 학과-범위 구조화 intent(다중 정보유형 후보).
+# kaist_* 전역 intent와 overview/general_info는 제외해 보수적으로만 결합한다.
+MULTI_INTENT_CANDIDATES = {
+    "admission_info",
+    "course_info",
+    "person_info",
+    "office_contact_info",
+    "event_info",
+    "asset_or_link_info",
 }
 
 CSV_FIRST_VECTOR_ASSIST_KEYWORDS = [
@@ -882,6 +918,13 @@ class QuestionAnalyzer:
         )
         content_type = intent_rule.content_type if intent_rule else None
 
+        # 다중 정보유형(예: "교수 이메일이랑 담당 과목")을 위해 주 intent 외에
+        # 명확히 함께 요청된 보조 intent를 보수적으로 수집한다.
+        additional_intent_rules = self._find_additional_intent_rules(
+            normalized_question=normalized_question,
+            primary_rule=intent_rule,
+        )
+
         route, route_reason = self._decide_route(
             normalized_question=normalized_question,
             intent_rule=intent_rule,
@@ -944,6 +987,22 @@ class QuestionAnalyzer:
             route=route,
         )
 
+        primary_and_additional = (
+            [intent_rule, *additional_intent_rules] if intent_rule else []
+        )
+        intents_list = self._dedup_preserve(
+            [rule.intent for rule in primary_and_additional]
+        )
+        content_types_list = self._dedup_preserve(
+            [rule.content_type for rule in primary_and_additional if rule.content_type]
+        )
+        sql_table_hints_list = self._dedup_preserve(
+            [rule.sql_table_hint for rule in primary_and_additional if rule.sql_table_hint]
+        )
+        sql_task_hints_list = self._dedup_preserve(
+            [rule.sql_task_hint for rule in primary_and_additional if rule.sql_task_hint]
+        )
+
         return QueryAnalysis(
             original_question=original_question,
             normalized_question=normalized_question,
@@ -969,6 +1028,11 @@ class QuestionAnalyzer:
                 else None
             ),
             sql_conditions=sql_conditions,
+            intents=intents_list,
+            content_types=content_types_list,
+            sql_table_hints=sql_table_hints_list,
+            sql_task_hints=sql_task_hints_list,
+            suppress_sql_keyword_filter=len(sql_task_hints_list) > 1,
             needs_sql=route in {"sql", "hybrid"},
             needs_vector=route in {"vector", "hybrid"},
             is_ambiguous=is_ambiguous,
@@ -1081,6 +1145,49 @@ class QuestionAnalyzer:
                 return rule
 
         return None
+
+    def _find_additional_intent_rules(
+        self,
+        normalized_question: str,
+        primary_rule: IntentRule | None,
+    ) -> list[IntentRule]:
+        """
+        주 intent 외에 같은 질문에서 명확히 함께 요청된 보조 intent를 보수적으로 찾는다.
+        - 주 intent가 학과-범위 구조화 intent일 때만 동작(overview/general/kaist_* 제외)
+        - 보조 후보도 같은 후보군으로 제한
+        - 해당 intent의 키워드가 실제 질문에 등장할 때만 채택
+        예: "교수 이메일이랑 담당 과목" → 주=course, 보조=person
+        """
+        if primary_rule is None or primary_rule.intent not in MULTI_INTENT_CANDIDATES:
+            return []
+
+        lowered_question = normalized_question.lower()
+        additional_rules: list[IntentRule] = []
+
+        for rule in self.intent_rules:
+            if rule.intent == primary_rule.intent:
+                continue
+
+            if rule.intent not in MULTI_INTENT_CANDIDATES:
+                continue
+
+            if any(keyword.lower() in lowered_question for keyword in rule.keywords):
+                additional_rules.append(rule)
+
+        return additional_rules
+
+    def _dedup_preserve(self, values: list[Any]) -> list[Any]:
+        seen = set()
+        result = []
+
+        for value in values:
+            if value in seen:
+                continue
+
+            seen.add(value)
+            result.append(value)
+
+        return result
 
     def _find_intent_rule(
         self,

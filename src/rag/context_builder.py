@@ -81,13 +81,22 @@ class ContextBuilder:
         self,
         analysis: QueryAnalysis,
         vector_result: Any | None = None,
-        sql_result: SqlQueryResult | None = None,
+        sql_result: SqlQueryResult | list[SqlQueryResult] | None = None,
     ) -> BuiltContext:
+        sql_results = self._normalize_sql_results(sql_result)
+
         vector_context = self._build_vector_context(vector_result)
-        sql_context = self._build_sql_context(sql_result)
+        sql_context = "\n\n".join(
+            part
+            for part in (
+                self._build_sql_context(result)
+                for result in sql_results
+            )
+            if part.strip()
+        )
         warnings = self._collect_warnings(
             vector_result=vector_result,
-            sql_result=sql_result,
+            sql_results=sql_results,
         )
         # fallback으로 가져온 vector 문서는 원래 질문 의도와 다를 수 있으므로
         # warning 목록뿐 아니라 실제 LLM context에도 명시한다.
@@ -98,7 +107,7 @@ class ContextBuilder:
             )
         sources = self._collect_sources(
             vector_result=vector_result,
-            sql_result=sql_result,
+            sql_results=sql_results,
         )
         context_parts = []
         if self.config.include_question_analysis:
@@ -353,10 +362,22 @@ class ContextBuilder:
 
         return text.strip()
 
+    def _normalize_sql_results(
+        self,
+        sql_result: SqlQueryResult | list[SqlQueryResult] | None,
+    ) -> list[SqlQueryResult]:
+        if sql_result is None:
+            return []
+
+        if isinstance(sql_result, list):
+            return [result for result in sql_result if result is not None]
+
+        return [sql_result]
+
     def _collect_warnings(
         self,
         vector_result: Any | None,
-        sql_result: SqlQueryResult | None,
+        sql_results: list[SqlQueryResult],
     ) -> list[str]:
         warnings = []
 
@@ -369,7 +390,7 @@ class ContextBuilder:
                     "일부 문서는 원 질문의 문서유형과 다를 수 있습니다."
                 )
 
-        if sql_result:
+        for sql_result in sql_results:
             warnings.extend(sql_result.warnings)
 
         return self._deduplicate_strings(warnings)
@@ -377,7 +398,7 @@ class ContextBuilder:
     def _collect_sources(
         self,
         vector_result: Any | None,
-        sql_result: SqlQueryResult | None,
+        sql_results: list[SqlQueryResult],
     ) -> list[SourceItem]:
         sources = []
 
@@ -387,7 +408,10 @@ class ContextBuilder:
                     self._source_from_vector_item(item)
                 )
 
-        if sql_result and not sql_result.is_empty():
+        for sql_result in sql_results:
+            if sql_result.is_empty():
+                continue
+
             sources.append(
                 SourceItem(
                     source_type="sql",
