@@ -41,6 +41,11 @@ def main() -> int:
         print("[SKIP] SQL retriever 사용 불가(CSV 경로 확인). 검증 생략.")
         return 0
 
+    # 결정적·DB 비의존 검증을 위해 CSV 경로를 강제한다(레포 내 CSV만 사용).
+    # MySQL 경로도 동일한 _specific_keywords(suppress) 계약을 공유하므로
+    # CSV 통과가 MySQL 동작의 대리 검증이 된다.
+    pipe.sql_retriever.config.mysql_configured = lambda: False
+
     failures: list[str] = []
 
     def check(name: str, ok: bool, detail: str) -> None:

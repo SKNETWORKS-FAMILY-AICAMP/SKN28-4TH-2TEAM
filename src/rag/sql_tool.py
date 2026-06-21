@@ -820,6 +820,13 @@ class SQLTool:
         analysis: QueryAnalysis,
         generic_words: set[str] | None = None,
     ) -> list[str]:
+        # 다중 요청(접속) 질문에서 키워드 LIKE 필터는 토큰 합집합으로 관련 행을
+        # 오히려 잘라낸다(예: '입학 일정이랑 제출 서류'가 면접 일정 행을 누락).
+        # MySQL 경로(_build_mysql_select)는 suppress_sql_keyword_filter로 이를 이미
+        # 끄지만 CSV 경로는 빠져 있었다. 여기서 키워드를 비워 두 경로를 일치시킨다.
+        if getattr(analysis, "suppress_sql_keyword_filter", False):
+            return []
+
         keywords = self._keywords_from_analysis(analysis)
         generic_words = generic_words or set()
 
