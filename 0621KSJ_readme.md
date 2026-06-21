@@ -293,3 +293,26 @@ python -c "from src.rag.rag_pipeline import create_default_pipeline as c; a=c().
 - **판정**: ①② **견고하게 해결**. 깨뜨리려는 검토로도 결함 못 찾음(④ 렌더 변동은 생성레이어 한계이지 회귀 아님 — 절단 고지가 있어 *정직한 불완전*).
 - **잔존(미해결)**: ③ C1 O(n²)(경미), ④ LLM 출력 변동(생성레이어, 코드불가).
 - **변경 파일(S7)**: `src/rag/context_builder.py`(total_available·고지·`_build_sql_contexts_fair`), `src/rag/sql_tool.py`(`COUNT(*) OVER()`·`_split_total_count`·CSV len·`_result` total), `validation/rag_quality/sql_multi_intent_smoke.py`(#43/#44).
+
+## 8.7 (세션3 후속, 2026-06-21) 문서화 — "이미 된 일을 다시 하지 않기"
+
+> "리스크 없는 작업부터 이어가자"는 요청으로 시작했으나, **저위험 ≠ 할 가치 있음**을 구분한 기록. 후보(③ C1 O(n²)·④ LLM 변동·`.gitattributes`·README)를 리스크+가치 둘 다로 독립 산정했고, 팀이 고른 README가 **이미 충족돼 있음**을 발견해 덮어쓰지 않았다. [[feedback_operating_mode]](움직임을 위한 움직임 거부) 적용.
+
+### 후보 재평가(독립 산정)
+- **`.gitattributes`(EOL 고정)**: 앞서 "리스크 없음"이라 한 내 판단을 **정정**. `core.autocrlf=true`+무 `.gitattributes`라 CSV churn이 반복되지만, eol 고정은 **공유 데이터 파일에 대한 리포 전역 정책 변경**(팀 워킹트리 영향+renormalization 커밋) → 솔로 작업 아님, 팀 조율 필요. **보류**.
+- **③ C1 O(n²)**: 진짜 무해(#41/#42/#44가 가드)하나 n≤100 상한이라 실익 ~0. "측정이 요구할 때만" 규율 **미통과**. 보류.
+- **④ LLM 완전성**: 프롬프트 변경은 광범위 영향+API 없이 비결정적 검증 → 리스크-프리 아님. 보류.
+
+### README: 검증으로 "갭"이 대부분 사라짐
+- **팀 요청은 이미 충족**: 루트 `README.md`(616줄, 실행/구조/환경변수/파이프라인/안전정책/모듈)와 `sql/README.md`(01·02·03·`load_with_pymysql.py`·ERD 설명, local_infile/권한, 실행순서, 상대경로 주의, 기대 행수) 둘 다 충실. **만들지 않은 충실한 문서는 덮어쓰지 않는다**(내 작업 원칙)는 그대로 적용.
+- **내가 띄운 정확성 갭 3개 중 2개가 오판으로 판명**: (1) `src/rag/test.ipynb` 참조 stale 의심 → **실존**(오판). (2) validation 스위트 미문서화 의심 → `validation/rag_quality/README.md` **자체 존재**(부분 오판, 메인에서 링크만 안 함). (3) 루트 제목 `SKN28_3RD_2TEAM`(4TH 이전 미반영) = 진짜 stale이나 **프로젝트 이름은 팀 정체성** → 단독 변경 금지.
+
+### 실제 가치 있던 저위험 델타(우리 S5~S7 산출물의 미문서화 해소)
+- **`validation/rag_quality/README.md`**: 우리가 만든 결정적 스모크 `sql_multi_intent_smoke.py`(#37~#44, **#43 거짓총계·#44 예산공정성 가드 포함**)를 전혀 안 다루고, 실행 경로가 **타 팀원 머신(`C:\Users\shyej\miniforge3\...`)으로 하드코딩**돼 있었음 → 스모크 하니스 문서화 + 경로 일반화(프로젝트 환경 기준) + 스크립트 목록 보강.
+- **루트 `README.md`**: "테스트 실행"에 **회귀 검증 스위트 포인터**(분류 골든 + SQL 스모크 2줄, validation README 링크) 추가. 본문은 미수정(추가형만).
+
+### 검증·커밋
+- 문서 주장 정합 확인: 커밋 직전 스모크 재실행 → **#43/#44 PASS**(README의 "ALL PASS 기대" 진실). 코드·CSV 무변경(문서 2파일만).
+- 커밋 **`2b63e21`** (`docs: validation 스모크 하니스 문서화…`), `upstream2/KSJ_4th` 푸시·동기화. (S7 코드 커밋 = `eae3271`, CSV EOL churn은 `--ignore-cr-at-eol` 내용 0 확인 후 제외.)
+- **메모리 정정**: [[project_readme_request]]("작성 필요")가 다음 콜드스타트의 중복 작성을 유발할 수 있어 **충족됨**으로 갱신.
+- **교훈**: 이 단위의 최대 산출물은 코드/문서 추가가 아니라 **(a) 이미 된 일을 다시 하지 않은 것 (b) 내 "갭" 가설을 측정으로 절반 기각한 것**. "저위험"은 착수 신호가 아니라 가치 검증 후의 부차 조건.
