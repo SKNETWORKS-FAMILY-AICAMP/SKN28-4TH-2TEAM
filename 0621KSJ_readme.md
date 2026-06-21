@@ -317,7 +317,7 @@ python -c "from src.rag.rag_pipeline import create_default_pipeline as c; a=c().
 - **메모리 정정**: [[project_readme_request]]("작성 필요")가 다음 콜드스타트의 중복 작성을 유발할 수 있어 **충족됨**으로 갱신.
 - **교훈**: 이 단위의 최대 산출물은 코드/문서 추가가 아니라 **(a) 이미 된 일을 다시 하지 않은 것 (b) 내 "갭" 가설을 측정으로 절반 기각한 것**. "저위험"은 착수 신호가 아니라 가치 검증 후의 부차 조건.
 
-## 8.8 다음 착수점 (미착수): C — 회귀 가드 강화 + 형제 버그 감사
+## 8.8 착수점 C — 회귀 가드 강화 + 형제 버그 감사 (✅ 완료 → 결과 8.9)
 
 > **이 절은 다음 세션 콜드스타트용 작업 정의서다.** S7의 ① 수정(거짓 총계→`total_available`)을 테스트로 더 잠그고, **같은 종류의 버그("LIMIT 이후 행수를 총계처럼 사용")가 다른 곳에 더 있는지** 감사한다. 성격 = 회귀 보험(급하지 않음, 순수 자율·무팀의존·저위험). 가치 검증을 통과한 **유일한 자율 작업**(③ 무가치·④ 리스크·EOL/제품질문 팀의존 — 8.7 참조).
 >
@@ -339,3 +339,24 @@ python -c "from src.rag.rag_pipeline import create_default_pipeline as c; a=c().
 - C-1: 신규 스모크 가드 추가 후 **#37~#45+ ALL PASS**, 분류 40/40 유지.
 - C-2: 형제 버그 **발견 시 수정+가드 / 미발견 시 "클린" 명시 종결**. 어느 쪽이든 노트에 결과 1줄.
 - 변경은 의도 파일만 스테이징(CSV EOL churn 제외), 커밋 메시지에 "C 회귀가드/감사" 명시.
+
+## 8.9 (세션4, 2026-06-21) C 실행 결과 — 가드 확장 + 감사 CLEAN
+
+> 8.8 정의서를 같은 세션에서 이어 실행. 두 부분 모두 완료. [[feedback_verify_at_output_level]]/[[feedback_operating_mode]] 적용 — 가설(8.8의 "잠정 클린")을 **소비처까지 추적해 확정**하고, 가드는 **데이터값 하드코딩 없는 오라클**로 작성.
+
+### C-1. total_available 가드 확장 (완료)
+- **오라클 설계**: SQL 캡(`config.max_rows`)을 100,000으로 올려 다시 조회한 **uncapped 행수 = 캡 전 진짜 매칭 수**. 절단된 결과의 `total_available`이 이 값과 같아야 한다. → 데이터값 하드코딩·내부 dedup/합산 로직 복제 없이 경로별 총계 계산을 검증(person·course·asset 통일).
+- **신규 스모크**: `sql_multi_intent_smoke.py` **#45(course)·#46(asset)**. 측정: course `total_available=145`==uncapped145, asset `total_available=298`==uncapped298, 둘 다 capped_rows=100(절단). **#37~#46 ALL PASS**, 분류 40/40 유지.
+- **8.8 추정 정정**: 8.8 C-1이 "CSV asset 155"로 적었으나 **155는 MySQL 값**이고 **CSV는 298**(asset+attachment 결합 방식이 경로별로 달라서). 오라클이 경로별 실측을 쓰므로 이 추정 오차에 안 걸렸다 — 하드코딩 대신 오라클을 택한 게 옳았던 사례.
+
+### C-2. 형제 버그 감사 — **CLEAN(클린, 미발견)**
+- **추적**: `row_count`/`len(...rows)`/"건·총·개수" 전 리포 grep + **소비처까지** 추적.
+- **결과**: "post-LIMIT 행수를 총계처럼 사용"하는 **사용자 노출 지점 없음**.
+  - 사용자 노출 총계는 절단 고지 하나뿐 → ①에서 이미 `total_available`로 수정(클린).
+  - `context_builder._collect_sources`의 `metadata["row_count"]=len(rows)`(post-LIMIT)는 **생성만 되고 소비 안 됨**: Streamlit `format_sources_for_cards`([pages/3_RAG_Chatbot.py:123](pages/3_RAG_Chatbot.py))가 title/dept/content_type/crawled_at/page/url만 읽고 row_count는 미사용. 다른 소비처(`run_dict`/`to_dict`)도 "총 N건"으로 노출 안 함.
+  - `data/preprocessing.py`·`sql_tool.py:1380`의 row_count = 전처리 통계·디버그 print(런타임 답변 무관). vector_retriever/rag_pipeline `result_count` = vector stage 디버그(SQL 총계 클래스 아님).
+- **판정**: 감사 CLEAN. 형제 버그 없음 → 수정 불요, 기록으로 종결.
+
+### 상태
+- **C 완료**. 변경 파일 = `validation/rag_quality/sql_multi_intent_smoke.py`(#45/#46) + 본 노트. 코드 동작 변경 0(테스트·문서만).
+- **잔존**: ③ C1 O(n²)(무가치), ④ LLM 변동(리스크), EOL/제품질문(팀의존) — 8.7대로. **새 자율 작업 없음 → 마일스톤 종료 지점.**

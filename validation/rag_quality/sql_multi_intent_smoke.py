@@ -171,6 +171,41 @@ def main() -> int:
           len(sections) >= 2 and ratio >= 0.7,
           f"섹션 문자 길이 {sections}, min/max={ratio:.2f} (≥0.7=굶주림 없음)")
 
+    # #45~ total_available 정확성을 person(#43) 외 경로(course/asset)까지 잠근다.
+    #     오라클: SQL 캡(max_rows)을 크게 올려 다시 조회한 uncapped 행수 = 캡 전 진짜
+    #     매칭 수. 절단된 결과의 total_available이 이 값과 같아야 한다(데이터값 하드코딩·
+    #     내부 dedup/합산 로직 복제 없이 경로별 총계 계산을 검증). ①을 모든 경로로 일반화.
+    def total_available_matches_true_count(table: str, question: str) -> tuple[bool, str]:
+        analysis = pipe.analyzer.analyze(question)
+        capped = next((r for r in pipe._search_sql_all(analysis) if r.table_name == table), None)
+        if capped is None:
+            return False, f"{table} 미조회(질문 부적합)"
+        old_max = pipe.sql_retriever.config.max_rows
+        pipe.sql_retriever.config.max_rows = 100_000
+        try:
+            uncapped = next(
+                (r for r in pipe._search_sql_all(analysis) if r.table_name == table), None
+            )
+        finally:
+            pipe.sql_retriever.config.max_rows = old_max
+        true_count = len(uncapped.rows) if uncapped else 0
+        truncated = len(capped.rows) < true_count
+        ok = truncated and capped.total_available == true_count
+        return ok, (
+            f"total_available={capped.total_available} == uncapped 진짜수={true_count}, "
+            f"capped_rows={len(capped.rows)}, 절단={truncated}"
+        )
+
+    for case_no, (table, question) in enumerate(
+        [
+            ("course", "AX학과 교수 이메일이랑 담당 과목 알려줘"),
+            ("asset", "AX학과 자료 링크 알려줘"),
+        ],
+        start=45,
+    ):
+        ok, detail = total_available_matches_true_count(table, question)
+        check(f"#{case_no} {table} total_available == 진짜 매칭 수(캡 전)", ok, detail)
+
     print(f"\n[SQL MULTI-INTENT SMOKE] {'ALL PASS' if not failures else 'FAIL: ' + ', '.join(failures)}")
     return 1 if failures else 0
 
