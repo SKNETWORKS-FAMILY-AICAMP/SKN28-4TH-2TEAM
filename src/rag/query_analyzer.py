@@ -1042,6 +1042,15 @@ class QuestionAnalyzer:
             [rule.sql_task_hint for rule in primary_and_additional if rule.sql_task_hint]
         )
 
+        # 키워드 LIKE 필터는 접속(다중 요청) 질문에서 토큰 합집합으로 관련 행을
+        # 오히려 잘라낸다(예: "입학 일정이랑 제출 서류"가 면접 일정 행을 누락).
+        # 따라서 보조 의도로 task가 여러 개거나, 단일 의도로 접속됐더라도
+        # 구조화 intent면 키워드 필터를 끈다(완전성 우선, 표현은 생성이 정리).
+        suppress_sql_keyword_filter = len(sql_task_hints_list) > 1 or (
+            self._has_conjunction_request(normalized_question)
+            and intent in MULTI_INTENT_CANDIDATES
+        )
+
         return QueryAnalysis(
             original_question=original_question,
             normalized_question=normalized_question,
@@ -1071,7 +1080,7 @@ class QuestionAnalyzer:
             content_types=content_types_list,
             sql_table_hints=sql_table_hints_list,
             sql_task_hints=sql_task_hints_list,
-            suppress_sql_keyword_filter=len(sql_task_hints_list) > 1,
+            suppress_sql_keyword_filter=suppress_sql_keyword_filter,
             needs_sql=route in {"sql", "hybrid"},
             needs_vector=route in {"vector", "hybrid"},
             is_ambiguous=is_ambiguous,
@@ -1202,7 +1211,7 @@ class QuestionAnalyzer:
             return []
 
         # 명시적 접속어가 없으면 다중 의도로 보지 않는다(보수적).
-        if not any(marker in normalized_question for marker in CONJUNCTION_MARKERS):
+        if not self._has_conjunction_request(normalized_question):
             return []
 
         lowered_question = normalized_question.lower()
@@ -1230,6 +1239,12 @@ class QuestionAnalyzer:
                 additional_rules.append(rule)
 
         return additional_rules
+
+    def _has_conjunction_request(self, normalized_question: str) -> bool:
+        """사용자가 명시적 접속어로 둘 이상을 함께 요청했는지."""
+        return any(
+            marker in normalized_question for marker in CONJUNCTION_MARKERS
+        )
 
     def _is_keyword_valid_for_intent(
         self,
