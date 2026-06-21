@@ -412,6 +412,15 @@ AI컴퓨팅학과 사무실 연락처 알려줘
 - SQL 연결이 준비되어 있으면 정형 데이터 질문은 SQL 결과를 우선 활용합니다.
 - vectorstore 또는 API 연결이 안 되어 있으면 warning이 출력됩니다.
 
+### 회귀 검증 스위트 (결정적, DB/LLM 비의존)
+
+질문 분류와 SQL 출력단계를 케이스 단위로 고정해 회귀를 잡는 검증 하니스입니다. 코드 수정 후 빠르게 돌려 회귀를 확인합니다. 상세는 [`validation/rag_quality/README.md`](validation/rag_quality/README.md) 참조.
+
+```powershell
+python validation\rag_quality\validate_rag_quality.py     # 질문 분류 골든 (API 불필요)
+python validation\rag_quality\sql_multi_intent_smoke.py   # SQL 다중 의도 행 단위 스모크 (DB/LLM 비의존)
+```
+
 ## 주요 모듈
 
 ### `src/rag/query_analyzer.py`
