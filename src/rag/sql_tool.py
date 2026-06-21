@@ -698,7 +698,8 @@ class SQLTool:
 
     def _generic_words_for_table(self, logical_table: str) -> set[str]:
         common = {
-            "정보", "알려줘", "보여줘", "정리해줘", "목록", "전체", "전부",
+            "정보", "알려줘", "보여줘", "정리해줘", "목록", "명단", "명부",
+            "리스트", "전체", "전부",
             "kaist", "KAIST", "카이스트", "학과", "대학", "관련",
         }
         table_specific = {
@@ -709,7 +710,13 @@ class SQLTool:
             "kaist_link": {"링크", "홈페이지"},
             "kaist_profile": {"기본", "기본정보"},
             "kaist_statistics": {"통계", "수", "몇", "몇명", "몇 명"},
-            "person": {"교수", "교수진", "구성원", "이메일", "메일"},
+            # 호칭/역할 단어는 이름 필터가 아니다. 누락된 존칭형("교수님",
+            # "교수님들")이 키워드로 살아남으면 name/email LIKE가 0행을 만들어
+            # 학과 교수 전수 질문이 빈 결과가 된다(특정 이름·연구분야 키워드는 보존).
+            "person": {
+                "교수", "교수님", "교수님들", "교수진", "교원",
+                "구성원", "이메일", "메일",
+            },
         }
 
         return common | table_specific.get(logical_table, set())

@@ -14,10 +14,30 @@ if str(PROJECT_ROOT_FROM_FILE) not in sys.path:
 from src.rag.query_analyzer import QueryAnalysis
 
 
+# LLM 답변 생성에 무의미한 메타/식별자 컬럼.
+# 토큰만 소모하고 표 가독성을 떨어뜨린다(예: person 18컬럼 중 절반이 메타라
+# 학과 교수 46명이 12000자 문자 캡에 걸려 30명으로 잘렸다). raw rows/columns
+# 원본은 보존하고, LLM 컨텍스트 문자열을 만들 때만 제외한다.
+# `*_id`(내부 PK)는 패턴으로 별도 처리한다.
+_SQL_CONTEXT_NOISE_COLUMNS = frozenset(
+    {
+        "source_url",
+        "crawled_at",
+        "missing_fields",
+        "image_url",
+        "dept",  # dept_name과 중복(코드)
+        "raw_values",  # courses 원시 덤프
+    }
+)
+
+
 @dataclass
 class ContextBuilderConfig:
     max_vector_docs: int = 5
-    max_sql_rows: int = 30
+    # 행 개수 캡은 조잡한 프록시다. 실질 절단은 문자 예산(max_total_context_chars)을
+    # 행 경계에서 적용하는 _build_sql_context가 담당한다(중간 절단 방지 + 고지 보존).
+    # 행 캡은 SQL 단(sql_tool.max_rows=100)과 정합하는 상한으로만 둔다.
+    max_sql_rows: int = 100
     max_chars_per_vector_doc: int = 1500
     max_total_context_chars: int = 12000
     include_debug_info: bool = False
@@ -86,14 +106,20 @@ class ContextBuilder:
         sql_results = self._normalize_sql_results(sql_result)
 
         vector_context = self._build_vector_context(vector_result)
-        sql_context = "\n\n".join(
-            part
-            for part in (
-                self._build_sql_context(result)
-                for result in sql_results
-            )
-            if part.strip()
-        )
+        # SQL은 구조화 근거라 문자 예산을 우선 배정한다. 표를 행 경계에서 자르고
+        # 고지를 보존하려면 각 표가 '남은 예산'을 알아야 하므로 순차로 차감한다.
+        # SQL 섹션은 context에서 vector보다 앞에 놓이므로(아래 context_parts),
+        # 최후 안전망 _limit_context가 잘라도 SQL 표와 고지는 보존된다.
+        sql_parts: list[str] = []
+        sql_budget = self.config.max_total_context_chars
+        for result in sql_results:
+            if sql_budget <= 0:
+                break
+            part = self._build_sql_context(result, char_budget=sql_budget)
+            if part.strip():
+                sql_parts.append(part)
+                sql_budget -= len(part) + len("\n\n")
+        sql_context = "\n\n".join(sql_parts)
         warnings = self._collect_warnings(
             vector_result=vector_result,
             sql_results=sql_results,
@@ -287,9 +313,13 @@ class ContextBuilder:
 
         return table_name_map.get(table_name, table_name)
 
+    # 절단 고지가 문자 예산 경계에서 잘려나가지 않도록 떼어 두는 여유분.
+    _SQL_NOTICE_RESERVE_CHARS = 90
+
     def _build_sql_context(
         self,
         sql_result: SqlQueryResult | None,
+        char_budget: int | None = None,
     ) -> str:
         if sql_result is None:
             return ""
@@ -304,8 +334,11 @@ class ContextBuilder:
                 "조회된 행이 없습니다."
             )
 
+        if char_budget is None or char_budget <= 0:
+            char_budget = self.config.max_total_context_chars
+
         columns = self._get_sql_columns(sql_result)
-        rows = sql_result.rows[: self.config.max_sql_rows]
+        capped_rows = sql_result.rows[: self.config.max_sql_rows]
 
         table_label = self._get_sql_table_label(sql_result.table_name)
 
@@ -322,17 +355,32 @@ class ContextBuilder:
         lines.append("| " + " | ".join(columns) + " |")
         lines.append("| " + " | ".join(["---"] * len(columns)) + " |")
 
-        for row in rows:
-            values = [
+        # 행은 반드시 행 경계에서만 자른다(마크다운 표 중간 절단 금지). 문자 예산을
+        # 넘으면 거기서 멈추고, 잘린 경우 고지를 표 직후에 남겨 '부분→전체' 오인을
+        # 막는다. 최소 1행은 보장한다(빈 표 방지).
+        displayed = 0
+        for row in capped_rows:
+            row_line = "| " + " | ".join(
                 self._safe_cell(row.get(column, ""))
                 for column in columns
-            ]
-            lines.append("| " + " | ".join(values) + " |")
+            ) + " |"
 
-        if len(sql_result.rows) > self.config.max_sql_rows:
+            projected = len("\n".join(lines)) + 1 + len(row_line)
+
+            if displayed > 0 and (
+                projected + self._SQL_NOTICE_RESERVE_CHARS > char_budget
+            ):
+                break
+
+            lines.append(row_line)
+            displayed += 1
+
+        total = len(sql_result.rows)
+
+        if displayed < total:
             lines.append(
-                f"\n...총 {len(sql_result.rows)}개 중 "
-                f"{self.config.max_sql_rows}개만 표시"
+                f"\n...총 {total}개 중 {displayed}개만 표시"
+                "(길이 제한 — 학과/조건을 좁혀 다시 물으면 전체를 볼 수 있습니다)"
             )
 
         return "\n".join(lines)
@@ -342,16 +390,29 @@ class ContextBuilder:
         sql_result: SqlQueryResult,
     ) -> list[str]:
         if sql_result.columns:
-            return sql_result.columns
+            ordered_columns = list(sql_result.columns)
+        else:
+            ordered_columns = []
 
-        ordered_columns = []
+            for row in sql_result.rows:
+                for key in row.keys():
+                    if key not in ordered_columns:
+                        ordered_columns.append(key)
 
-        for row in sql_result.rows:
-            for key in row.keys():
-                if key not in ordered_columns:
-                    ordered_columns.append(key)
+        pruned = [
+            column
+            for column in ordered_columns
+            if not self._is_context_noise_column(column)
+        ]
 
-        return ordered_columns
+        # 전부 메타로 걸러지면(이론상) 원본을 그대로 쓴다.
+        return pruned or ordered_columns
+
+    def _is_context_noise_column(self, column: str) -> bool:
+        if column == "record_id" or column.endswith("_id"):
+            return True
+
+        return column in _SQL_CONTEXT_NOISE_COLUMNS
 
     def _safe_cell(self, value: Any) -> str:
         if value is None:

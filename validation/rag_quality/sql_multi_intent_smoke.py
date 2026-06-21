@@ -16,7 +16,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from src.rag.context_builder import ContextBuilder
 from src.rag.rag_pipeline import create_default_pipeline
+
+_CONTEXT_BUILDER = ContextBuilder()
 
 
 def tables(pipe, question: str) -> dict[str, list[dict]]:
@@ -25,6 +28,33 @@ def tables(pipe, question: str) -> dict[str, list[dict]]:
     for result in pipe._search_sql_all(analysis):
         out[result.table_name] = list(result.rows or [])
     return out
+
+
+def build_context(pipe, question: str) -> str:
+    """LLM에 실제로 들어가는 컨텍스트 문자열을 만든다.
+
+    분류 골든은 라벨만, 위 tables()는 raw SQL 행만 본다. 둘 다 'raw 행이
+    컨텍스트에 온전히·정직하게 실리는가'(행 경계 절단, 절단 고지, 컬럼 프루닝)는
+    검증하지 못한다 — 실제로 person 46행이 컨텍스트 단계에서 30행으로 잘리던
+    버그를 raw 검사가 놓쳤다. 이 헬퍼가 그 사각지대를 메운다.
+    """
+    analysis = pipe.analyzer.analyze(question)
+    sql_results = list(pipe._search_sql_all(analysis))
+    built = _CONTEXT_BUILDER.build(
+        analysis,
+        vector_result=None,
+        sql_result=sql_results,
+    )
+    return built.context
+
+
+def table_rows_well_formed(context: str) -> bool:
+    """마크다운 표 행이 행 경계에서만 잘렸는지(중간 절단 없음)."""
+    return all(
+        line.rstrip().endswith("|")
+        for line in context.splitlines()
+        if line.startswith("|")
+    )
 
 
 def schedule_titles(rows: list[dict]) -> set[str]:
@@ -75,6 +105,29 @@ def main() -> int:
     # #40 정당한 event(설명회 단서): event 보존
     t = tables(pipe, "AX학과 설명회 일정이랑 교수 이메일 알려줘")
     check("#40 event retrieved", "event" in t, f"tables={sorted(t)}")
+
+    # ── 컨텍스트 단계 검증(raw 행 ≠ 컨텍스트 행 사각지대) ──────────────
+    # #41 작은 학과(AI시스템 person 46행)는 컨텍스트에 전수가 실려야 하고,
+    #     문자 캡 안에 들어가므로 절단 고지가 없어야 한다.
+    q = "AI시스템학과 교수 이메일이랑 담당 과목 알려줘"
+    person_rows = tables(pipe, q).get("person", [])
+    ctx = build_context(pipe, q)
+    emails = [r.get("email", "") for r in person_rows if r.get("email")]
+    in_ctx = sum(1 for e in emails if e and e in ctx)
+    check("#41 small dept full in context",
+          len(emails) > 0 and in_ctx == len(emails) and "개만 표시" not in ctx,
+          f"emails {in_ctx}/{len(emails)} 컨텍스트 포함, 절단고지 없음")
+    check("#41 table not mid-row truncated", table_rows_well_formed(ctx),
+          "모든 표 행이 행 경계에서 종료(중간 절단 없음)")
+
+    # #42 큰 결과(AX person)는 문자 예산으로 일부만 실리되, (a) 표가 행 중간에서
+    #     깨지지 않고 (b) 절단 고지가 컨텍스트에 보존돼야 한다('부분→전체' 오인 방지).
+    q = "AX학과 교수 이메일이랑 담당 과목 알려줘"
+    ctx = build_context(pipe, q)
+    check("#42 large result keeps notice", "개만 표시" in ctx,
+          f"절단 고지 보존(ctx_len={len(ctx)})")
+    check("#42 table not mid-row truncated", table_rows_well_formed(ctx),
+          "표 행 경계 보존(중간 절단 없음)")
 
     print(f"\n[SQL MULTI-INTENT SMOKE] {'ALL PASS' if not failures else 'FAIL: ' + ', '.join(failures)}")
     return 1 if failures else 0
