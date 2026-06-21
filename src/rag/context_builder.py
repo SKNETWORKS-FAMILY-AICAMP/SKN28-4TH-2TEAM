@@ -52,6 +52,10 @@ class SqlQueryResult:
     conditions: dict[str, Any] = field(default_factory=dict)
     message: str = ""
     warnings: list[str] = field(default_factory=list)
+    # LIMIT(SQL 캡)을 적용하기 전의 진짜 매칭 행 수. None이면 미상 → 절단 고지는
+    # len(rows)로 후퇴한다. 이 값이 있으면 고지가 "총 N개 중 M개"의 N을 캡으로
+    # 잘린 수가 아니라 실제 총계로 말한다(SQL 캡 침묵까지 정직하게 드러냄).
+    total_available: int | None = None
 
     def is_empty(self) -> bool:
         return len(self.rows) == 0
@@ -107,19 +111,10 @@ class ContextBuilder:
 
         vector_context = self._build_vector_context(vector_result)
         # SQL은 구조화 근거라 문자 예산을 우선 배정한다. 표를 행 경계에서 자르고
-        # 고지를 보존하려면 각 표가 '남은 예산'을 알아야 하므로 순차로 차감한다.
-        # SQL 섹션은 context에서 vector보다 앞에 놓이므로(아래 context_parts),
-        # 최후 안전망 _limit_context가 잘라도 SQL 표와 고지는 보존된다.
-        sql_parts: list[str] = []
-        sql_budget = self.config.max_total_context_chars
-        for result in sql_results:
-            if sql_budget <= 0:
-                break
-            part = self._build_sql_context(result, char_budget=sql_budget)
-            if part.strip():
-                sql_parts.append(part)
-                sql_budget -= len(part) + len("\n\n")
-        sql_context = "\n\n".join(sql_parts)
+        # 고지를 보존하려면 각 표가 '남은 예산'을 알아야 한다. SQL 섹션은 context에서
+        # vector보다 앞에 놓이므로(아래 context_parts), 최후 안전망 _limit_context가
+        # 잘라도 SQL 표와 고지는 보존된다.
+        sql_context = "\n\n".join(self._build_sql_contexts_fair(sql_results))
         warnings = self._collect_warnings(
             vector_result=vector_result,
             sql_results=sql_results,
@@ -313,6 +308,51 @@ class ContextBuilder:
 
         return table_name_map.get(table_name, table_name)
 
+    def _build_sql_contexts_fair(
+        self,
+        sql_results: list[SqlQueryResult],
+    ) -> list[str]:
+        """여러 SQL 표에 문자 예산을 공정하게 배분해 컨텍스트 조각들을 만든다.
+
+        과거에는 첫 표가 예산을 독식해(_search_sql_all이 먼저 주는 표가 이김)
+        뒤 표가 굶었다(예: course가 person을 42행으로 굶김 — 사용자가 '이메일'을
+        먼저 말해도). 여기서는 **작은 표부터** `남은예산 // 남은표수`로 할당한다:
+        작은 표가 남긴 예산이 큰 표로 흘러 어느 표도 굶지 않고, 배분이 순서에
+        의존하지 않는다(표시는 원래 순서를 유지해 배분 공정성과 표시순서를 분리).
+
+        빈 결과('조회된 행 없음')는 작으니 먼저 렌더해 공정 몫에서 제외한다.
+        """
+        parts_by_index: dict[int, str] = {}
+        remaining = self.config.max_total_context_chars
+        gap = len("\n\n")
+
+        indexed = list(enumerate(sql_results))
+        empty = [(i, r) for i, r in indexed if r is None or r.is_empty()]
+        nonempty = [(i, r) for i, r in indexed if r is not None and not r.is_empty()]
+
+        for i, result in empty:
+            part = self._build_sql_context(result, char_budget=max(remaining, 0))
+            parts_by_index[i] = part
+            if part.strip():
+                remaining -= len(part) + gap
+
+        # 작은 표부터: 적게 쓰고 남긴 몫이 뒤(큰 표)의 분모에서 더 큰 1인분이 된다.
+        for position, (i, result) in enumerate(
+            sorted(nonempty, key=lambda pair: len(pair[1].rows))
+        ):
+            tables_left = len(nonempty) - position
+            share = max(remaining, 0) // tables_left if tables_left else max(remaining, 0)
+            part = self._build_sql_context(result, char_budget=share)
+            parts_by_index[i] = part
+            if part.strip():
+                remaining -= len(part) + gap
+
+        return [
+            parts_by_index[i]
+            for i in sorted(parts_by_index)
+            if parts_by_index[i].strip()
+        ]
+
     # 절단 고지가 문자 예산 경계에서 잘려나가지 않도록 떼어 두는 여유분.
     _SQL_NOTICE_RESERVE_CHARS = 90
 
@@ -375,7 +415,11 @@ class ContextBuilder:
             lines.append(row_line)
             displayed += 1
 
-        total = len(sql_result.rows)
+        # 고지의 N은 '문자 예산으로 잘린 수(len(rows))'가 아니라 'SQL LIMIT 전
+        # 진짜 매칭 수'여야 한다. total_available이 있으면 그걸 쓴다 → displayed가
+        # SQL 캡(100)과 같아도 total>displayed면 고지가 남아 캡 침묵을 드러낸다.
+        # (안전망: total_available이 표시 행수보다 작게 들어오면 len(rows)로 보정)
+        total = max(sql_result.total_available or 0, len(sql_result.rows))
 
         if displayed < total:
             lines.append(

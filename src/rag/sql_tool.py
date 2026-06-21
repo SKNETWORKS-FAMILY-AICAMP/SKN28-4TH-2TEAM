@@ -213,6 +213,10 @@ class SQLTool:
         "person": "person",
     }
 
+    # LIMIT 전 진짜 매칭 수를 SELECT에 심는 윈도우 컬럼 별칭.
+    # `_`로 시작해 표시 컬럼과 충돌하지 않고, _split_total_count가 회수·제거한다.
+    _TOTAL_COUNT_ALIAS = "_total_count"
+
     def __init__(self, config: SQLToolConfig | None = None) -> None:
         self.config = config or SQLToolConfig.from_env()
         self.csv_data_dir = Path(self.config.csv_data_dir)
@@ -326,6 +330,7 @@ class SQLTool:
 
         sql, params = self._build_mysql_select(mysql_table, table_name, analysis)
         rows = self._fetch_mysql_rows(sql, params)
+        rows, total_available = self._split_total_count(rows)
 
         return self._result(
             table_name=mysql_table,
@@ -333,6 +338,7 @@ class SQLTool:
             columns=self._columns_from_rows(rows),
             analysis=analysis,
             message=f"{mysql_table} MySQL 조회가 완료되었습니다.",
+            total_available=total_available,
         )
 
     def _query_mysql_departments(self, analysis: QueryAnalysis) -> SqlQueryResult:
@@ -444,7 +450,8 @@ class SQLTool:
                 c.course_description,
                 GROUP_CONCAT(DISTINCT t.track_name ORDER BY t.track_name SEPARATOR ', ') AS track_name,
                 c.source_url,
-                c.crawled_at
+                c.crawled_at,
+                COUNT(*) OVER() AS {self._TOTAL_COUNT_ALIAS}
             FROM course c
             LEFT JOIN department d ON d.dept = c.dept
             LEFT JOIN course_track ct ON ct.course_id = c.record_id
@@ -458,6 +465,7 @@ class SQLTool:
             LIMIT {self._limit()}
         """
         rows = self._fetch_mysql_rows(sql, params)
+        rows, total_available = self._split_total_count(rows)
 
         return self._result(
             table_name="course",
@@ -465,6 +473,7 @@ class SQLTool:
             columns=self._columns_from_rows(rows),
             analysis=analysis,
             message="course MySQL 조회가 완료되었습니다.",
+            total_available=total_available,
         )
 
     def _query_mysql_office_contacts(self, analysis: QueryAnalysis) -> SqlQueryResult:
@@ -539,7 +548,8 @@ class SQLTool:
                 a.url,
                 a.filename,
                 a.source_url,
-                a.crawled_at
+                a.crawled_at,
+                COUNT(*) OVER() AS {self._TOTAL_COUNT_ALIAS}
             FROM asset a
             LEFT JOIN department d ON d.dept = a.dept
             {self._where_sql(asset_where)}
@@ -560,7 +570,8 @@ class SQLTool:
                 att.url,
                 att.filename,
                 att.url AS source_url,
-                att.crawled_at
+                att.crawled_at,
+                COUNT(*) OVER() AS {self._TOTAL_COUNT_ALIAS}
             FROM attachment att
             LEFT JOIN department d ON d.dept = att.dept
             {self._where_sql(attachment_where)}
@@ -568,10 +579,19 @@ class SQLTool:
             LIMIT {self._limit()}
         """
 
-        rows = [
-            *self._fetch_mysql_rows(asset_sql, asset_params),
-            *self._fetch_mysql_rows(attachment_sql, attachment_params),
-        ][: self._limit()]
+        asset_rows, asset_total = self._split_total_count(
+            self._fetch_mysql_rows(asset_sql, asset_params)
+        )
+        attachment_rows, attachment_total = self._split_total_count(
+            self._fetch_mysql_rows(attachment_sql, attachment_params)
+        )
+        # 두 쿼리를 합쳐 캡으로 자른다. 진짜 총계도 두 매칭 수의 합이다
+        # (둘 다 None이면 미상 유지 → 고지는 len(rows)로 후퇴).
+        rows = [*asset_rows, *attachment_rows][: self._limit()]
+        if asset_total is None and attachment_total is None:
+            total_available = None
+        else:
+            total_available = (asset_total or 0) + (attachment_total or 0)
 
         return self._result(
             table_name="asset",
@@ -579,6 +599,7 @@ class SQLTool:
             columns=self._columns_from_rows(rows),
             analysis=analysis,
             message="asset/attachment MySQL 조회가 완료되었습니다.",
+            total_available=total_available,
         )
 
     def _build_mysql_select(
@@ -616,14 +637,18 @@ class SQLTool:
         return sql, params
 
     def _select_sql_for_table(self, mysql_table: str, logical_table: str) -> str:
+        # COUNT(*) OVER()는 WHERE/JOIN 적용 후·LIMIT 적용 전의 전체 행 수다.
+        # person→department는 다대일이라 JOIN이 행을 부풀리지 않으므로 매칭 인원과 같다.
+        total_col = f", COUNT(*) OVER() AS {self._TOTAL_COUNT_ALIAS}"
+
         if logical_table in {"admission", "asset", "event", "person"}:
             return f"""
-                SELECT base.*, d.dept_name
+                SELECT base.*, d.dept_name{total_col}
                 FROM {mysql_table} base
                 LEFT JOIN department d ON d.dept = base.dept
             """
 
-        return f"SELECT * FROM {mysql_table} base"
+        return f"SELECT base.*{total_col} FROM {mysql_table} base"
 
     def _order_sql_for_table(self, logical_table: str) -> str:
         order_map = {
@@ -1100,6 +1125,7 @@ class SQLTool:
         )
         require_match = table_name in {"asset", "kaist_links", "kaist_link"} and bool(keywords)
         df = self._filter_keywords(df, keywords, require_match=require_match)
+        total_available = len(df)  # head(limit) 캡 전 진짜 매칭 수
         df = self._sort_table(table_name, df).head(self._limit())
 
         return self._result(
@@ -1108,6 +1134,7 @@ class SQLTool:
             columns=list(df.columns),
             analysis=analysis,
             message=f"{table_name} CSV 조회가 완료되었습니다.",
+            total_available=total_available,
         )
 
     def _query_csv_courses(self, analysis: QueryAnalysis) -> SqlQueryResult:
@@ -1151,7 +1178,7 @@ class SQLTool:
         if keep_columns:
             df = df[keep_columns]
 
-        df = (
+        deduped = (
             df.drop_duplicates(
                 subset=[
                     column
@@ -1160,8 +1187,9 @@ class SQLTool:
                 ]
             )
             .pipe(lambda x: self._sort_table("course", x))
-            .head(self._limit())
         )
+        total_available = len(deduped)  # head(limit) 캡 전 진짜 매칭 수
+        df = deduped.head(self._limit())
 
         return self._result(
             table_name="course",
@@ -1169,6 +1197,7 @@ class SQLTool:
             columns=list(df.columns),
             analysis=analysis,
             message="교과목 CSV 조회가 완료되었습니다.",
+            total_available=total_available,
         )
 
     def _query_csv_assets(self, analysis: QueryAnalysis) -> SqlQueryResult:
@@ -1201,6 +1230,7 @@ class SQLTool:
             generic_words=self._generic_words_for_table("asset"),
         )
         df = self._filter_keywords(df, keywords, require_match=bool(keywords))
+        total_available = len(df)  # head(limit) 캡 전 진짜 매칭 수
         df = self._sort_table("asset", df).head(self._limit())
 
         return self._result(
@@ -1209,6 +1239,7 @@ class SQLTool:
             columns=list(df.columns),
             analysis=analysis,
             message="자료/링크 CSV 조회가 완료되었습니다.",
+            total_available=total_available,
         )
 
     def _query_csv_office_contacts(self, analysis: QueryAnalysis) -> SqlQueryResult:
@@ -1240,6 +1271,7 @@ class SQLTool:
         analysis: QueryAnalysis,
         message: str,
         warnings: list[str] | None = None,
+        total_available: int | None = None,
     ) -> SqlQueryResult:
         final_warnings = list(warnings or [])
 
@@ -1255,6 +1287,7 @@ class SQLTool:
             conditions=getattr(analysis, "sql_conditions", {}),
             message=message,
             warnings=final_warnings,
+            total_available=total_available,
         )
 
     def _columns_from_rows(self, rows: list[dict[str, Any]]) -> list[str]:
@@ -1266,6 +1299,31 @@ class SQLTool:
                     columns.append(key)
 
         return columns
+
+    def _split_total_count(
+        self,
+        rows: list[dict[str, Any]],
+    ) -> tuple[list[dict[str, Any]], int | None]:
+        """`COUNT(*) OVER() AS _total_count` 윈도우 컬럼을 행에서 떼어낸다.
+
+        LIMIT 전 진짜 매칭 수를 단일 쿼리로 구하려고 SELECT에 심은 보조 컬럼이다.
+        값을 회수하고 행에서는 제거해 표/컬럼에 섞이지 않게 한다(미존재 시 None).
+        """
+        total: int | None = None
+        cleaned: list[dict[str, Any]] = []
+
+        for row in rows:
+            if self._TOTAL_COUNT_ALIAS in row:
+                row = dict(row)
+                value = row.pop(self._TOTAL_COUNT_ALIAS)
+                if total is None and value is not None:
+                    try:
+                        total = int(value)
+                    except (TypeError, ValueError):
+                        total = None
+            cleaned.append(row)
+
+        return cleaned, total
 
     def _missing_file_result(self, table_name: str, analysis: QueryAnalysis) -> SqlQueryResult:
         filenames = ", ".join(self.FILE_MAP.get(table_name, (str(table_name),)))

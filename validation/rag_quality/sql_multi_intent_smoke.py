@@ -9,6 +9,7 @@
 """
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -28,6 +29,11 @@ def tables(pipe, question: str) -> dict[str, list[dict]]:
     for result in pipe._search_sql_all(analysis):
         out[result.table_name] = list(result.rows or [])
     return out
+
+
+def sql_results(pipe, question: str) -> list:
+    analysis = pipe.analyzer.analyze(question)
+    return list(pipe._search_sql_all(analysis))
 
 
 def build_context(pipe, question: str) -> str:
@@ -128,6 +134,42 @@ def main() -> int:
           f"절단 고지 보존(ctx_len={len(ctx)})")
     check("#42 table not mid-row truncated", table_rows_well_formed(ctx),
           "표 행 경계 보존(중간 절단 없음)")
+
+    # #43 절단 고지의 총계(N)는 SQL LIMIT으로 잘린 수가 아니라 진짜 매칭 수여야 한다.
+    #     AX person은 캡(100)을 초과하므로 total_available>100이고, 컨텍스트 고지의
+    #     N이 그 진짜 총계와 같아야 한다('총 100개'라 거짓 단정하던 ① 회귀 방지).
+    q = "AX학과 교수 이메일이랑 담당 과목 알려줘"
+    person = next((r for r in sql_results(pipe, q) if r.table_name == "person"), None)
+    ctx = build_context(pipe, q)
+    person_notice = [
+        int(n)
+        for n, _ in re.findall(r"총 (\d+)개 중 (\d+)개만 표시", ctx)
+    ]
+    true_total = getattr(person, "total_available", None) if person else None
+    cap = pipe.sql_retriever._limit()
+    check("#43 notice reports true total, not SQL cap",
+          true_total is not None
+          and true_total > cap
+          and true_total in person_notice
+          and cap not in person_notice,
+          f"total_available={true_total} > cap={cap}, 고지 N={person_notice} (캡 아님)")
+
+    # #44 두 큰 표(person 147 + course 145)가 예산을 공정하게 나눠야 한다.
+    #     과거엔 첫 표(course)가 독식해 person이 굶었다(② 불공정). 섹션 문자 길이
+    #     비율이 균형(min/max ≥ 0.7)이면 어느 표도 굶지 않은 것 — 첫 표 독식이
+    #     재발하면 비율이 크게 떨어져 잡힌다.
+    sql_ctx = _CONTEXT_BUILDER.build(
+        pipe.analyzer.analyze(q), vector_result=None, sql_result=sql_results(pipe, q)
+    ).sql_context
+    sections = [
+        len(sec)
+        for sec in sql_ctx.split("[SQL 조회 결과]")
+        if "raw_table" in sec
+    ]
+    ratio = (min(sections) / max(sections)) if len(sections) >= 2 else 1.0
+    check("#44 budget split is fair across tables",
+          len(sections) >= 2 and ratio >= 0.7,
+          f"섹션 문자 길이 {sections}, min/max={ratio:.2f} (≥0.7=굶주림 없음)")
 
     print(f"\n[SQL MULTI-INTENT SMOKE] {'ALL PASS' if not failures else 'FAIL: ' + ', '.join(failures)}")
     return 1 if failures else 0
