@@ -316,3 +316,26 @@ python -c "from src.rag.rag_pipeline import create_default_pipeline as c; a=c().
 - 커밋 **`2b63e21`** (`docs: validation 스모크 하니스 문서화…`), `upstream2/KSJ_4th` 푸시·동기화. (S7 코드 커밋 = `eae3271`, CSV EOL churn은 `--ignore-cr-at-eol` 내용 0 확인 후 제외.)
 - **메모리 정정**: [[project_readme_request]]("작성 필요")가 다음 콜드스타트의 중복 작성을 유발할 수 있어 **충족됨**으로 갱신.
 - **교훈**: 이 단위의 최대 산출물은 코드/문서 추가가 아니라 **(a) 이미 된 일을 다시 하지 않은 것 (b) 내 "갭" 가설을 측정으로 절반 기각한 것**. "저위험"은 착수 신호가 아니라 가치 검증 후의 부차 조건.
+
+## 8.8 다음 착수점 (미착수): C — 회귀 가드 강화 + 형제 버그 감사
+
+> **이 절은 다음 세션 콜드스타트용 작업 정의서다.** S7의 ① 수정(거짓 총계→`total_available`)을 테스트로 더 잠그고, **같은 종류의 버그("LIMIT 이후 행수를 총계처럼 사용")가 다른 곳에 더 있는지** 감사한다. 성격 = 회귀 보험(급하지 않음, 순수 자율·무팀의존·저위험). 가치 검증을 통과한 **유일한 자율 작업**(③ 무가치·④ 리스크·EOL/제품질문 팀의존 — 8.7 참조).
+>
+> **베이스라인**: HEAD `e4990ca`(또는 이후), `KSJ_4th`. env=miniforge `pystudy_env`([[project_local_conda_env]]). 착수 전 그린 확인: `python validation\rag_quality\validate_rag_quality.py`(40/40) + `python validation\rag_quality\sql_multi_intent_smoke.py`(#37~#44 ALL PASS). **판정은 [[feedback_verify_at_output_level]]대로 출력(컨텍스트 고지/렌더)에서**, 검증은 결정적 CSV 경로(DB·LLM 비의존)로.
+
+### C-1. total_available 가드 확장 (테스트)
+- **현황**: 스모크 #43은 **person**만(AX 147), #44는 person+course **공정성**만 잠근다. course/asset 경로의 `total_available` *정확성*은 이번 세션에 **수동으로만** 확인됨(CSV: course 145·asset 155; MySQL AX: course 78·asset 155=154+1). 못 박혀 있지 않다.
+- **할 일**: `validation/rag_quality/sql_multi_intent_smoke.py`에 #45~ 추가 — course·asset 경로에서 `total_available`이 (a) 절단 시 `len(rows)`보다 크고 (b) 독립 계산한 진짜 매칭 수와 일치함을 결정적으로 검증. 데이터값 하드코딩 대신 독립 카운트와 대조(예: CSV는 필터 후 `len`, MySQL은 별도 COUNT)하는 #43 패턴 재사용.
+- **주의(선재 측정)**: CSV person 경로는 `_query_csv_table`이 `.head(limit)` 전 `len`으로 총계 계산. course는 `_query_csv_courses`의 dedup **후** `len`. asset은 두 쿼리 합산. MySQL은 `COUNT(*) OVER()`(course는 GROUP BY라 그룹수=78, 이번에 독립 검증 완료). 경로별로 "총계 계산 시점"이 달라 테스트도 경로별로 봐야 함.
+
+### C-2. 형제 버그 감사 ("post-LIMIT 수를 총계처럼")
+- **잠정 결과(이번 세션 읽기전용 스캔)** — 콜드 세션은 이걸 출발 가설로 삼아 **확정/반증**만 하면 된다:
+  - `context_builder._build_sql_context` 절단 고지 → **①에서 이미 `total_available`로 수정됨**(클린).
+  - `context_builder._collect_sources`의 `metadata["row_count"] = len(sql_result.rows)`(≈484행, post-LIMIT) → **사용자 비노출로 추정**: Streamlit `format_sources_for_cards`([pages/3_RAG_Chatbot.py:123](pages/3_RAG_Chatbot.py))가 `row_count`를 **읽지 않음**(title/dept/content_type/crawled_at/page/url만). → **형제 버그 아님(잠정 클린)**. 콜드 세션은 다른 sources 소비처(run_dict, API 응답 등)가 row_count를 "총 N건"으로 노출하지 않는지만 확인 후 종결.
+  - `vector_retriever`/`rag_pipeline`의 `result_count`(stage 결과 수, 디버그) → SQL 총계 클래스 아님(무관).
+- **할 일**: 위 잠정 클린을 확인(grep `row_count`·`len(.*rows)`의 *소비처*까지 추적)하고, 사용자에게 총계로 보이는 post-LIMIT 수가 있으면 `total_available` 도입으로 수정·가드, 없으면 "감사 결과 클린"으로 노트에 종결 기록.
+
+### 수용 기준
+- C-1: 신규 스모크 가드 추가 후 **#37~#45+ ALL PASS**, 분류 40/40 유지.
+- C-2: 형제 버그 **발견 시 수정+가드 / 미발견 시 "클린" 명시 종결**. 어느 쪽이든 노트에 결과 1줄.
+- 변경은 의도 파일만 스테이징(CSV EOL churn 제외), 커밋 메시지에 "C 회귀가드/감사" 명시.
