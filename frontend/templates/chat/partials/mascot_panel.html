@@ -1,0 +1,11 @@
+{% comment %} 넙죽이 마스코트 패널. 상태: idle/thinking/source/done/warning. JS: mascot.js {% endcomment %}
+<aside class="mascot-panel mascot" data-state="idle" id="mascot">
+  <div class="mascot-stage">
+    <img class="mascot-img" id="mascot-img" src="{% static 'images/mascot/nubzuki_idle.png' %}" alt="넙죽이">
+  </div>
+  <div class="mascot-speech">
+    <div class="mascot-name">넙죽이</div>
+    <div class="mascot-statuschip" id="mascot-chip"><span class="dot"></span><span id="mascot-chiptxt">대기 중</span></div>
+    <div class="mascot-line" id="mascot-line">무엇이든 물어보세요!</div>
+  </div>
+</aside>

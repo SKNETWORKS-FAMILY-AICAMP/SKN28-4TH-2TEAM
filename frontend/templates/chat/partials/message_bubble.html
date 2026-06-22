@@ -1,0 +1,15 @@
+{% comment %}
+넙죽이 메시지 말풍선 — 백엔드 렌더링용 참고 마크업.
+실시간 UI는 static/js/chat.js 의 addBot()/addUser() 가 동일 구조를 생성합니다.
+컨텍스트: role("user"|"bot"), text|answer_html, mascot_state
+{% endcomment %}
+<div class="msg {{ role }}">
+  {% if role == "bot" %}
+    <div class="msg-av bot"><img src="{% static 'images/mascot/nubzuki_' %}{{ mascot_state|default:'idle' }}.png" alt="넙죽이"></div>
+  {% else %}
+    <div class="msg-av user">{{ user_initial }}</div>
+  {% endif %}
+  <div class="msg-col">
+    <div class="bubble {{ role }}">{{ answer_html|safe }}</div>
+  </div>
+</div>

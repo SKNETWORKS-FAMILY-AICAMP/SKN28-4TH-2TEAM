@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}넙죽이 · KAIST 학과 안내{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap">
+  <link rel="stylesheet" href="{% static 'css/variables.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/mascot.css' %}">
+  <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+  <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <link rel="stylesheet" href="{% static 'css/tweaks.css' %}">
+
+  <script>
+    // Static root — must match Django STATIC_URL
+    window.ASSET_BASE = "{% static 'images/' %}".replace(/images\/$/, '');
+    // Live-tweak defaults (optional)
+    window.TWEAKS = { "accent":"#29a8e2", "theme":"light", "mascotSize":1, "density":"comfortable", "playful":true };
+    {% block boot %}{% endblock %}
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="{% static 'js/data.js' %}"></script>
+  <script src="{% static 'js/kb_data.js' %}"></script>
+  <script src="{% static 'js/search.js' %}"></script>
+  <script src="{% static 'js/mascot.js' %}"></script>
+  <script src="{% static 'js/chat.js' %}"></script>
+  <script src="{% static 'js/auth.js' %}"></script>
+  <script src="{% static 'js/dashboard.js' %}"></script>
+  <script src="{% static 'js/errors.js' %}"></script>
+  <script src="{% static 'js/app.js' %}"></script>
+{% block page %}{% endblock %}
+</body>
+</html>

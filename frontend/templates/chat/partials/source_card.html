@@ -1,0 +1,12 @@
+{% comment %}
+출처 카드 — FR-C4(출처 표시). 클릭 시 원문(url)이 새 탭으로 열립니다.
+컨텍스트: source.title, source.doc(학과·문서명·수집일), source.url, source.snippet
+{% endcomment %}
+<a class="src" href="{{ source.url }}" target="_blank" rel="noopener">
+  <div class="src-num">{{ forloop.counter }}</div>
+  <div class="src-body">
+    <div class="src-title">{{ source.title }}</div>
+    <div class="src-doc">{{ source.doc }}</div>
+    {% if source.snippet %}<div class="src-snip"><span class="mono">{{ source.snippet }}</span></div>{% endif %}
+  </div>
+</a>
