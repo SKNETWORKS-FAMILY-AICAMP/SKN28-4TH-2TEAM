@@ -43,6 +43,17 @@ DEPARTMENT_DISPLAY_ORDER = {
     "aic": 4,
 }
 
+# 교수 목록 표시 순서: 전임(학과장/전임교수/교수/중점교원)을 겸임(겸직/겸임교수)보다 먼저.
+# 팀 결정(2026-06-23): 전체 인원을 다 보여주되 역할 라벨 노출 + 전임을 상위에.
+PERSON_ROLE_DISPLAY_ORDER = {
+    "학과장": 0,
+    "전임교수": 1,
+    "교수": 2,
+    "중점교원": 3,
+    "겸직교수": 4,
+    "겸임교수": 5,
+}
+
 KAIST_ACADEMIC_GROUP_ALIASES = {
     "공과대학": "공과대학",
     "자연과학대학": "자연과학대학",
@@ -659,7 +670,18 @@ class SQLTool:
             "kaist_link": "ORDER BY base.link_name",
             "kaist_profile": "ORDER BY base.item",
             "kaist_statistics": "ORDER BY base.stat_group, base.level",
-            "person": "ORDER BY base.dept, base.role_normalized, base.name",
+            "person": (
+                "ORDER BY base.dept, "
+                "CASE base.role_normalized "
+                "WHEN '학과장' THEN 0 "
+                "WHEN '전임교수' THEN 1 "
+                "WHEN '교수' THEN 2 "
+                "WHEN '중점교원' THEN 3 "
+                "WHEN '겸직교수' THEN 4 "
+                "WHEN '겸임교수' THEN 5 "
+                "ELSE 6 END, "
+                "base.name"
+            ),
         }
 
         return order_map.get(logical_table, "")
@@ -953,8 +975,16 @@ class SQLTool:
             "kaist_profile": ["item"],
             "kaist_statistics": ["stat_group", "level"],
             "office_contacts": ["program_name"],
-            "person": ["dept", "role_normalized", "name"],
         }
+
+        if table_name == "person" and "role_normalized" in df.columns:
+            df = df.copy()
+            df["_role_rank"] = df["role_normalized"].map(PERSON_ROLE_DISPLAY_ORDER)
+            df["_role_rank"] = df["_role_rank"].fillna(len(PERSON_ROLE_DISPLAY_ORDER))
+            sort_columns = [c for c in ["dept"] if c in df.columns] + ["_role_rank"]
+            if "name" in df.columns:
+                sort_columns.append("name")
+            return df.sort_values(sort_columns, kind="stable").drop(columns="_role_rank")
 
         columns = [column for column in preferred.get(table_name, []) if column in df.columns]
 
