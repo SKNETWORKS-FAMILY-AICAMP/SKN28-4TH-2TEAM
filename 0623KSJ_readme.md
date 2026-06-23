@@ -68,7 +68,7 @@
 ## 4. 현재 상태
 - **✅ 세션6 완료**: ② 교수 전임 우선 정렬(+ AX 잘림 버그 수정). 코드 변경 = `src/rag/sql_tool.py` 1파일.
 - **스모크 #37~#46 ALL PASS**, 분류 40/40, CSV 경로 출력·edge case 전수 검증.
-- **변경 미커밋**: `src/rag/sql_tool.py`. (CSV 5개 EOL churn은 8.7대로 의도적 미커밋.)
+- **커밋·푸시 완료**: `0cfa8ed` (`src/rag/sql_tool.py` + 노트 0621/0622/0623), `upstream2`의 **KSJ_4th·main 양쪽**에 fast-forward. (CSV 5개 EOL churn은 8.7대로 의도적 미커밋.)
 
 ### 잔존 (사유 명시)
 - **① CSV EOL** — 팀 결정으로 보류(4차 후 여유 시).
