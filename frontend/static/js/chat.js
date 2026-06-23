@@ -14,7 +14,7 @@ const SESSION_Q  = {
 const Chat = {
   msgSeq:0, busy:false, idleTimer:null, activeSession:null,
 
-  viewHTML(){
+  railHTML(){
     const grouped = {};
     SESSIONS.forEach(s=>{ (grouped[s.day]=grouped[s.day]||[]).push(s); });
     let railList='';
@@ -22,11 +22,16 @@ const Chat = {
       railList += `<div class="rail-sec">${day}</div>`;
       grouped[day].forEach(s=>{
         railList += `<div class="sess" data-sess="${s.id}" data-title="${s.title}">
-          <div class="sess-ic">${svg(s.icon)}</div>
-          <div class="sess-body"><div class="sess-title">${s.title}</div><div class="sess-meta">${s.meta}</div></div>
+          <div class="sess-ic">${svg(s.icon||'message')}</div>
+          <div class="sess-body"><div class="sess-title">${this.esc(s.title)}</div><div class="sess-meta">${this.esc(s.meta||'')}</div></div>
         </div>`;
       });
     });
+    return railList;
+  },
+
+  viewHTML(){
+    const railList=this.railHTML();
 
     return `
     <div class="chat-shell">
@@ -82,6 +87,7 @@ const Chat = {
     this.sendBtn = document.getElementById('send-btn');
 
     this.showWelcome();
+    this.loadSessionList();
 
     const grow=()=>{ this.input.style.height='auto'; this.input.style.height=Math.min(this.input.scrollHeight,140)+'px'; this.sendBtn.disabled=!this.input.value.trim()||this.busy; };
     this.input.addEventListener('input', grow);
@@ -89,11 +95,11 @@ const Chat = {
     this.sendBtn.addEventListener('click', ()=>this.submit());
 
     document.getElementById('new-chat').addEventListener('click', ()=>this.newChat());
-    document.querySelectorAll('.sess').forEach(el=>el.addEventListener('click', ()=>this.loadSession(el.dataset.sess)));
+    this.wireRailSessions();
     document.getElementById('rail-toggle').addEventListener('click', ()=>document.getElementById('rail').classList.toggle('collapsed'));
     document.getElementById('toggle-theme').addEventListener('click', ()=>App.toggleTheme());
     const ga=document.getElementById('go-admin'); if(ga) ga.addEventListener('click', ()=>App.go('admin'));
-    document.getElementById('user-card').addEventListener('click', ()=>App.go('login'));
+    document.getElementById('user-card').addEventListener('click', ()=>this.logout());
 
     // sidebar search filter (functional)
     const rs=document.getElementById('rail-search-inp');
@@ -109,6 +115,31 @@ const Chat = {
         sec.style.display=any?'':'none';
       });
     });
+  },
+
+  wireRailSessions(){
+    document.querySelectorAll('.sess').forEach(el=>el.addEventListener('click', ()=>this.loadSession(el.dataset.sess)));
+    if(this.activeSession){
+      document.querySelectorAll('.sess').forEach(s=>s.classList.toggle('active', String(s.dataset.sess)===String(this.activeSession)));
+    }
+  },
+
+  async loadSessionList(){
+    try{
+      const res = await Api.sessions();
+      SESSIONS = res.sessions || [];
+      const list=document.getElementById('rail-list');
+      if(list) list.innerHTML = this.railHTML();
+      this.wireRailSessions();
+    }catch(e){ /* session rail remains empty */ }
+  },
+
+  async logout(){
+    if(CURRENT_USER.role==='guest'){ App.go('login'); return; }
+    try{ await Api.logout(); }catch(e){}
+    CURRENT_USER = { name:'게스트', mail:'temporary@session', initial:'게', role:'guest', via:'guest' };
+    SESSIONS = [];
+    App.go('login');
   },
 
   renderSuggest(list){
@@ -143,18 +174,25 @@ const Chat = {
     this.showWelcome();
   },
 
-  loadSession(id){
+  async loadSession(id){
     if(this.busy) return;
-    this.activeSession=id;
-    document.querySelectorAll('.sess').forEach(s=>s.classList.toggle('active', s.dataset.sess===id));
-    const s = SESSIONS.find(x=>x.id===id);
-    document.getElementById('chat-title').textContent = s? s.title : '대화';
-    this.inner.innerHTML='';
-    document.getElementById('suggest').innerHTML='';
-    const q = SESSION_Q[id];
-    if(q){ this.addUser(q); this.addBot(this.resolve(q, null, true), true); }
-    Mascot.set('idle');
-    this.scroll();
+    try{
+      const res = await Api.session(id);
+      this.activeSession=String(res.session.id);
+      document.querySelectorAll('.sess').forEach(s=>s.classList.toggle('active', String(s.dataset.sess)===this.activeSession));
+      document.getElementById('chat-title').textContent = res.session.title || '대화';
+      this.inner.innerHTML='';
+      document.getElementById('suggest').innerHTML='';
+      (res.messages||[]).forEach(m=>{
+        if(m.role==='user') this.addUser(m.content||'');
+        else this.addBot(this.apiMessageToBot(m), true);
+      });
+      if(!(res.messages||[]).length) this.showWelcome();
+      Mascot.set('idle');
+      this.scroll();
+    }catch(e){
+      Mascot.set('warning','대화를 불러오지 못했어요.');
+    }
   },
 
   /* resolve a query to a bot object deterministically (no LLM) */
@@ -187,26 +225,17 @@ const Chat = {
     const typing = this.addTyping();
     this.scroll();
 
-    // scripted (greeting/departments/fallback) shortcut
-    const m = kbId || matchKB(query);
-    if(m && KB[m]){ await this.wait(820); typing.remove(); this.finish(KB[m]); return; }
-
-    const result = Search.retrieve(query);
-    if(!result){ await this.wait(820); typing.remove(); this.finish(KB.fallback); return; }
-
-    Mascot.set('source');
-    const sources = Search.sourcesFor(result);
-    let answerHTML = null;
-    if(window.claude && window.claude.complete){
-      try{
-        const txt = await Promise.race([ window.claude.complete(Search.llmPrompt(query, result)), this.wait(9000).then(()=>null) ]);
-        if(txt && txt.trim()) answerHTML = this.fmt(txt);
-      }catch(e){ /* fall through */ }
-    } else { await this.wait(700); }
-    if(!answerHTML) answerHTML = Search.fallbackAnswer(result);
-
-    typing.remove();
-    this.finish({ answer:answerHTML, sources, mascot:result.mascot, chips:Search.chipsFor(result) });
+    try{
+      const res = await Api.chat({ session_id:this.activeSession, question:query });
+      typing.remove();
+      this.activeSession = String(res.session_id);
+      Mascot.set(res.warning ? 'warning' : 'source');
+      this.finish(this.apiResponseToBot(res));
+      this.loadSessionList();
+    }catch(e){
+      typing.remove();
+      this.finish(this.localFallback(query, kbId));
+    }
   },
 
   finish(kb){
@@ -217,6 +246,52 @@ const Chat = {
     if(kb.mascot==='source') setTimeout(()=>Mascot.set('done','출처까지 확인 완료! 또 궁금한 게 있나요?'),1400);
     this.idleTimer=setTimeout(()=>Mascot.set('idle'), 7000);
     this.scroll();
+  },
+
+  apiResponseToBot(res){
+    return {
+      answer:this.fmt(res.answer||''),
+      sources:this.apiSources(res.sources||[]),
+      mascot:res.warning ? 'warning' : 'source',
+      chips:res.warning ? ['AI컴퓨팅학과 전공 과목 알려줘','단과대학이랑 학과 목록 알려줘'] : null,
+    };
+  },
+
+  apiMessageToBot(message){
+    return {
+      answer:this.fmt(message.content||''),
+      sources:this.apiSources(message.sources||[]),
+      mascot:message.warning ? 'warning' : 'source',
+      chips:null,
+    };
+  },
+
+  apiSources(sources){
+    return (sources||[]).map(s=>{
+      const bits=[];
+      if(s.department) bits.push(s.department);
+      if(s.score!==null && s.score!==undefined && s.score!=='') bits.push(`score ${s.score}`);
+      return {
+        title:s.title || 'Retrieved Source',
+        doc:bits.join(' · ') || 'RAG Source',
+        url:s.url || '',
+        snippet:'',
+        score:s.score,
+      };
+    });
+  },
+
+  localFallback(query, kbId){
+    const m = kbId || matchKB(query);
+    if(m && KB[m]) return KB[m];
+    const result = Search.retrieve(query);
+    if(!result) return KB.fallback;
+    return {
+      answer:Search.fallbackAnswer(result),
+      sources:Search.sourcesFor(result),
+      mascot:result.mascot,
+      chips:Search.chipsFor(result),
+    };
   },
 
   /* ——— renderers ——— */

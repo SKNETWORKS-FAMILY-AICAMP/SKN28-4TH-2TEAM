@@ -1,12 +1,66 @@
 /* ============================================================
+   API helpers — Django JSON endpoints
+   ============================================================ */
+const Api = {
+  csrf(){
+    const m = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+    return m ? decodeURIComponent(m[1]) : '';
+  },
+
+  async request(url, opts={}){
+    const method = opts.method || 'GET';
+    const headers = Object.assign({ 'Accept':'application/json' }, opts.headers||{});
+    const init = { method, headers, credentials:'same-origin' };
+    if(opts.body !== undefined){
+      headers['Content-Type'] = 'application/json';
+      init.body = JSON.stringify(opts.body);
+    }
+    if(method !== 'GET') headers['X-CSRFToken'] = this.csrf();
+    const res = await fetch(url, init);
+    const data = await res.json().catch(()=>({}));
+    if(!res.ok){
+      const err = new Error(data.error || '요청을 처리하지 못했어요.');
+      err.data = data; err.status = res.status;
+      throw err;
+    }
+    return data;
+  },
+
+  applyUser(payload){
+    const u = payload && payload.user;
+    if(!u) return;
+    CURRENT_USER = {
+      name: u.name || '게스트',
+      mail: u.email || '',
+      initial: u.initial || (u.name||u.email||'?').slice(0,1),
+      role: u.role || 'guest',
+      via: payload.authenticated ? 'django' : 'guest',
+    };
+  },
+
+  me(){ return this.request('/api/auth/me/'); },
+  login(email, password, remember){ return this.request('/api/auth/login/', {method:'POST', body:{email, password, remember}}); },
+  signup(name, email, password){ return this.request('/api/auth/signup/', {method:'POST', body:{name, email, password}}); },
+  logout(){ return this.request('/api/auth/logout/', {method:'POST', body:{}}); },
+  chat(payload){ return this.request('/api/chat/', {method:'POST', body:payload}); },
+  sessions(){ return this.request('/api/chat/sessions/'); },
+  createSession(){ return this.request('/api/chat/sessions/', {method:'POST', body:{}}); },
+  session(id){ return this.request(`/api/chat/sessions/${encodeURIComponent(id)}/`); },
+  deleteSession(id){ return this.request(`/api/chat/sessions/${encodeURIComponent(id)}/`, {method:'DELETE'}); },
+};
+
+/* ============================================================
    App router · theme · prototype nav · Tweaks panel
    ============================================================ */
 const App = {
   current:'login',
   tweaks: Object.assign({ accent:'#29a8e2', theme:'light', mascotSize:1, density:'comfortable', playful:true }, window.TWEAKS||{}),
 
-  start(){
+  async start(){
     this.applyTweaks();
+    try{
+      Api.applyUser(await Api.me());
+    }catch(e){ /* keep guest state */ }
     const r=window.__ROUTE;          // set by Django page templates
     if(r){ this.go(r); } else { this.go('login'); this.buildProtoNav(); }
     this.initTweakHost();
@@ -114,4 +168,4 @@ const App = {
   hideTweaks(){ const p=document.getElementById('tweaks-panel'); if(p) p.classList.add('hidden'); },
 };
 
-window.addEventListener('DOMContentLoaded', ()=>App.start());
+window.addEventListener('DOMContentLoaded', ()=>{ App.start().catch(()=>App.go(window.__ROUTE||'login')); });

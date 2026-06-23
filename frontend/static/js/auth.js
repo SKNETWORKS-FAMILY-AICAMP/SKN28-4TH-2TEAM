@@ -32,12 +32,12 @@ const Auth = {
           <form id="login-form" novalidate>
             <div class="field" id="f-email">
               <label>이메일</label>
-              <div class="inp">${svg('mail')}<input type="email" id="li-email" placeholder="you@kaist.ac.kr" value="dohyun.lee@kaist.ac.kr"></div>
+              <div class="inp">${svg('mail')}<input type="email" id="li-email" placeholder="you@example.com"></div>
               <div class="err">올바른 이메일을 입력해 주세요.</div>
             </div>
             <div class="field" id="f-pw">
               <label>비밀번호</label>
-              <div class="inp">${svg('lock')}<input type="password" id="li-pw" placeholder="비밀번호" value="········"><span class="eye" id="li-eye">${svg('eye')}</span></div>
+              <div class="inp">${svg('lock')}<input type="password" id="li-pw" placeholder="비밀번호"><span class="eye" id="li-eye">${svg('eye')}</span></div>
               <div class="err">비밀번호는 6자 이상이에요.</div>
             </div>
             <div class="auth-row">
@@ -70,9 +70,9 @@ const Auth = {
               <div class="err">이름을 입력해 주세요.</div>
             </div>
             <div class="field" id="s-email">
-              <label>KAIST 이메일</label>
-              <div class="inp">${svg('mail')}<input id="su-email" placeholder="you@kaist.ac.kr"></div>
-              <div class="err">@kaist.ac.kr 이메일을 입력해 주세요.</div>
+              <label>이메일</label>
+              <div class="inp">${svg('mail')}<input id="su-email" placeholder="you@example.com"></div>
+              <div class="err">올바른 이메일을 입력해 주세요.</div>
             </div>
             <div class="field" id="s-pw">
               <label>비밀번호</label>
@@ -103,13 +103,24 @@ const Auth = {
     document.getElementById('to-signup').addEventListener('click', ()=>App.go('signup'));
     /* KAIST SSO: presentation-only, intentionally non-functional */
     document.getElementById('li-google').addEventListener('click', e=>this.googleSignIn(e.currentTarget));
-    document.getElementById('login-form').addEventListener('submit', e=>{
+    document.getElementById('login-form').addEventListener('submit', async e=>{
       e.preventDefault();
       const em=document.getElementById('li-email'), p=document.getElementById('li-pw');
       let ok=true;
       ok = this.validate('f-email', /\S+@\S+\.\S+/.test(em.value)) && ok;
       ok = this.validate('f-pw', p.value.length>=6) && ok;
-      if(ok) App.go('chat');
+      if(!ok) return;
+      const btn=e.submitter || e.currentTarget.querySelector('button[type="submit"]');
+      this.busy(btn, true, '로그인 중…');
+      try{
+        const res = await Api.login(em.value.trim(), p.value, e.currentTarget.querySelector('input[type="checkbox"]').checked);
+        Api.applyUser(res);
+        App.go('chat');
+      }catch(err){
+        this.setError('f-pw', err.message || '로그인에 실패했어요.');
+      }finally{
+        this.busy(btn, false, '로그인');
+      }
     });
   },
 
@@ -118,7 +129,7 @@ const Auth = {
     eye.addEventListener('click', ()=>{ const t=pw.type==='password'; pw.type=t?'text':'password'; eye.innerHTML=svg(t?'eyeOff':'eye'); });
     document.getElementById('to-login').addEventListener('click', ()=>App.go('login'));
     document.getElementById('su-google').addEventListener('click', e=>this.googleSignIn(e.currentTarget));
-    document.getElementById('signup-form').addEventListener('submit', e=>{
+    document.getElementById('signup-form').addEventListener('submit', async e=>{
       e.preventDefault();
       const name=document.getElementById('su-name').value.trim();
       const em=document.getElementById('su-email').value.trim();
@@ -126,24 +137,48 @@ const Auth = {
       const agree=document.getElementById('su-agree').checked;
       let ok=true;
       ok = this.validate('s-name', !!name) && ok;
-      ok = this.validate('s-email', /\S+@kaist\.ac\.kr$/i.test(em)) && ok;
+      ok = this.validate('s-email', /\S+@\S+\.\S+/.test(em)) && ok;
       ok = this.validate('s-pw', p.length>=6) && ok;
       ok = this.validate('s-pw2', p2===p && p2.length>=6) && ok;
       if(!agree){ ok=false; document.getElementById('su-agree').parentElement.style.color='var(--danger)'; }
-      if(ok) App.go('chat');
+      if(!ok) return;
+      const btn=e.submitter || e.currentTarget.querySelector('button[type="submit"]');
+      this.busy(btn, true, '계정 생성 중…');
+      try{
+        const res = await Api.signup(name, em, p);
+        Api.applyUser(res);
+        App.go('chat');
+      }catch(err){
+        this.setError('s-email', err.message || '회원가입에 실패했어요.');
+      }finally{
+        this.busy(btn, false, '계정 만들기');
+      }
     });
   },
 
   googleSignIn(btn){
-    // Simulated Google sign-in. In production this is the real OAuth flow (see notes).
+    // OAuth/SSO is intentionally out of scope for this iteration.
     const orig = btn.innerHTML;
     btn.disabled = true;
-    btn.innerHTML = `<span class="gspin"></span> Google 계정 연결 중…`;
-    setTimeout(()=>{ CURRENT_USER = GOOGLE_USER; App.go('chat'); }, 850);
+    btn.innerHTML = `아직 준비 중이에요`;
+    setTimeout(()=>{ btn.disabled = false; btn.innerHTML = orig; }, 1100);
   },
 
   validate(fieldId, cond){
     document.getElementById(fieldId).classList.toggle('invalid', !cond);
     return cond;
+  },
+
+  setError(fieldId, message){
+    const field = document.getElementById(fieldId);
+    field.classList.add('invalid');
+    const err = field.querySelector('.err');
+    if(err) err.textContent = message;
+  },
+
+  busy(btn, on, label){
+    if(!btn) return;
+    btn.disabled = on;
+    btn.textContent = label;
   },
 };

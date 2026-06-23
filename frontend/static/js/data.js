@@ -72,20 +72,13 @@ const COLLEGE_COLOR={ ai:'#9b6cf0', natsci:'var(--nub)', life:'var(--coral)' };
 /* ============================================================
    Current user
    ============================================================ */
-let   CURRENT_USER = { name:'이도현', mail:'dohyun.lee@kaist.ac.kr', initial:'이', role:'admin', via:'kaist' };
+let   CURRENT_USER = { name:'게스트', mail:'temporary@session', initial:'게', role:'guest', via:'guest' };
 const GOOGLE_USER  = { name:'김민지', mail:'minji.kim@gmail.com', initial:'민', role:'user', via:'google' };
 
 /* ============================================================
    Example conversations (grouped by college) — titles are real queries
    ============================================================ */
-const SESSIONS = [
-  { id:'s5', title:'단과대학·학과 목록', meta:'전체 학과 안내', icon:'building', day:'둘러보기' },
-  { id:'s1', title:'AI컴퓨팅학과 전공 과목', meta:'AI대학', icon:'cpu', day:'AI대학' },
-  { id:'s2', title:'AI대학 교수진', meta:'AI대학', icon:'users', day:'AI대학' },
-  { id:'s3', title:'자연과학대학 입학 안내', meta:'자연과학대학', icon:'cap', day:'자연과학대학' },
-  { id:'s4', title:'화학과 교수님 연구분야', meta:'자연과학대학 · 화학과', icon:'flask', day:'자연과학대학' },
-  { id:'s6', title:'생명과학과 과목 안내', meta:'생명과학기술대학', icon:'dna', day:'생명과학기술대학' },
-];
+let SESSIONS = [];
 
 /* ============================================================
    Quick prompts (route through retrieval over real data)
