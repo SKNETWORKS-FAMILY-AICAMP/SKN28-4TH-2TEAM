@@ -8,14 +8,15 @@ from typing import Any
 
 CURRENT_FILE = Path(__file__).resolve()
 PROJECT_ROOT = CURRENT_FILE.parents[2]
+SRC_DIR = PROJECT_ROOT / "src"
 
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
 
-from rag.query_analyzer import QuestionAnalyzer
-from rag.vector_retriever import VectorRetriever
-from rag.context_builder import ContextBuilder, ContextBuilderConfig
-from rag.answer_generator import AnswerGenerator
+from kaist_rag.rag.query_analyzer import QuestionAnalyzer
+from kaist_rag.rag.vector_retriever import VectorRetriever
+from kaist_rag.rag.context_builder import ContextBuilder, ContextBuilderConfig
+from kaist_rag.rag.answer_generator import AnswerGenerator
 
 
 RUN_LLM_ANSWER = False

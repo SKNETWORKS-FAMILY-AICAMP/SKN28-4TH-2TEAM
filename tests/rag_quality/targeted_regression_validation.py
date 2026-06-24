@@ -12,12 +12,13 @@ from typing import Any
 
 CURRENT_FILE = Path(__file__).resolve()
 PROJECT_ROOT = CURRENT_FILE.parents[2]
+SRC_DIR = PROJECT_ROOT / "src"
 RESULTS_DIR = CURRENT_FILE.parent / "results"
 
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
 
-from rag.rag_pipeline import create_default_pipeline
+from kaist_rag.rag.rag_pipeline import create_default_pipeline
 
 
 @dataclass(frozen=True)

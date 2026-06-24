@@ -13,13 +13,14 @@ from typing import Iterable
 
 CURRENT_FILE = Path(__file__).resolve()
 PROJECT_ROOT = CURRENT_FILE.parents[2]
+SRC_DIR = PROJECT_ROOT / "src"
 DATA_DIR = PROJECT_ROOT / "data" / "processed" / "csv"
 OUT_DIR = CURRENT_FILE.parent / "generated"
 OUT_CSV = OUT_DIR / "question_bank.csv"
 OUT_SUMMARY = OUT_DIR / "question_bank_summary.json"
 
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
 
 
 @dataclass
