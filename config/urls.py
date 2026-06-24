@@ -22,8 +22,8 @@ admin_stats_page = ensure_csrf_cookie(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/auth/", include("accounts.urls")),
-    path("api/chat/", include("chat.urls")),
+    path("api/auth/", include("apps.accounts.urls")),
+    path("api/chat/", include("apps.chat.urls")),
     path("", login_page, name="home"),
     path("login/", login_page, name="login"),
     path("signup/", signup_page, name="signup"),
