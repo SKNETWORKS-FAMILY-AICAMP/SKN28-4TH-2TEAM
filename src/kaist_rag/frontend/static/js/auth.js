@@ -115,7 +115,7 @@ const Auth = {
       try{
         const res = await Api.login(em.value.trim(), p.value, e.currentTarget.querySelector('input[type="checkbox"]').checked);
         Api.applyUser(res);
-        App.go('chat');
+        window.location.replace('/chat/');
       }catch(err){
         this.setError('f-pw', err.message || '로그인에 실패했어요.');
       }finally{
@@ -147,7 +147,7 @@ const Auth = {
       try{
         const res = await Api.signup(name, em, p);
         Api.applyUser(res);
-        App.go('chat');
+        window.location.replace('/chat/');
       }catch(err){
         this.setError('s-email', err.message || '회원가입에 실패했어요.');
       }finally{

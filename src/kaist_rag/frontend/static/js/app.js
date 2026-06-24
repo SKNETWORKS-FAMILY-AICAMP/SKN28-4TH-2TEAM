@@ -58,10 +58,16 @@ const App = {
 
   async start(){
     this.applyTweaks();
+    let authState = { authenticated:false };
     try{
-      Api.applyUser(await Api.me());
+      authState = await Api.me();
+      Api.applyUser(authState);
     }catch(e){ /* keep guest state */ }
     const r=window.__ROUTE;          // set by Django page templates
+    if(authState.authenticated && (r==='login' || r==='signup')){
+      window.location.replace('/chat/');
+      return;
+    }
     if(r){ this.go(r); } else { this.go('login'); this.buildProtoNav(); }
     this.initTweakHost();
   },
