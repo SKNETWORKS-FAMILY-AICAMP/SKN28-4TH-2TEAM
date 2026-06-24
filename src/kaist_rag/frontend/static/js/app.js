@@ -99,13 +99,21 @@ const App = {
 
   /* ——— prototype screen jumper ——— */
   buildProtoNav(){
+    const old=document.getElementById('proto-nav');
+    if(old) old.remove();
+    if(CURRENT_USER.role!=='admin') return;
     const nav=document.createElement('div'); nav.id='proto-nav';
     const items=[['login','로그인'],['signup','회원가입'],['chat','채팅'],['admin','관리자']];
     nav.innerHTML='<span class="pn-label">화면</span>'+items.map(i=>`<button data-v="${i[0]}">${i[1]}</button>`).join('');
     document.body.appendChild(nav);
     nav.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>this.go(b.dataset.v)));
   },
-  syncProtoNav(){ document.querySelectorAll('#proto-nav button').forEach(b=>b.classList.toggle('active', b.dataset.v===this.current)); },
+  syncProtoNav(){
+    const nav=document.getElementById('proto-nav');
+    if(CURRENT_USER.role!=='admin'){ if(nav) nav.remove(); return; }
+    if(!nav){ this.buildProtoNav(); return; }
+    nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.v===this.current));
+  },
 
   /* ——— Tweaks host protocol ——— */
   initTweakHost(){

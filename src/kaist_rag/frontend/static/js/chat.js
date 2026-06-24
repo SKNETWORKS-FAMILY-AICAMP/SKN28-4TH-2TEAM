@@ -32,10 +32,11 @@ const Chat = {
 
   viewHTML(){
     const railList=this.railHTML();
+    const railCollapsed = window.sessionStorage?.getItem('communityRailCollapsed') === '1' || Boolean(window.Community && Community.railCollapsed);
 
     return `
     <div class="chat-shell">
-      <aside class="rail scroll" id="rail">
+      <aside class="rail scroll${railCollapsed ? ' collapsed' : ''}" id="rail">
         <div class="rail-top">
           <div class="brand"><span class="mark"><img src="${asset('images/mascot/nubzuki_idle.png')}" alt=""></span> 넙죽이 <small>KAIST 학과 안내</small></div>
         </div>
@@ -59,6 +60,7 @@ const Chat = {
             <div class="ch-sub">KAIST AI대학 · 자연과학대학 · 생명과학기술대학 안내</div>
           </div>
           <div class="spacer"></div>
+          ${window.Community ? Community.topNav('chat') : ''}
           ${CURRENT_USER.role==='admin' ? `<button class="btn btn-soft btn-sm" id="go-admin">${svg('chart')} 관리자</button>`:''}
           <button class="iconbtn" id="toggle-theme" title="테마">${svg('moon')}</button>
         </header>
@@ -96,9 +98,16 @@ const Chat = {
 
     document.getElementById('new-chat').addEventListener('click', ()=>this.newChat());
     this.wireRailSessions();
-    document.getElementById('rail-toggle').addEventListener('click', ()=>document.getElementById('rail').classList.toggle('collapsed'));
+    document.getElementById('rail-toggle').addEventListener('click', ()=>{
+      if(window.Community) Community.toggleRail();
+      else {
+        const collapsed = document.getElementById('rail').classList.toggle('collapsed');
+        window.sessionStorage?.setItem('communityRailCollapsed', collapsed ? '1' : '0');
+      }
+    });
     document.getElementById('toggle-theme').addEventListener('click', ()=>App.toggleTheme());
     const ga=document.getElementById('go-admin'); if(ga) ga.addEventListener('click', ()=>App.go('admin'));
+    if(window.Community) Community.wireTopNav();
     document.getElementById('user-card').addEventListener('click', ()=>this.logout());
 
     // sidebar search filter (functional)
