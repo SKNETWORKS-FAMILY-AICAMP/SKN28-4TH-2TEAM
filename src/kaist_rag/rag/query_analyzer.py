@@ -1010,6 +1010,7 @@ class QuestionAnalyzer:
         route, route_reason = self._decide_route(
             normalized_question=normalized_question,
             intent_rule=intent_rule,
+            department_code=department_code,
         )
 
         metadata_filter = self._build_metadata_filter(
@@ -1505,8 +1506,16 @@ class QuestionAnalyzer:
         self,
         normalized_question: str,
         intent_rule: IntentRule | None,
+        department_code: str | None = None,
     ) -> tuple[RouteType, str]:
         if intent_rule is None:
+            # 의도를 특정하지 못했어도 학과가 명확하면 되묻지 말고
+            # 해당 학과 문서를 검색해 답변한다(over-clarify 완화).
+            if department_code:
+                return "vector", "특정 학과의 일반 정보 질문은 문서 검색으로 답변합니다."
+            # 단과대학/조직 목록 질문("생명과학기술대학은 뭐가 있어?")은 정형 조회로 답변한다.
+            if self._is_kaist_academic_org_question(normalized_question.lower()):
+                return "sql", "KAIST 학과/프로그램 조직 목록은 정형 데이터 조회가 적합합니다."
             return "clarify", "질문 의도를 분류하지 못했습니다."
 
         lowered_question = normalized_question.lower()
@@ -1684,7 +1693,9 @@ class QuestionAnalyzer:
         )
 
         if intent == "general_info" and content_type is None:
-            if not scope_resolved:
+            # 학과가 인식되면 일반 정보 질문(미션·인사말·소개·오시는 길 등)도
+            # 되묻지 않고 벡터 검색으로 답변을 시도한다(over-clarify 완화).
+            if not scope_resolved and department_code is None:
                 missing_fields.append("intent_or_content_type")
 
         if content_type in {"course", "person", "admission", "event"}:
@@ -1721,7 +1732,10 @@ class QuestionAnalyzer:
 
         # semantic matcher가 too_broad로 잘못 강제하는 것을 방지
         if forced_ambiguity_type and not scope_resolved:
-            return forced_ambiguity_type
+            # 특정 학과가 인식되면 too_broad/missing_intent로 되묻지 말고
+            # 해당 학과 자료로 답변을 시도한다(over-clarify 완화).
+            if not (department_code and forced_ambiguity_type in ("too_broad", "missing_intent")):
+                return forced_ambiguity_type
 
         if unsupported_department_name:
             return "unsupported_kaist_department"
@@ -1730,7 +1744,10 @@ class QuestionAnalyzer:
             lowered_question=lowered_question,
             intent=intent,
         ):
-            return "off_topic"
+            # KAIST 단과대학/조직 목록 질문("생명과학기술대학은 뭐가 있어?")은
+            # off_topic이 아니다.
+            if not scope_resolved:
+                return "off_topic"
 
         if self._is_unclear_reference_question(lowered_question, department_code):
             return "unclear_reference"
@@ -1741,7 +1758,8 @@ class QuestionAnalyzer:
                 return "comparison_criterion"
 
         if self._is_too_broad_question(lowered_question):
-            if not scope_resolved:
+            # 학과가 명확히 지정된 질문은 '너무 넓음'으로 거부하지 않는다.
+            if not scope_resolved and department_code is None:
                 return "too_broad"
 
         if self._is_department_scope_question(lowered_question, department_code):
@@ -1752,7 +1770,9 @@ class QuestionAnalyzer:
             return "missing_department"
 
         if intent == "general_info" and content_type is None:
-            if not scope_resolved:
+            # 학과가 인식되면 일반 정보 질문(미션·인사말·소개 등)도
+            # 되묻지 말고 벡터 검색으로 답변을 시도한다.
+            if not scope_resolved and department_code is None:
                 return "missing_intent"
 
         return None

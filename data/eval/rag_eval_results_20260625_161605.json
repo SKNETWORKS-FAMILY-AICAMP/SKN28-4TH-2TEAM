@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-06-25 16:12",
+  "mode": "both",
+  "count": 39,
+  "retrieval": {
+    "n": 39,
+    "dept_hit@5": 97.4,
+    "kw_hit@5": 82.1,
+    "per_college": {
+      "life": "28/29",
+      "ai": "5/5",
+      "natsci": "5/5"
+    }
+  },
+  "pipeline": {
+    "n": 39,
+    "answered_rate": 66.7,
+    "classification": {
+      "answered": 26,
+      "clarify": 11,
+      "insufficient": 2
+    },
+    "route_dist": {
+      "vector": 11,
+      "clarify": 13,
+      "sql": 15
+    },
+    "source_dept_correct": 59.0
+  }
+}

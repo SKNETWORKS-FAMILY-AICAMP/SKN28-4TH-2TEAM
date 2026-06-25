@@ -1,0 +1,39 @@
+{"question": "생명과학과 비전은 무엇인가?", "expected_dept": "bio", "expected_keywords": ["비전"], "college": "life", "qtype": "about"}
+{"question": "생명과학과 History 내용을 알려줘.", "expected_dept": "bio", "expected_keywords": ["history"], "college": "life", "qtype": "about"}
+{"question": "생명과학과 학부 이수요건은 어디서 확인할 수 있어?", "expected_dept": "bio", "expected_keywords": ["이수요건", "학부"], "college": "life", "qtype": "degree_requirement"}
+{"question": "생명과학과 대학원 교과과정은 어떤 정보가 있어?", "expected_dept": "bio", "expected_keywords": ["교과과정", "대학원"], "college": "life", "qtype": "curriculum"}
+{"question": "생명과학과 입시 공지는 어디에 있어?", "expected_dept": "bio", "expected_keywords": ["공지", "입시"], "college": "life", "qtype": "admission_notice"}
+{"question": "의과학대학원 학과소개를 알려줘.", "expected_dept": "gsmse", "expected_keywords": ["학과소개"], "college": "life", "qtype": "about"}
+{"question": "의과학대학원 연혁을 알려줘.", "expected_dept": "gsmse", "expected_keywords": ["연혁"], "college": "life", "qtype": "about"}
+{"question": "의과학대학원 입학전형은 어떻게 돼?", "expected_dept": "gsmse", "expected_keywords": ["입학전형"], "college": "life", "qtype": "admission"}
+{"question": "의과학대학원 트랙소개를 알려줘.", "expected_dept": "gsmse", "expected_keywords": ["트랙소개"], "college": "life", "qtype": "admission_track"}
+{"question": "의과학대학원 전문연구요원 제도는 뭐야?", "expected_dept": "gsmse", "expected_keywords": ["전문연구요원"], "college": "life", "qtype": "admission"}
+{"question": "의과학대학원 입시 FAQ에는 어떤 내용이 있어?", "expected_dept": "gsmse", "expected_keywords": ["faq"], "college": "life", "qtype": "admission_faq"}
+{"question": "의과학대학원 오시는 길 알려줘.", "expected_dept": "gsmse", "expected_keywords": ["오시는 길"], "college": "life", "qtype": "about"}
+{"question": "뇌인지과학과 학과 미션은 뭐야?", "expected_dept": "bcs", "expected_keywords": ["미션", "학과"], "college": "life", "qtype": "about"}
+{"question": "뇌인지과학과 학과장 인사말 내용을 알려줘.", "expected_dept": "bcs", "expected_keywords": ["인사말", "학과장"], "college": "life", "qtype": "about"}
+{"question": "뇌인지과학과 학사과정 입학 정보 알려줘.", "expected_dept": "bcs", "expected_keywords": ["학사과정"], "college": "life", "qtype": "admission"}
+{"question": "뇌인지과학과 대학원과정 입학 정보 알려줘.", "expected_dept": "bcs", "expected_keywords": ["대학원과정"], "college": "life", "qtype": "admission"}
+{"question": "뇌인지과학과 FAQ 알려줘.", "expected_dept": "bcs", "expected_keywords": ["faq"], "college": "life", "qtype": "admission_faq"}
+{"question": "공학생물학대학원 비전은 뭐야?", "expected_dept": "eb", "expected_keywords": ["비전"], "college": "life", "qtype": "about"}
+{"question": "공학생물학이란 무엇인가?", "expected_dept": "eb", "expected_keywords": ["공학생물학"], "college": "life", "qtype": "about"}
+{"question": "공학생물학대학원 입학안내 알려줘.", "expected_dept": "eb", "expected_keywords": ["입학안내"], "college": "life", "qtype": "admission"}
+{"question": "공학생물학대학원 입시일정 알려줘.", "expected_dept": "eb", "expected_keywords": ["입시일정"], "college": "life", "qtype": "admission_notice"}
+{"question": "공학생물학대학원 이수요건 알려줘.", "expected_dept": "eb", "expected_keywords": ["이수요건"], "college": "life", "qtype": "degree_requirement"}
+{"question": "STAR 프로그램이 뭐야?", "expected_dept": "eb", "expected_keywords": ["star", "프로그램"], "college": "life", "qtype": "education"}
+{"question": "줄기세포및재생생물학대학원 인사말 알려줘.", "expected_dept": "scrb", "expected_keywords": ["인사말"], "college": "life", "qtype": "about"}
+{"question": "줄기세포 소개 내용을 알려줘.", "expected_dept": "scrb", "expected_keywords": ["소개", "줄기세포"], "college": "life", "qtype": "about"}
+{"question": "줄기세포대학원 교육과정 알려줘.", "expected_dept": "scrb", "expected_keywords": ["교육과정"], "college": "life", "qtype": "curriculum"}
+{"question": "줄기세포대학원 학위과정 알려줘.", "expected_dept": "scrb", "expected_keywords": ["학위과정"], "college": "life", "qtype": "degree_requirement"}
+{"question": "줄기세포대학원 입학안내 알려줘.", "expected_dept": "scrb", "expected_keywords": ["입학안내"], "college": "life", "qtype": "admission"}
+{"question": "줄기세포대학원 지원자격 알려줘.", "expected_dept": "scrb", "expected_keywords": ["지원자격"], "college": "life", "qtype": "admission"}
+{"question": "AI컴퓨팅학과 졸업 이수학점 알려줘", "expected_dept": "aic", "expected_keywords": ["138", "학점"], "college": "ai", "qtype": "degree"}
+{"question": "AI시스템학과 대학원 입학 안내", "expected_dept": "ai_systems", "expected_keywords": ["입학", "모집"], "college": "ai", "qtype": "admission"}
+{"question": "AX학과 교과목 알려줘", "expected_dept": "ax", "expected_keywords": ["과목"], "college": "ai", "qtype": "course"}
+{"question": "AI미래학과는 어떤 학과야", "expected_dept": "fx", "expected_keywords": ["AI미래"], "college": "ai", "qtype": "overview"}
+{"question": "AI컴퓨팅학과 교수진 알려줘", "expected_dept": "aic", "expected_keywords": ["교수"], "college": "ai", "qtype": "faculty"}
+{"question": "물리학과 교수님 알려줘", "expected_dept": "physics", "expected_keywords": ["교수"], "college": "natsci", "qtype": "faculty"}
+{"question": "화학과 교과목 알려줘", "expected_dept": "chem", "expected_keywords": ["과목"], "college": "natsci", "qtype": "course"}
+{"question": "수리과학과 소개해줘", "expected_dept": "mathsci", "expected_keywords": ["수리"], "college": "natsci", "qtype": "overview"}
+{"question": "양자대학원 입학 정보 알려줘", "expected_dept": "quantum", "expected_keywords": ["양자"], "college": "natsci", "qtype": "admission"}
+{"question": "물리학과 졸업 요건 알려줘", "expected_dept": "physics", "expected_keywords": ["학점"], "college": "natsci", "qtype": "degree"}
