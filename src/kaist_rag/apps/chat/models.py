@@ -46,7 +46,7 @@ class ChatMessage(models.Model):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     content = models.TextField()
     sources = models.JSONField(default=list, blank=True)
-    warning = models.CharField(max_length=80, blank=True)
+    warning = models.TextField(blank=True)
     route = models.CharField(max_length=40, blank=True)
     metadata = models.JSONField(default=dict, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
