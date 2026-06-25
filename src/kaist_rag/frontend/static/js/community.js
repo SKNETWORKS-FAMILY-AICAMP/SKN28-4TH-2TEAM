@@ -603,7 +603,6 @@
                 </label>
                 <div class="community-check-row">
                   <label><input name="isPrivate" type="checkbox" ${item?.isPrivate === false ? '' : 'checked'}> 비공개 문의</label>
-                  <label><input name="emailOnAnswer" type="checkbox" ${item?.emailOnAnswer ? 'checked' : ''}> 답변 완료 시 이메일 알림</label>
                 </div>
               </form>
             </article>
@@ -789,7 +788,6 @@
         title:form.elements.title.value,
         content:form.elements.content.value,
         isPrivate:Boolean(form.elements.isPrivate.checked),
-        emailOnAnswer:Boolean(form.elements.emailOnAnswer.checked),
       };
       const id = form.dataset.inquiryId;
       const result = id

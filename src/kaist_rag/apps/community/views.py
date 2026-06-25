@@ -232,7 +232,7 @@ def _validate_inquiry_payload(data: dict[str, Any]) -> tuple[dict[str, Any] | No
         "title": title,
         "content": content,
         "is_private": bool(data.get("isPrivate", True)),
-        "email_on_answer": bool(data.get("emailOnAnswer", False)),
+        "email_on_answer": False,
     }, None
 
 
