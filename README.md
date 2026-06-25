@@ -86,33 +86,31 @@ SKN28 4기 · 2팀 · 4차 프로젝트 · 발표일 2026-06-26
 
 ## 5. 화면설계서
 
-실제 구현 화면 스크린샷입니다. 화면별 상세 설계(레이아웃·요소·흐름)는 `docs/frontend_wireframes_*.md` 참고.
+실제 화면에 번호 마커(①②③)를 표기하고, 번호별 화면 요소·동작을 설명합니다. 화면별 상세 설계는 `docs/frontend_wireframes_*.md` 참고.
 
-### 6.1 로그인 / 회원가입
+### 5.1 로그인 / 회원가입
 | 로그인 | 회원가입 |
 |:---:|:---:|
-| ![로그인](docs/images/screens/01_login.png) | ![회원가입](docs/images/screens/02_signup.png) |
+| ![로그인](docs/images/screens/annotated/login.png) | ![회원가입](docs/images/screens/annotated/signup.png) |
 
-이메일/비밀번호 인증, 비밀번호 표시 토글, 실데이터 통계(학과 15 · 교과목 908 · 교수·연구진 607) 노출. 상세: [login_signup](docs/frontend_wireframes_login_signup.md)
+이메일/비밀번호 인증, 비밀번호 표시 토글, 실데이터 통계 노출. 상세: [login_signup](docs/frontend_wireframes_login_signup.md)
 
-### 6.2 채팅 (메인 기능)
-| 채팅 메인 | 답변 + 출처 카드 |
-|:---:|:---:|
-| ![채팅](docs/images/screens/03_chat_main.png) | ![대화](docs/images/screens/04_chat_conversation.png) |
+### 5.2 채팅 (메인 기능)
+![채팅](docs/images/screens/annotated/chat.png)
 
 세션 레일, 질문 입력, 넙죽이 답변 + 출처 카드(학과·문서·URL), 피드백/복사/재생성, 마스코트 상태 전이. 상세: [chat_main](docs/frontend_wireframes_chat_main.md)
 
-### 6.3 게시판 (커뮤니티)
+### 5.3 게시판 (커뮤니티)
 | 게시판 목록 | 게시글 상세 |
 |:---:|:---:|
-| ![게시판](docs/images/screens/05_board_list.png) | ![게시글 상세](docs/images/screens/06_board_detail.png) |
+| ![게시판 목록](docs/images/screens/annotated/board_list.png) | ![게시글 상세](docs/images/screens/annotated/board_detail.png) |
 
 카테고리·검색·공지 고정, 글 작성/상세, 댓글·대댓글, 작성자 수정·삭제 권한. 상세: [board](docs/frontend_wireframes_board.md)
 
-### 6.4 문의 / 관리자 통계
+### 5.4 문의 / 관리자 통계
 | 문의 게시판 | 수집 데이터 현황(관리자) |
 |:---:|:---:|
-| ![문의](docs/images/screens/07_inquiry_list.png) | ![관리자](docs/images/screens/08_admin_stats.png) |
+| ![문의](docs/images/screens/annotated/inquiry_list.png) | ![관리자](docs/images/screens/annotated/admin.png) |
 
 문의 상태(대기/처리중/완료)·비공개·운영자 답변, 관리자 수집 통계 대시보드(차트·학과별 표). 상세: [inquiry](docs/frontend_wireframes_inquiry.md) · [admin_dashboard](docs/frontend_wireframes_admin_dashboard.md)
 
