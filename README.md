@@ -51,9 +51,7 @@ SKN28 4기 · 2팀 · 4차 프로젝트 · 발표일 2026-06-26
 | <div align="center">김성재</div> | <div align="center">손지은</div> | <div align="center">신혜지</div> | <div align="center">심기성</div> |
 |:---:|:---:|:---:|:---:|
 | [@hippo2coding](https://github.com/hippo2coding) | [@yjson616](https://github.com/yjson616) | [@HyejiShin-20](https://github.com/HyejiShin-20) | [@sim2084](https://github.com/sim2084) |
-| 백엔드 · 인증/채팅 · 통합 | 데이터 수집·전처리 | 프론트엔드 · UI/UX | RAG 파이프라인 · DB |
-
-> ℹ️ 역할 분담은 초안입니다 — 실제 담당에 맞게 수정해 주세요.
+|  |  |  |  |
 
 ---
 
