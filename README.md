@@ -88,31 +88,93 @@ SKN28 4기 · 2팀 · 4차 프로젝트 · 발표일 2026-06-26
 
 실제 화면에 번호 마커(①②③)를 표기하고, 번호별 화면 요소·동작을 설명합니다. 화면별 상세 설계는 `docs/frontend_wireframes_*.md` 참고.
 
-### 5.1 로그인 / 회원가입
-| 로그인 | 회원가입 |
-|:---:|:---:|
-| ![로그인](docs/images/screens/annotated/login.png) | ![회원가입](docs/images/screens/annotated/signup.png) |
+### 5.1 로그인
 
-이메일/비밀번호 인증, 비밀번호 표시 토글, 실데이터 통계 노출. 상세: [login_signup](docs/frontend_wireframes_login_signup.md)
+![로그인](docs/images/screens/annotated/login.png)
 
-### 5.2 채팅 (메인 기능)
+| 번호 | 요소 | 번호 | 요소 |
+|:--:|---|:--:|---|
+| ① | 이메일 입력 | ⑥ | Google 계정 로그인 |
+| ② | 비밀번호 입력 | ⑦ | KAIST SSO 로그인(시연용) |
+| ③ | 비밀번호 표시 토글 | ⑧ | 회원가입 링크 |
+| ④ | 로그인 상태 유지 | ⑨ | 실데이터 통계(학과·교과목·교수) |
+| ⑤ | 로그인 버튼 | | |
+
+상세: [login_signup](docs/frontend_wireframes_login_signup.md)
+
+### 5.2 회원가입
+
+![회원가입](docs/images/screens/annotated/signup.png)
+
+| 번호 | 요소 | 번호 | 요소 |
+|:--:|---|:--:|---|
+| ① | 이름 입력 | ⑤ | 약관 동의(필수) |
+| ② | 이메일 입력 | ⑥ | 계정 만들기 버튼 |
+| ③ | 비밀번호(6자 이상) | ⑦ | 로그인 링크 |
+| ④ | 비밀번호 확인 | | |
+
+### 5.3 채팅 (메인 기능)
+
 ![채팅](docs/images/screens/annotated/chat.png)
 
-세션 레일, 질문 입력, 넙죽이 답변 + 출처 카드(학과·문서·URL), 피드백/복사/재생성, 마스코트 상태 전이. 상세: [chat_main](docs/frontend_wireframes_chat_main.md)
+| 번호 | 요소 | 번호 | 요소 |
+|:--:|---|:--:|---|
+| ① | 새 대화 시작 | ⑦ | 넙죽이 답변(LLM) |
+| ② | 대화 검색 | ⑧ | 출처 카드(학과·문서·URL) |
+| ③ | 세션 목록(날짜별) | ⑨ | 피드백 👍👎 / 복사 / 재생성 |
+| ④ | 사용자 카드 / 로그아웃 | ⑩ | 입력창(Enter 전송) |
+| ⑤ | 대화 제목·부제 | ⑪ | 전송 버튼 |
+| ⑥ | 사용자 질문 | ⑫ | 마스코트 상태칩 |
 
-### 5.3 게시판 (커뮤니티)
-| 게시판 목록 | 게시글 상세 |
-|:---:|:---:|
-| ![게시판 목록](docs/images/screens/annotated/board_list.png) | ![게시글 상세](docs/images/screens/annotated/board_detail.png) |
+상세: [chat_main](docs/frontend_wireframes_chat_main.md)
 
-카테고리·검색·공지 고정, 글 작성/상세, 댓글·대댓글, 작성자 수정·삭제 권한. 상세: [board](docs/frontend_wireframes_board.md)
+### 5.4 게시판 — 목록
 
-### 5.4 문의 / 관리자 통계
-| 문의 게시판 | 수집 데이터 현황(관리자) |
-|:---:|:---:|
-| ![문의](docs/images/screens/annotated/inquiry_list.png) | ![관리자](docs/images/screens/annotated/admin.png) |
+![게시판 목록](docs/images/screens/annotated/board_list.png)
 
-문의 상태(대기/처리중/완료)·비공개·운영자 답변, 관리자 수집 통계 대시보드(차트·학과별 표). 상세: [inquiry](docs/frontend_wireframes_inquiry.md) · [admin_dashboard](docs/frontend_wireframes_admin_dashboard.md)
+| 번호 | 요소 | 번호 | 요소 |
+|:--:|---|:--:|---|
+| ① | 새 글 작성(레일) | ⑤ | 공지 글(상단 고정) |
+| ② | 검색창 | ⑥ | 게시글 행(카테고리·작성자) |
+| ③ | 글쓰기 버튼 | ⑦ | 페이지네이션 |
+| ④ | 게시글 수 | ⑧ | 넙죽이 패널 |
+
+### 5.5 게시판 — 게시글 상세
+
+![게시글 상세](docs/images/screens/annotated/board_detail.png)
+
+| 번호 | 요소 | 번호 | 요소 |
+|:--:|---|:--:|---|
+| ① | 목록으로 | ⑤ | 본문(+참고 링크) |
+| ② | 수정 / 삭제(작성자) | ⑥ | 댓글 / 대댓글 |
+| ③ | 카테고리·공지 뱃지 | ⑦ | 댓글 입력창 |
+| ④ | 작성자 카드(조회·댓글·날짜) | | |
+
+상세: [board](docs/frontend_wireframes_board.md)
+
+### 5.6 문의
+
+![문의](docs/images/screens/annotated/inquiry_list.png)
+
+| 번호 | 요소 | 번호 | 요소 |
+|:--:|---|:--:|---|
+| ① | 새 문의 작성 | ④ | 답변 상태칩(대기/처리중/완료) |
+| ② | 검색창 | ⑤ | 문의 행(유형·작성자·비공개) |
+| ③ | 문의하기 버튼 | ⑥ | 넙죽이 패널 |
+
+상세: [inquiry](docs/frontend_wireframes_inquiry.md)
+
+### 5.7 관리자 — 수집 데이터 현황
+
+![관리자](docs/images/screens/annotated/admin.png)
+
+| 번호 | 요소 | 번호 | 요소 |
+|:--:|---|:--:|---|
+| ① | 크롤링 기준 뱃지 | ④ | 데이터 구성(막대) |
+| ② | 채팅으로 | ⑤ | 단과대학별 비중(도넛) |
+| ③ | KPI 카드(단과대학·학과·교과목·교수) | ⑥ | 학과별 수집 현황 표 |
+
+상세: [admin_dashboard](docs/frontend_wireframes_admin_dashboard.md)
 
 ---
 
