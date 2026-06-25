@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "kaist_rag.apps.accounts.apps.AccountsConfig",
     "kaist_rag.apps.chat.apps.ChatConfig",
+    "kaist_rag.apps.community.apps.CommunityConfig",
 ]
 
 MIDDLEWARE = [

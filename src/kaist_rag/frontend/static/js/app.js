@@ -47,6 +47,30 @@ const Api = {
   createSession(){ return this.request('/api/chat/sessions/', {method:'POST', body:{}}); },
   session(id){ return this.request(`/api/chat/sessions/${encodeURIComponent(id)}/`); },
   deleteSession(id){ return this.request(`/api/chat/sessions/${encodeURIComponent(id)}/`, {method:'DELETE'}); },
+  communityMine(){ return this.request('/api/community/mine/'); },
+  communityPosts(params={}){ return this.request(`/api/community/posts/${this.query(params)}`); },
+  communityPost(id){ return this.request(`/api/community/posts/${encodeURIComponent(id)}/`); },
+  createCommunityPost(payload){ return this.request('/api/community/posts/', {method:'POST', body:payload}); },
+  updateCommunityPost(id, payload){ return this.request(`/api/community/posts/${encodeURIComponent(id)}/`, {method:'PATCH', body:payload}); },
+  deleteCommunityPost(id){ return this.request(`/api/community/posts/${encodeURIComponent(id)}/`, {method:'DELETE'}); },
+  createPostComment(id, content){ return this.request(`/api/community/posts/${encodeURIComponent(id)}/comments/`, {method:'POST', body:{content}}); },
+  communityInquiries(params={}){ return this.request(`/api/community/inquiries/${this.query(params)}`); },
+  communityInquiry(id){ return this.request(`/api/community/inquiries/${encodeURIComponent(id)}/`); },
+  createCommunityInquiry(payload){ return this.request('/api/community/inquiries/', {method:'POST', body:payload}); },
+  updateCommunityInquiry(id, payload){ return this.request(`/api/community/inquiries/${encodeURIComponent(id)}/`, {method:'PATCH', body:payload}); },
+  deleteCommunityInquiry(id){ return this.request(`/api/community/inquiries/${encodeURIComponent(id)}/`, {method:'DELETE'}); },
+  createInquiryComment(id, content){ return this.request(`/api/community/inquiries/${encodeURIComponent(id)}/comments/`, {method:'POST', body:{content}}); },
+  updateInquiryStatus(id, status){ return this.request(`/api/community/inquiries/${encodeURIComponent(id)}/status/`, {method:'PATCH', body:{status}}); },
+  updateCommunityComment(id, content){ return this.request(`/api/community/comments/${encodeURIComponent(id)}/`, {method:'PATCH', body:{content}}); },
+  deleteCommunityComment(id){ return this.request(`/api/community/comments/${encodeURIComponent(id)}/`, {method:'DELETE'}); },
+  query(params){
+    const qs = new URLSearchParams();
+    Object.entries(params).forEach(([key, value])=>{
+      if(value !== undefined && value !== null && String(value) !== '') qs.set(key, value);
+    });
+    const text = qs.toString();
+    return text ? `?${text}` : '';
+  },
 };
 
 /* ============================================================
@@ -58,10 +82,16 @@ const App = {
 
   async start(){
     this.applyTweaks();
+    let authState = { authenticated:false };
     try{
-      Api.applyUser(await Api.me());
+      authState = await Api.me();
+      Api.applyUser(authState)
     }catch(e){ /* keep guest state */ }
     const r=window.__ROUTE;          // set by Django page templates
+    if(authState.authenticated && (r==='login' || r==='signup')){
+      window.location.replace('/chat/');
+      return;
+    }
     if(r){ this.go(r); } else { this.go('login'); this.buildProtoNav(); }
     this.initTweakHost();
   },
