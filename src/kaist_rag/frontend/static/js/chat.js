@@ -400,12 +400,30 @@ const Chat = {
   fmt(t){
     t=(t||'').trim().replace(/^#{1,6}\s*/gm,'');
     t=this.esc(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-    const lines=t.split(/\n+/); let html='', inList=false;
+    const lines=t.split(/\n+/); let html='', inList=false, tbuf=[];
     const close=()=>{ if(inList){html+='</ul>';inList=false;} };
+    const cells=ln=>ln.replace(/^\s*\|/,'').replace(/\|\s*$/,'').split('|').map(c=>c.trim());
+    const isSep=ln=>cells(ln).every(c=>/^:?-+:?$/.test(c));
+    const linkify=c=>c
+      .replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>')
+      .replace(/(^|[\s(])([\w.+-]+@[\w-]+\.[\w.-]+)/g,'$1<a href="mailto:$2">$2</a>');
+    const flushTbl=()=>{
+      if(!tbuf.length) return;
+      if(tbuf.length>=2 && isSep(tbuf[1])){
+        const head=cells(tbuf[0]);
+        let body='';
+        for(let i=2;i<tbuf.length;i++){ const row=cells(tbuf[i]); body+='<tr>'+head.map((_,c)=>'<td>'+linkify(row[c]||'')+'</td>').join('')+'</tr>'; }
+        html+='<div class="tbl-wrap"><table class="md-tbl"><thead><tr>'+head.map(h=>'<th>'+h+'</th>').join('')+'</tr></thead><tbody>'+body+'</tbody></table></div>';
+      } else { tbuf.forEach(l=>{ html+='<p>'+l+'</p>'; }); }
+      tbuf=[];
+    };
     for(let ln of lines){ ln=ln.trim(); if(!ln)continue;
+      if(/^\|.*\|/.test(ln)){ close(); tbuf.push(ln); continue; }
+      flushTbl();
       if(/^[•\-*]\s+/.test(ln)){ if(!inList){html+='<ul class="b-list">';inList=true;} html+='<li>'+ln.replace(/^[•\-*]\s+/,'')+'</li>'; }
       else if(/^[A-Z]{2,3}\s?\d{3,5}\b/.test(ln)){ if(!inList){html+='<ul class="b-list">';inList=true;} const m=ln.match(/^([A-Z]{2,3}\s?\d{3,5})\s*(.*)$/); html+='<li><strong>'+m[1]+'</strong>'+(m[2]?' '+m[2]:'')+'</li>'; }
       else { close(); html+='<p>'+ln+'</p>'; } }
+    flushTbl();
     close();
     return html;
   },
