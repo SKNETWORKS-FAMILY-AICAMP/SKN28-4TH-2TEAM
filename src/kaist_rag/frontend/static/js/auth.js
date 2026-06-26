@@ -126,21 +126,22 @@ const Auth = {
 
   initSignup(){
     const eye=document.getElementById('su-eye'), pw=document.getElementById('su-pw');
+    const agree=document.getElementById('su-agree');
     eye.addEventListener('click', ()=>{ const t=pw.type==='password'; pw.type=t?'text':'password'; eye.innerHTML=svg(t?'eyeOff':'eye'); });
     document.getElementById('to-login').addEventListener('click', ()=>App.go('login'));
     document.getElementById('su-google').addEventListener('click', e=>this.googleSignIn(e.currentTarget));
+    agree.addEventListener('change', ()=>{ if(agree.checked) this.validateCheck('su-agree', true); });
     document.getElementById('signup-form').addEventListener('submit', async e=>{
       e.preventDefault();
       const name=document.getElementById('su-name').value.trim();
       const em=document.getElementById('su-email').value.trim();
       const p=document.getElementById('su-pw').value, p2=document.getElementById('su-pw2').value;
-      const agree=document.getElementById('su-agree').checked;
       let ok=true;
       ok = this.validate('s-name', !!name) && ok;
       ok = this.validate('s-email', /\S+@\S+\.\S+/.test(em)) && ok;
       ok = this.validate('s-pw', p.length>=6) && ok;
       ok = this.validate('s-pw2', p2===p && p2.length>=6) && ok;
-      if(!agree){ ok=false; document.getElementById('su-agree').parentElement.style.color='var(--danger)'; }
+      ok = this.validateCheck('su-agree', agree.checked) && ok;
       if(!ok) return;
       const btn=e.submitter || e.currentTarget.querySelector('button[type="submit"]');
       this.busy(btn, true, '계정 생성 중…');
@@ -149,7 +150,7 @@ const Auth = {
         Api.applyUser(res);
         window.location.replace('/chat/');
       }catch(err){
-        this.setError('s-email', err.message || '회원가입에 실패했어요.');
+        this.setSignupError(err);
       }finally{
         this.busy(btn, false, '계정 만들기');
       }
@@ -167,6 +168,17 @@ const Auth = {
   validate(fieldId, cond){
     document.getElementById(fieldId).classList.toggle('invalid', !cond);
     return cond;
+  },
+
+  validateCheck(inputId, cond){
+    document.getElementById(inputId).parentElement.classList.toggle('invalid', !cond);
+    return cond;
+  },
+
+  setSignupError(err){
+    const fieldMap = { name:'s-name', email:'s-email', password:'s-pw' };
+    const field = fieldMap[err.data && err.data.field] || 's-email';
+    this.setError(field, err.message || '회원가입에 실패했어요.');
   },
 
   setError(fieldId, message){

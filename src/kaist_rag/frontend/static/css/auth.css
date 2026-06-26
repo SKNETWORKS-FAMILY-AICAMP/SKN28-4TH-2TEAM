@@ -51,6 +51,7 @@
 .field.invalid .err { display: block; }
 .auth-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; font-size: 13px; }
 .check { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--ink-soft); font-weight: 600; }
+.check.invalid { color: var(--danger); }
 .check input { width: 18px; height: 18px; accent-color: var(--nub); }
 .link { color: var(--nub-deep); font-weight: 700; cursor: pointer; }
 .link:hover { text-decoration: underline; }

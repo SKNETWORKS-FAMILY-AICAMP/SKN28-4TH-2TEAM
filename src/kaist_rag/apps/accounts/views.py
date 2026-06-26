@@ -64,13 +64,13 @@ def signup(request: HttpRequest) -> JsonResponse:
     password = str(data.get("password", ""))
 
     if not name:
-        return JsonResponse({"ok": False, "error": "이름을 입력해 주세요."}, status=400)
+        return JsonResponse({"ok": False, "field": "name", "error": "이름을 입력해 주세요."}, status=400)
 
     try:
         validate_email(email)
     except ValidationError:
         return JsonResponse(
-            {"ok": False, "error": "올바른 이메일 형식을 입력해 주세요."},
+            {"ok": False, "field": "email", "error": "올바른 이메일 형식을 입력해 주세요."},
             status=400,
         )
 
@@ -78,14 +78,14 @@ def signup(request: HttpRequest) -> JsonResponse:
 
     if User.objects.filter(username__iexact=email).exists() or User.objects.filter(email__iexact=email).exists():
         return JsonResponse(
-            {"ok": False, "error": "이미 가입된 이메일입니다."},
+            {"ok": False, "field": "email", "error": "이미 가입된 이메일입니다."},
             status=409,
         )
 
     try:
         validate_password(password)
     except ValidationError as exc:
-        return JsonResponse({"ok": False, "error": " ".join(exc.messages)}, status=400)
+        return JsonResponse({"ok": False, "field": "password", "error": " ".join(exc.messages)}, status=400)
 
     user = User.objects.create_user(
         username=email,
