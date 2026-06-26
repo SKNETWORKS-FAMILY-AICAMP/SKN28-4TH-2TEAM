@@ -280,6 +280,8 @@ python manage.py runserver 127.0.0.1:8000
 | ERD | [docs/sql_ERD.md](docs/sql_ERD.md) |
 | LLM 연동 웹 앱 | `src/kaist_rag/` (Django + RAG) |
 | 데이터 적재 가이드 | [docs/sql_README.md](docs/sql_README.md) |
+| 테스트 계획 및 결과 보고서 | [docs/테스트_계획_및_결과_보고서.md](docs/테스트_계획_및_결과_보고서.md) |
+| 발표 자료 (PPT) | [발표덱 PDF](presentation/넙죽이%20발표덱.pdf) · [PPTX](presentation/Design_system_UI_screens.pptx) |
 
 ---
 
