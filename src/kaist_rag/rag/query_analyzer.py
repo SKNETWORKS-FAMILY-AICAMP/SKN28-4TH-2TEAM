@@ -183,6 +183,53 @@ DEPARTMENTS = [
             "fx",
         ],
     ),
+    # ── 생명과학기술대학 ──
+    DepartmentInfo(
+        name="생명과학과",
+        code="bio",
+        keywords=["생명과학과"],
+    ),
+    DepartmentInfo(
+        name="뇌인지과학과",
+        code="bcs",
+        keywords=["뇌인지과학과", "뇌인지", "bcs"],
+    ),
+    DepartmentInfo(
+        name="의과학대학원",
+        code="gsmse",
+        keywords=["의과학대학원", "의과학", "gsmse"],
+    ),
+    DepartmentInfo(
+        name="줄기세포및재생생물학대학원",
+        code="scrb",
+        keywords=["줄기세포및재생생물학대학원", "줄기세포", "scrb"],
+    ),
+    DepartmentInfo(
+        name="공학생물대학원",
+        code="eb",
+        keywords=["공학생물대학원", "공학생물학대학원", "공학생물"],
+    ),
+    # ── 자연과학대학 ──
+    DepartmentInfo(
+        name="물리학과",
+        code="physics",
+        keywords=["물리학과", "물리학", "physics"],
+    ),
+    DepartmentInfo(
+        name="수리과학과",
+        code="mathsci",
+        keywords=["수리과학과", "수리과학", "mathsci"],
+    ),
+    DepartmentInfo(
+        name="화학과",
+        code="chem",
+        keywords=["화학과", "chem"],
+    ),
+    DepartmentInfo(
+        name="양자대학원",
+        code="quantum",
+        keywords=["양자대학원", "quantum"],
+    ),
 ]
 
 AI_COLLEGE_SCOPE_KEYWORDS = [
@@ -282,20 +329,16 @@ UNSUPPORTED_KAIST_DEPARTMENT_KEYWORDS = [
     "산업및시스템공학과",
     "산업 및 시스템공학과",
     "산업디자인학과",
-    "수리과학과",
-    "물리학과",
-    "화학과",
-    "생명과학과",
-    "뇌인지과학과",
     "기술경영학부",
     "경영공학부",
     "디지털인문사회과학부",
     "문화기술대학원",
     "과학기술정책대학원",
-    "의과학대학원",
     "문술미래전략대학원",
     "녹색성장지속가능대학원",
 ]
+# 주의: 수리·물리·화학·생명과학·뇌인지·의과학 등은 이제 DEPARTMENTS에 등록되어
+# 지원 학과이므로 위 미지원 목록에서 제외했다.
 
 
 INTENT_EXAMPLES = [
@@ -366,7 +409,7 @@ INTENT_EXAMPLES = [
     IntentExample("전산학부 교수진 알려줘", "general_info", "unsupported_kaist_department"),
     IntentExample("기계공학과 입학 정보 알려줘", "general_info", "unsupported_kaist_department"),
     IntentExample("산업디자인학과 소개해줘", "general_info", "unsupported_kaist_department"),
-    IntentExample("수리과학과 교과목 알려줘", "general_info", "unsupported_kaist_department"),
+    IntentExample("신소재공학과 교과목 알려줘", "general_info", "unsupported_kaist_department"),
     IntentExample("오늘 날씨 알려줘", "general_info", "off_topic"),
     IntentExample("파이썬 코드 짜줘", "general_info", "off_topic"),
     IntentExample("맛집 추천해줘", "general_info", "off_topic"),
@@ -967,6 +1010,7 @@ class QuestionAnalyzer:
         route, route_reason = self._decide_route(
             normalized_question=normalized_question,
             intent_rule=intent_rule,
+            department_code=department_code,
         )
 
         metadata_filter = self._build_metadata_filter(
@@ -1462,8 +1506,16 @@ class QuestionAnalyzer:
         self,
         normalized_question: str,
         intent_rule: IntentRule | None,
+        department_code: str | None = None,
     ) -> tuple[RouteType, str]:
         if intent_rule is None:
+            # 의도를 특정하지 못했어도 학과가 명확하면 되묻지 말고
+            # 해당 학과 문서를 검색해 답변한다(over-clarify 완화).
+            if department_code:
+                return "vector", "특정 학과의 일반 정보 질문은 문서 검색으로 답변합니다."
+            # 단과대학/조직 목록 질문("생명과학기술대학은 뭐가 있어?")은 정형 조회로 답변한다.
+            if self._is_kaist_academic_org_question(normalized_question.lower()):
+                return "sql", "KAIST 학과/프로그램 조직 목록은 정형 데이터 조회가 적합합니다."
             return "clarify", "질문 의도를 분류하지 못했습니다."
 
         lowered_question = normalized_question.lower()
@@ -1641,7 +1693,9 @@ class QuestionAnalyzer:
         )
 
         if intent == "general_info" and content_type is None:
-            if not scope_resolved:
+            # 학과가 인식되면 일반 정보 질문(미션·인사말·소개·오시는 길 등)도
+            # 되묻지 않고 벡터 검색으로 답변을 시도한다(over-clarify 완화).
+            if not scope_resolved and department_code is None:
                 missing_fields.append("intent_or_content_type")
 
         if content_type in {"course", "person", "admission", "event"}:
@@ -1678,7 +1732,10 @@ class QuestionAnalyzer:
 
         # semantic matcher가 too_broad로 잘못 강제하는 것을 방지
         if forced_ambiguity_type and not scope_resolved:
-            return forced_ambiguity_type
+            # 특정 학과가 인식되면 too_broad/missing_intent로 되묻지 말고
+            # 해당 학과 자료로 답변을 시도한다(over-clarify 완화).
+            if not (department_code and forced_ambiguity_type in ("too_broad", "missing_intent")):
+                return forced_ambiguity_type
 
         if unsupported_department_name:
             return "unsupported_kaist_department"
@@ -1687,7 +1744,10 @@ class QuestionAnalyzer:
             lowered_question=lowered_question,
             intent=intent,
         ):
-            return "off_topic"
+            # KAIST 단과대학/조직 목록 질문("생명과학기술대학은 뭐가 있어?")은
+            # off_topic이 아니다.
+            if not scope_resolved:
+                return "off_topic"
 
         if self._is_unclear_reference_question(lowered_question, department_code):
             return "unclear_reference"
@@ -1698,7 +1758,8 @@ class QuestionAnalyzer:
                 return "comparison_criterion"
 
         if self._is_too_broad_question(lowered_question):
-            if not scope_resolved:
+            # 학과가 명확히 지정된 질문은 '너무 넓음'으로 거부하지 않는다.
+            if not scope_resolved and department_code is None:
                 return "too_broad"
 
         if self._is_department_scope_question(lowered_question, department_code):
@@ -1709,7 +1770,9 @@ class QuestionAnalyzer:
             return "missing_department"
 
         if intent == "general_info" and content_type is None:
-            if not scope_resolved:
+            # 학과가 인식되면 일반 정보 질문(미션·인사말·소개 등)도
+            # 되묻지 말고 벡터 검색으로 답변을 시도한다.
+            if not scope_resolved and department_code is None:
                 return "missing_intent"
 
         return None
@@ -2015,7 +2078,7 @@ class QuestionAnalyzer:
             )
             return (
                 f"현재 수집된 자료에는 {department_text}에 대해 답변할 만큼 충분한 정보가 없습니다.\n\n"
-                "이 챗봇은 수집된 KAIST AI 관련 학과 자료를 중심으로 답변합니다. "
+                "이 챗봇은 수집된 KAIST AI·자연과학·생명과학기술대학 학과 자료를 중심으로 답변합니다. "
                 "정확하고 최신 정보는 KAIST 공식 홈페이지나 입학처에서 확인하거나, 학과명을 포함해 직접 검색해 주세요.\n\n"
                 f"- KAIST 공식 홈페이지: {KAIST_OFFICIAL_URL}\n"
                 f"- KAIST 입학처: {KAIST_ADMISSION_URL}"
@@ -2023,7 +2086,7 @@ class QuestionAnalyzer:
 
         if ambiguity_type == "off_topic":
             return (
-                "이 챗봇은 수집된 KAIST 및 KAIST AI 관련 학과 자료를 바탕으로 답변합니다.\n\n"
+                "이 챗봇은 수집된 KAIST 및 KAIST AI·자연과학·생명과학기술대학 학과 자료를 바탕으로 답변합니다.\n\n"
                 "KAIST와 관련 없는 질문에는 답변할 수 없습니다. "
                 "KAIST 학과, 입학, 교수진, 교과목, 연구 분야, 캠퍼스 기본 정보에 대해 질문해주세요."
             )
@@ -2031,7 +2094,7 @@ class QuestionAnalyzer:
         if ambiguity_type == "department_scope":
             examples = ", ".join(department.name for department in self.departments)
             return (
-                "현재 이 챗봇은 KAIST 전체 학과가 아니라, 수집된 KAIST AI 관련 학과 정보만 안내할 수 있습니다.\n\n"
+                "현재 이 챗봇은 KAIST 전체 학과가 아니라, 수집된 KAIST AI·자연과학·생명과학기술대학 학과 정보만 안내할 수 있습니다.\n\n"
                 f"안내 가능한 학과: {examples}\n\n"
                 "특정 학과 소개를 원하시나요, 아니면 수집된 AI 관련 학과 전체를 간단히 비교해드릴까요?"
             )
@@ -2063,7 +2126,7 @@ class QuestionAnalyzer:
         if ambiguity_type == "unsupported_fact":
             return (
                 "제공된 문서에서 해당 정보는 확인되지 않습니다.\n\n"
-                "이 챗봇은 수집된 KAIST AI 관련 학과 자료를 바탕으로 답변합니다. "
+                "이 챗봇은 수집된 KAIST AI·자연과학·생명과학기술대학 학과 자료를 바탕으로 답변합니다. "
                 "경쟁률, 등록금, 취업률, 평균 연봉, 합격 가능성, 외부 대학 비교처럼 "
                 "문서에 근거가 없는 정보는 추측해서 답변하지 않습니다."
             )
